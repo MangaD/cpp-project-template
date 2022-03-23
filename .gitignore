@@ -1,0 +1,7 @@
+/vcpkg/
+/.vscode/
+/.cache/
+/build/
+/docs/doxygen/build/
+/docs/sphinx/build/
+/docs/sphinx/index.rst

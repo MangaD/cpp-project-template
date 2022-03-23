@@ -1,0 +1,41 @@
+# Taken from:
+# - https://github.com/marketplace/actions/doxygen-github-pages-deploy-action
+# - https://github.com/DenverCoder1/doxygen-github-pages-action/blob/main/action.yml
+
+name: Doxygen GitHub Pages Deploy Action
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: "true"
+
+      - name: Install Doxygen and CMake
+        run: sudo apt-get install doxygen cmake libwxgtk3.0-gtk3-dev -y
+        shell: bash
+
+      - name: Generate Doxygen Documentation
+        run: |
+          mkdir build && cd build && cmake ..
+          cmake --build . --target doxygen
+        shell: bash
+
+      - name: Create .nojekyll (ensures pages with underscores work on gh pages)
+        run: touch docs/doxygen/build/html/.nojekyll
+        shell: bash
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: docs/doxygen/build/html
+
