@@ -1,0 +1,4 @@
+# Ignore issues in std
+fun:std::*
+# Ignore issues in 3rdparty
+src:3rdparty/*

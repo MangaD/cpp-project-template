@@ -1,0 +1,3 @@
+namespace tut1 {
+
+}

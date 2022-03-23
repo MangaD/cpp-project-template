@@ -1,0 +1,76 @@
+/**
+ * See:
+ * - https://docs.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource
+ * - https://docs.microsoft.com/en-us/windows/win32/msi/localizing-the-error-and-actiontext-tables
+ * - https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
+ * - https://github.com/tpn/winsdk-10/blob/master/Include/10.0.16299.0/shared/common.ver
+ */
+
+#pragma code_page(65001) // UTF-8
+
+// About unicode in RC files:
+// https://devblogs.microsoft.com/oldnewthing/20190607-00/?p=102569
+// Note: Strings shouldn't have L prefix, doesn't work for some reason.
+
+#include <windows.h>
+
+#define VER_FILEVERSION         @CMAKE_PROJECT_VERSION_MAJOR@,@CMAKE_PROJECT_VERSION_MINOR@,@CMAKE_PROJECT_VERSION_PATCH@,@CMAKE_PROJECT_VERSION_TWEAK@
+#define VER_FILEVERSION_STR     "@CMAKE_PROJECT_VERSION_MAJOR@.@CMAKE_PROJECT_VERSION_MINOR@.@CMAKE_PROJECT_VERSION_PATCH@.@CMAKE_PROJECT_VERSION_TWEAK@\0"
+
+#define VER_PRODUCTVERSION      @CMAKE_PROJECT_VERSION_MAJOR@,@CMAKE_PROJECT_VERSION_MINOR@,@CMAKE_PROJECT_VERSION_PATCH@,@CMAKE_PROJECT_VERSION_TWEAK@
+#define VER_PRODUCTVERSION_STR  "@CMAKE_PROJECT_VERSION_MAJOR@.@CMAKE_PROJECT_VERSION_MINOR@.@CMAKE_PROJECT_VERSION_PATCH@.@CMAKE_PROJECT_VERSION_TWEAK@\0"
+
+#ifndef DEBUG
+	#define VER_DEBUG 0
+	#define VER_PRERELEASE 0
+#else
+	#define VER_DEBUG VS_FF_DEBUG
+	#define VER_PRERELEASE VS_FF_PRERELEASE
+#endif
+
+#if @PROJECT_LANGUAGE_NEUTRAL@ == 0
+	#ifndef UNICODE
+		#define VER_VERSION_LANG "0c0904E4" /* LANG_ENGLISH/SUBLANG_ENGLISH_US, Ansi CP */
+	#else
+		#define VER_VERSION_LANG "040904B0" /* LANG_ENGLISH/SUBLANG_ENGLISH_US, Unicode CP */
+	#endif
+	#define VER_VERSION_TRANSLATION   0x0409, 0x04B0
+#else
+	#ifndef UNICODE
+		#define VER_VERSION_LANG "000004E4" /* LANG_NEUTRAL/SUBLANG_NEUTRAL, Ansi CP */
+	#else
+		#define VER_VERSION_LANG "000004B0" /* LANG_NEUTRAL/SUBLANG_NEUTRAL, Unicode CP */
+	#endif
+	#define VER_VERSION_TRANSLATION   0x0000, 0x04B0
+#endif
+
+VS_VERSION_INFO     VERSIONINFO
+FILEVERSION         VER_FILEVERSION
+PRODUCTVERSION      VER_PRODUCTVERSION
+FILEFLAGSMASK       VS_FFI_FILEFLAGSMASK
+FILEFLAGS           (VER_PRERELEASE|VER_DEBUG)
+FILEOS              VOS__WINDOWS32
+FILETYPE            VFT_APP
+FILESUBTYPE         VFT2_UNKNOWN
+BEGIN
+    BLOCK    "VarFileInfo"
+    BEGIN
+        VALUE "Translation", VER_VERSION_TRANSLATION
+    END
+
+    BLOCK    "StringFileInfo"
+    BEGIN
+        BLOCK VER_VERSION_LANG
+        BEGIN
+            VALUE "CompanyName",      "@CPACK_PACKAGE_VENDOR@"
+            VALUE "FileDescription",  "@PROJECT_DESCRIPTION@"
+            VALUE "FileVersion",      VER_FILEVERSION_STR
+            VALUE "InternalName",     "@PROJECT_NAME@"
+            VALUE "LegalCopyright",   "© @COPYRIGHT_YEAR@ @CPACK_PACKAGE_VENDOR@"
+            VALUE "OriginalFilename", "@PROJECT_NAME@.exe"
+            VALUE "ProductName",      "@PROJECT_NAME@"
+            VALUE "Comments",         "@PROJECT_DESCRIPTION@"
+            VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
+        END
+    END
+END
