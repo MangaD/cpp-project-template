@@ -1,11 +1,10 @@
 BasedOnStyle: Google
-BreakBeforeBraces: Allman
-ColumnLimit: 100
+ColumnLimit: 80
 Cpp11BracedListStyle: true
 IndentWidth: 4
 TabWidth: 4
+BreakBeforeBraces: Allman
 MaxEmptyLinesToKeep: 1
-NamespaceIndentation: All
 SpaceBeforeAssignmentOperators: true
 Standard: "c++20"
 UseTab: ForIndentation

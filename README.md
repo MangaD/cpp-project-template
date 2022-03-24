@@ -112,6 +112,7 @@ cmake --build . --target sphinx
 4. For Sphinx instructions, see:
    - https://www.sphinx-doc.org/en/master/index.html
    - https://sphinx-themes.org/sample-sites/sphinx-rtd-theme/
+5. GitHub Actions uses the [latest runners](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources) available and for this reason may need maintenance.
 
 ## TODO
 
@@ -126,7 +127,9 @@ cmake --build . --target sphinx
 - [ ] vcpkg or conan
 - [ ] i18n and L10n
 - [ ] Boost
-
+- [ ] GitHub Actions make installers with CPack
+- [ ] GitHub Actions ARM processor
+- [ ] Dynamic library
 
 ---
 

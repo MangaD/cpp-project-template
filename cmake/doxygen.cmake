@@ -23,7 +23,6 @@ if (DOXYGEN_FOUND)
 
 	doxygen_add_docs(doxygen
 		README.md
-		INSTRUCTIONS.md
 		${SOURCE_DIR})
 
 else()
