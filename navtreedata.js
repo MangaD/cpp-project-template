@@ -41,7 +41,8 @@ var NAVTREE =
         [ "DEB on Ubuntu", "md_README.html#autotoc_md13", null ]
       ] ],
       [ "Documentation", "md_README.html#autotoc_md14", null ],
-      [ "TODO", "md_README.html#autotoc_md15", null ]
+      [ "TODO", "md_README.html#autotoc_md15", null ],
+      [ "<<<<<<< HEAD", "md_README.html#autotoc_md16", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
