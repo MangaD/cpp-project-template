@@ -64,6 +64,20 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY CACHE STRING ${PROJECT_BINARY_DIR}/lib)
 # https://clang.llvm.org/docs/HowToSetupToolingForLLVM.html
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+###############
+### TARGETS ###
+###############
+
+set(PROJECT_LIB_NAME projectlib)
+set(PROJECT_LIB_DIR ${SOURCE_DIR}/${PROJECT_LIB_NAME})
+add_library(${PROJECT_LIB_NAME} STATIC "")
+add_subdirectory(${PROJECT_LIB_DIR})
+
+set(PROJECT_CLI_NAME projectcli)
+set(PROJECT_CLI_DIR ${SOURCE_DIR}/${PROJECT_CLI_NAME})
+add_executable(${PROJECT_CLI_NAME} "")
+add_subdirectory(${PROJECT_CLI_DIR})
+
 #####################
 ### CMake modules ###
 #####################
@@ -72,21 +86,9 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(cmake/doxygen.cmake)
 include(cmake/sphinx.cmake)
 include(cmake/cppcheck.cmake)
+# clang-tidy uses the PROJECT_LIB_DIR variable
 include(cmake/clang-tidy.cmake)
 include(cmake/clang-format.cmake)
-
-###############
-### TARGETS ###
-###############
-
-set(PROJECT_LIB_NAME projectlib)
-add_library(${PROJECT_LIB_NAME} STATIC "")
-add_subdirectory(${SOURCE_DIR}/${PROJECT_LIB_NAME})
-
-set(PROJECT_CLI_EXE_NAME ${PROJECT_NAME}-cli)
-add_executable(${PROJECT_CLI_EXE_NAME} "")
-add_subdirectory(${SOURCE_DIR})
-
 # Sanitizers must come after add_executable or add_library, and target name
 # must be changed in the module accordingly.
 include(cmake/sanitizer.cmake)
@@ -106,7 +108,7 @@ enable_testing()
 
 # does the application run
 add_test(NAME Runs
-	COMMAND $<TARGET_FILE:${PROJECT_CLI_EXE_NAME}>)
+	COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}>)
 
 include(cmake/memcheck.cmake)
 
@@ -115,6 +117,6 @@ include(cmake/memcheck.cmake)
 #############
 
 # See: https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html
-install(TARGETS ${PROJECT_CLI_EXE_NAME} DESTINATION bin)
+install(TARGETS ${PROJECT_CLI_NAME} DESTINATION bin)
 
 include(cmake/cpack_module.cmake)

@@ -8,6 +8,7 @@ if (CLANG_FORMAT)
 
 	file(GLOB_RECURSE ALL_CXX_SOURCE_FILES
 		${SOURCE_DIR}/*.[ch]pp
+		${SOURCE_DIR}/*.[ch]
 	)
 	add_custom_target(format
 		COMMAND clang-format

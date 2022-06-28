@@ -15,9 +15,11 @@ if(CLANG_TIDY)
 		COMMAND clang-tidy
 		${ALL_CXX_SOURCE_FILES}
 		-format-style=file
+		-p=${PROJECT_BINARY_DIR}
 		--
 		-std=c++${CMAKE_CXX_STANDARD}
 		-I${PROJECT_BINARY_DIR}
+		-I${PROJECT_LIB_DIR}
 	)
 else ()
 	message(WARNING "clang-tidy not found.")
