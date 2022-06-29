@@ -9,8 +9,10 @@ on: [push, pull_request]
 env:
   CMAKE_VERSION: 3.23.0-rc5
   NINJA_VERSION: 1.10.2
+  WXWIDGETS_VERSION: 3.2.0
   BUILD_TYPE: Release
   CCACHE_VERSION: 4.6
+  wxWidgets_ROOT_DIR: C:/wxwidgets-build
 
 jobs:
   build:
@@ -87,6 +89,32 @@ jobs:
           execute_process(
             COMMAND chmod +x ninja
             COMMAND chmod +x ${cmake_dir}/cmake
+          )
+        endif()
+
+    - name: Install wxWidgets
+      shell: cmake -P {0}
+      run: |
+        set(cmake_version $ENV{CMAKE_VERSION})
+        set(wxwidgets_version $ENV{WXWIDGETS_VERSION})
+
+        message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
+        message(STATUS "wxWidgets_ROOT_DIR: $ENV{wxWidgets_ROOT_DIR}")
+
+        if ("${{ runner.os }}" STREQUAL "Linux")
+          execute_process(
+            COMMAND sudo apt-get -y install libwxgtk3.0-gtk3-dev
+          )
+        elseif ("${{ runner.os }}" STREQUAL "Windows")
+          set(wxwidgets_url "https://github.com/wxWidgets/wxWidgets/releases/download/v${wxwidgets_version}/wxWidgets-${wxwidgets_version}-headers.7z")
+          file(DOWNLOAD "${wxwidgets_url}" C:/include.7z SHOW_PROGRESS)
+          set(wxwidgets_url "https://github.com/wxWidgets/wxWidgets/releases/download/v${wxwidgets_version}/wxMSW-${wxwidgets_version}_vc14x_x64_Dev.7z")
+          file(DOWNLOAD "${wxwidgets_url}" C:/dev.7z SHOW_PROGRESS)
+          execute_process(
+            COMMAND mkdir $ENV{wxWidgets_ROOT_DIR}
+            COMMAND cd $ENV{wxWidgets_ROOT_DIR}
+            COMMAND ${CMAKE_COMMAND} -E tar xvf C:/include.7z
+            COMMAND ${CMAKE_COMMAND} -E tar xvf C:/dev.7z
           )
         endif()
 

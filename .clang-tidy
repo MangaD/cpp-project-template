@@ -1,1 +1,1 @@
-Checks: "cppcore*"
+Checks: cppcore*,-cppcoreguidelines-owning-memory

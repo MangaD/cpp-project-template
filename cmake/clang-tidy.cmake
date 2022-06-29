@@ -11,6 +11,12 @@ if(CLANG_TIDY)
 		${SOURCE_DIR}/*.[ch]
 	)
 
+	SET(wxWidgets_INCLUDE_FLAGS "")
+	FOREACH(DIR ${wxWidgets_INCLUDE_DIRS})
+		list(APPEND wxWidgets_INCLUDE_FLAGS "-I\"${DIR}\" ")
+	ENDFOREACH()
+	list(JOIN wxWidgets_INCLUDE_FLAGS " " wxWidgets_INCLUDE_FLAGS)
+
 	add_custom_target(tidy
 		COMMAND clang-tidy
 		${ALL_CXX_SOURCE_FILES}
@@ -20,6 +26,7 @@ if(CLANG_TIDY)
 		-std=c++${CMAKE_CXX_STANDARD}
 		-I${PROJECT_BINARY_DIR}
 		-I${PROJECT_LIB_DIR}
+		${wxWidgets_INCLUDE_FLAGS}
 	)
 else ()
 	message(WARNING "clang-tidy not found.")

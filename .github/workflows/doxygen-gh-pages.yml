@@ -19,7 +19,7 @@ jobs:
           submodules: "true"
 
       - name: Install Doxygen and CMake
-        run: sudo apt-get install doxygen cmake -y
+        run: sudo apt-get install doxygen cmake libwxgtk3.0-gtk3-dev -y
         shell: bash
 
       - name: Generate Doxygen Documentation

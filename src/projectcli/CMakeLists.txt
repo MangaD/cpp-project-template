@@ -23,10 +23,12 @@ if (MINGW)
 	)
 elseif (MSVC)
 	# MT vs MD vs MTd vs MDd https://social.msdn.microsoft.com/Forums/en-US/9474efb9-49cd-46e1-8935-ee2bebe95203/difference-in-mt-and-md-run-time-lib-setting?forum=vcgeneral
-	target_compile_options(${PROJECT_CLI_NAME} PUBLIC
-		$<$<CONFIG:Debug>:/MTd>
-		$<$<CONFIG:Release>:/MT>
-	)
+	set_property(TARGET ${PROJECT_CLI_NAME} PROPERTY
+		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+	#target_compile_options(${PROJECT_CLI_NAME} PUBLIC
+	#	$<$<CONFIG:Debug>:/MTd>
+	#	$<$<CONFIG:Release>:/MT>
+	#)
 	target_link_options(${PROJECT_CLI_NAME} PUBLIC
 		$<$<CONFIG:Release>:/INCREMENTAL:NO /NODEFAULTLIB:MSVCRT>
 	)

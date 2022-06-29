@@ -13,3 +13,10 @@ AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AllowShortLambdasOnASingleLine: All
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
+
+# Indent preprocessor directives
+IndentPPDirectives: BeforeHash
+
+# Do not indent access modifiers
+IndentAccessModifiers: false
+AccessModifierOffset: -4

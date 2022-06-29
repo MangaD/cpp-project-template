@@ -15,7 +15,9 @@ if (CPPCHECK)
 		--inline-suppr
 		--std=c++${CMAKE_CXX_STANDARD}
 		--suppressions-list=${CMAKE_SOURCE_DIR}/CppCheckSuppressions.txt
+		--library=wxwidgets
 		-I${PROJECT_BINARY_DIR}
+		-I${PROJECT_LIB_DIR}
 	)
 
 else()

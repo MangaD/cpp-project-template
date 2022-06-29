@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
 	                     // https://stackoverflow.com/q/68878728/3049315
 	progName = argv[0];  // NOLINT: Pointer arithmetic is inevitable here.
 
+	constexpr int i = 5;
+
 	try
 	{
 		parseUserOptions(argc, argv);
@@ -34,5 +36,5 @@ int main(int argc, char *argv[])
 	}
 
 	std::cout << "TESTING TUTORIAL 1:" << std::endl;
-	std::cout << "\tFactorial of 5 is: " << tut1::factorial(5) << std::endl;
+	std::cout << "\tFactorial of " << i << " is: " << tut1::factorial(i) << std::endl;
 }
