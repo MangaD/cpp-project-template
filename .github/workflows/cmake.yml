@@ -5,7 +5,13 @@
 
 name: CMake Build Matrix
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 env:
   CMAKE_VERSION: 3.25.0-rc4
