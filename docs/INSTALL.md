@@ -278,7 +278,7 @@ Download and Install the Null Soft Installer (NSIS) from [here](https://nsis.sou
 ```sh
 cmake ..
 cmake --build . --config Release
-cpack -G NSIS
+cpack -G NSIS64
 ```
 
 ### WiX on Windows

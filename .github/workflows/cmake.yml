@@ -332,7 +332,7 @@ jobs:
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       working-directory: build
       run: |
-        cpack -G NSIS
+        cpack -G NSIS64
         cpack -G WIX
         mv package/${{ steps.generate-name.outputs.nsisName }}.exe ../${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_nsis.exe
         mv package/${{ steps.generate-name.outputs.nsisName }}.msi ../${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_wix.msi

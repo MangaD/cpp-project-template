@@ -1,0 +1,65 @@
+### TODO
+
+- [x] Static library
+- [ ] Dynamic library
+- [x] Console app
+- [x] GUI app
+  - [x] wxWidgets
+  - [ ] QT (see: https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
+- [x] Windows resources
+  - [x] Icon
+  - [x] Version data
+- [ ] i18n and L10n
+- [ ] Boost
+- [ ] Unit testing
+  - [ ] Catch2
+  - [ ] GoogleTest
+- [ ] Code coverage (lcov, gcov) + codecov
+- [x] CMake integration
+  - [x] CTest
+  - [x] CPack
+    - [ ] Sign the executables (see: https://stackoverflow.com/a/252245/3049315)
+  - [ ] CDash
+- [x] Package manager
+  - [x] vcpkg
+  - [ ] conan
+- [x] Static analysis
+  - [x] cppcheck
+  - [x] clang-tidy
+- [x] Dynamic analysis
+  - [x] valgrind
+- [x] Sanitizers (gcc & clang)
+- [ ] Profiling (https://hackingcpp.com/cpp/tools/profilers.html)
+  - [ ] GNU Profiler (gprof)
+  - [ ] Intel VTune Profiler
+  - [ ] perf
+
+- [x] Documentation
+  - [x] Doxygen
+    - [x] GitHub Pages
+  - [x] Sphinx
+    - [ ] layout + organization
+    - [ ] publishing with: https://readthedocs.org/ , github pages , and gitlab pages
+- [x] CI/CD
+  - [x] GitHub Actions
+    - [x] Windows Latest MSVC
+      - [x] Archive
+      - [x] NSIS installer
+      - [x] WiX Toolset
+    - [x] Windows Latest MinGW
+      - [x] Archive
+      - [x] NSIS installer
+      - [x] WiX Toolset
+    - [x] Ubuntu Latest GCC
+      - [x] Archive
+      - [ ] DEB
+    - [ ] Fedora
+      - [ ] RPM
+    - [x] macOS Latest Clang
+      - [ ] DMG
+    - [ ] Raspbian
+      - [ ] [arm-runner](https://github.com/marketplace/actions/arm-runner)
+      - [ ] [Install wxWidgets on RPI](https://yasriady.blogspot.com/2015/10/how-to-build-wxwidgets-for-raspberry-pi.html)
+  - [ ] GitLab CI/CD
+  - [ ] Travis CI
+  - [ ] Appveyor
