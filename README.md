@@ -31,3 +31,13 @@ See [development guide](./docs/GUIDE.md).
 ## License
 
 See [LICENSE](./LICENSE).
+
+The Standard C++ Foundation stylized "C++" logo has its own [license](https://isocpp.org/home/terms-of-use).
+
+### Third-Party Libraries
+
+This project makes use of third-party libraries, whose licenses must be taken into consideration when releasing a binary.
+
+| Library Name | License | Authors/Notes |
+|-|-|-|
+| [wxWidgets](https://www.wxwidgets.org) | [wxWindows Library Licence](https://www.wxwidgets.org/about/licence/) | [The wxWidgets Team](https://www.wxwidgets.org/about/team/) | 
