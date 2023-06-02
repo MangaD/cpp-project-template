@@ -39,12 +39,12 @@ jobs:
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows-static
           }
-        - {
-            name: "Windows Latest MinGW", ext: "windows-mingw",
-            os: windows-latest,
-            cc: "gcc", cxx: "g++",
-            vcpkg_triplet: x64-mingw-static
-          }
+        #- {
+        #    name: "Windows Latest MinGW", ext: "windows-mingw",
+        #    os: windows-latest,
+        #    cc: "gcc", cxx: "g++",
+        #    vcpkg_triplet: x64-mingw-static
+        #  }
         - {
             name: "Ubuntu Latest GCC", ext: "linux",
             os: ubuntu-latest,

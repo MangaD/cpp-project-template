@@ -179,9 +179,7 @@ cd .\vcpkg
 # wxWidgets with vcpkg: https://www.wxwidgets.org/blog/2019/01/wxwidgets-and-vcpkg/
 #.\vcpkg.exe install wxwidgets:x86-windows
 .\vcpkg.exe install wxwidgets:x64-windows
-#.\vcpkg.exe install wxwidgets:x86-windows-release
 .\vcpkg.exe install wxwidgets:x64-windows-release
-#.\vcpkg.exe install wxwidgets:x86-windows-static
 .\vcpkg.exe install wxwidgets:x64-windows-static
 ## For MinGW
 .\vcpkg.exe install wxwidgets:x64-mingw-static
@@ -193,8 +191,8 @@ cd .\vcpkg
 cd ..
 mkdir build && cd build
 # toolchain file must have full path
-cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
-# -DVCPKG_TARGET_TRIPLET=x64-mingw-static VCPKG_HOST_TRIPLET=x64-mingw-static
+cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -DVCPKG_HOST_TRIPLET=x64-windows-static
+# -DVCPKG_TARGET_TRIPLET=x64-mingw-static -DVCPKG_HOST_TRIPLET=x64-mingw-static
 #-DVCPKG_TARGET_TRIPLET=x64-windows-release
 #-DVCPKG_TARGET_TRIPLET=x64-windows
 
