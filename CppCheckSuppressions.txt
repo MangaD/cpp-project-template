@@ -1,0 +1,6 @@
+# Suppressions in a file: https://cppcheck.sourceforge.io/manual.html#suppressions-in-a-file
+
+missingIncludeSystem # https://stackoverflow.com/a/19779624/3049315
+StlMissingComparison # https://dev.exiv2.org/issues/1020
+unusedFunction # Because cppcheck does not recognize wxWidgets events
+unmatchedSuppression

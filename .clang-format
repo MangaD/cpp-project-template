@@ -1,0 +1,23 @@
+BasedOnStyle: Google
+ColumnLimit: 80
+Cpp11BracedListStyle: true
+IndentWidth: 4
+TabWidth: 4
+BreakBeforeBraces: Allman
+MaxEmptyLinesToKeep: 1
+SpaceBeforeAssignmentOperators: true
+Standard: "c++20"
+UseTab: ForIndentation
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLambdasOnASingleLine: All
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+PackConstructorInitializers: Never
+
+# Indent preprocessor directives
+IndentPPDirectives: BeforeHash
+
+# Do not indent access modifiers
+IndentAccessModifiers: false
+AccessModifierOffset: -4

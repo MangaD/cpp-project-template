@@ -1,0 +1,21 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "tidy",
+			"displayName": "Default clang-tidy",
+			"description": "Default build using clang-tidy",
+			"cacheVariables": {
+				"CMAKE_CXX_CLANG_TIDY": "clang-tidy"
+			}
+		},
+		{
+			"name": "cppcheck",
+			"displayName": "Default cppcheck",
+			"description": "Default build using cppcheck",
+			"cacheVariables": {
+				"CMAKE_CXX_CPPCHECK": "cppcheck;--enable=all;--force;--inline-suppr;--suppressions-list=${sourceDir}/CppCheckSuppressions.txt;--library=wxwidgets"
+			}
+		}
+	]
+}
