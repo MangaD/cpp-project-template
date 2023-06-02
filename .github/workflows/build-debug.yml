@@ -278,13 +278,23 @@ jobs:
         coveralls-send: true
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    # - name: Coverity scan
-    #   uses: vapier/coverity-scan-action@v1
-    #   if: runner.os == 'Linux'
-    #   with:
-    #     email: ${{ secrets.COVERITY_SCAN_EMAIL }}
-    #     token: ${{ secrets.COVERITY_SCAN_TOKEN }}
-    #     command: 'ninja'
+    - name: Clean build directory for Coverity scan
+      if: runner.os == 'Linux'
+      working-directory: project/build
+      run: |
+        cmake --build . --target clean
+        find . -name "*.gcda" -type f -delete
+        find . -name "*.gcno" -type f -delete
+        find . -name "*.o" -type f -delete
+
+    - name: Coverity scan
+      uses: vapier/coverity-scan-action@v1
+      if: runner.os == 'Linux'
+      with:
+        email: ${{ secrets.COVERITY_SCAN_EMAIL }}
+        token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        working-directory: project/build
+        command: 'ninja'
 
     - name: Install Strip
       working-directory: project
