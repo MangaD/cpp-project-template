@@ -8,10 +8,10 @@
 	#include <wx/wx.h>
 #endif
 
-void showSplashScreen(const wxString& fileName, int durationMs,
-                      wxBitmapType bitmapType = wxBITMAP_TYPE_ANY);
+void showSplashScreen(const wxString& fileName, const unsigned long durationMs,
+                      const wxBitmapType bitmapType = wxBITMAP_TYPE_ANY);
 
-void showSplashScreen(const wxImage& img, int durationMs);
+void showSplashScreen(const wxImage& img, const unsigned long durationMs);
 
 wxImage alphaToBlackAndWhiteMask(const wxImage& img);
 

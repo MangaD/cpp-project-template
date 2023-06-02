@@ -2,10 +2,11 @@
 
 #include <wx/splash.h>  // wxSplashScreen
 
+#include <cstddef>
 #include <span>
 
-void showSplashScreen(const wxString& fileName, int durationMs,
-                      wxBitmapType bitmapType)
+void showSplashScreen(const wxString& fileName, const unsigned long durationMs,
+                      const wxBitmapType bitmapType)
 {
 	wxImage splashImg;
 	if (splashImg.LoadFile(fileName, bitmapType))
@@ -17,7 +18,7 @@ void showSplashScreen(const wxString& fileName, int durationMs,
 // Splash screen
 // https://forums.wxwidgets.org/viewtopic.php?t=10997
 // https://openclassrooms.com/forum/sujet/wxwidgets-comment-creer-une-image-flottante#message-86763288
-void showSplashScreen(const wxImage& splashImg, int durationMs)
+void showSplashScreen(const wxImage& splashImg, const unsigned long durationMs)
 {
 	if (!splashImg.IsOk()) return;
 
@@ -31,7 +32,7 @@ void showSplashScreen(const wxImage& splashImg, int durationMs)
 	wxSplashScreen scrn{
 	    splashImg,
 	    wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
-	    durationMs,
+	    static_cast<int>(durationMs),
 	    nullptr,
 	    -1,
 	    wxDefaultPosition,
@@ -47,7 +48,7 @@ void showSplashScreen(const wxImage& splashImg, int durationMs)
 	wxYield();
 	// Sleep for `durationMs/1000` seconds before destroying the splash screen and showing
 	// main frame
-	wxSleep(durationMs/1000);
+	wxMilliSleep(durationMs);
 }
 
 // https://openclassrooms.com/forum/sujet/wxwidgets-comment-creer-une-image-flottante#message-86763288
