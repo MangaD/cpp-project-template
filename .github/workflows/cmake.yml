@@ -43,7 +43,7 @@ jobs:
             name: "Windows Latest MinGW", ext: "windows-mingw",
             os: windows-latest,
             cc: "gcc", cxx: "g++",
-            vcpkg_triplet: x64-windows-static
+            vcpkg_triplet: x64-mingw-static
           }
         - {
             name: "Ubuntu Latest GCC", ext: "linux",
@@ -141,9 +141,9 @@ jobs:
       uses: actions/cache@v3.2.1
       with:
         path: .ccache
-        key: ${{ matrix.config.ext }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+        key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
         restore-keys: |
-          ${{ matrix.config.ext }}-ccache-
+          ${{ matrix.config.name }}-ccache-
 
     - name: Configure
       shell: cmake -P {0}
@@ -172,16 +172,31 @@ jobs:
 
         if (NOT "${{ runner.os }}" STREQUAL "Linux")
           file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake" toolchain_file)
-          execute_process(
-            COMMAND cmake
-              -S .
-              -B build
-              -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
-              -D CMAKE_C_COMPILER_LAUNCHER=ccache
-              -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-              -D CMAKE_TOOLCHAIN_FILE=${toolchain_file} -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }}
-            RESULT_VARIABLE result
-          )
+          
+          if("${{ runner.os }}" STREQUAL "Windows" AND ${{ matrix.config.cxx }} STREQUAL "g++")
+            execute_process(
+              COMMAND cmake
+                -S .
+                -B build
+                -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
+                -G "MinGW Makefiles"
+                -D CMAKE_C_COMPILER_LAUNCHER=ccache
+                -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+                -D CMAKE_TOOLCHAIN_FILE=${toolchain_file} -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_HOST_TRIPLET=${{ matrix.config.vcpkg_triplet }}
+              RESULT_VARIABLE result
+            )
+          else()
+            execute_process(
+              COMMAND cmake
+                -S .
+                -B build
+                -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
+                -D CMAKE_C_COMPILER_LAUNCHER=ccache
+                -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+                -D CMAKE_TOOLCHAIN_FILE=${toolchain_file} -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_HOST_TRIPLET=${{ matrix.config.vcpkg_triplet }}
+              RESULT_VARIABLE result
+            )
+          endif()
         else()
           execute_process(
             COMMAND cmake

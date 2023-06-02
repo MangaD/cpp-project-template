@@ -175,7 +175,7 @@ cd .\vcpkg
 # Search library example (optional, just to see if it's available)
 .\vcpkg.exe search zlib
 
-# Install libraries (x86 for 32-bit, x64 for 64-bit)
+## Install libraries (x86 for 32-bit, x64 for 64-bit)
 # wxWidgets with vcpkg: https://www.wxwidgets.org/blog/2019/01/wxwidgets-and-vcpkg/
 #.\vcpkg.exe install wxwidgets:x86-windows
 .\vcpkg.exe install wxwidgets:x64-windows
@@ -183,6 +183,8 @@ cd .\vcpkg
 .\vcpkg.exe install wxwidgets:x64-windows-release
 #.\vcpkg.exe install wxwidgets:x86-windows-static
 .\vcpkg.exe install wxwidgets:x64-windows-static
+## For MinGW
+.\vcpkg.exe install wxwidgets:x64-mingw-static
 
 # Make libraries available
 .\vcpkg.exe integrate install
@@ -192,6 +194,7 @@ cd ..
 mkdir build && cd build
 # toolchain file must have full path
 cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
+# -DVCPKG_TARGET_TRIPLET=x64-mingw-static VCPKG_HOST_TRIPLET=x64-mingw-static
 #-DVCPKG_TARGET_TRIPLET=x64-windows-release
 #-DVCPKG_TARGET_TRIPLET=x64-windows
 
