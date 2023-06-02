@@ -120,6 +120,18 @@ if(WIN32)
 	SET(CPACK_WIX_UI_BANNER "${ASSETS_DIR}/wix\\\\banner.bmp")
 	SET(CPACK_WIX_UI_DIALOG "${ASSETS_DIR}/wix\\\\dialog.bmp")
 
+elseif(APPLE)
+
+	set(MACOSX_BUNDLE_BUNDLE_NAME ${CPACK_PACKAGE_NAME})
+	set(MACOSX_BUNDLE_ICON_FILE "${ASSETS_DIR}/apple/icon.icns")
+
+	set_source_files_properties("${ASSETS_DIR}/apple/icon.icns"
+		PROPERTIES
+		MACOSX_PACKAGE_LOCATION "Resources")
+
+	set(CPACK_DMG_VOLUME_NAME "${PROJECT_NAME}")
+	set(CPACK_DMG_BACKGROUND_IMAGE "${ASSETS_DIR}/images/logo.png")
+
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.32), libstdc++6 (>= 3.4.29)")

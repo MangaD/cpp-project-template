@@ -298,6 +298,13 @@ cmake ..
 cpack -G DEB
 ```
 
+### DMG on MacOS
+
+```sh
+cmake ..
+cpack -G DragNDrop
+```
+
 ## Documentation
 
 ```sh

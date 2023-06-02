@@ -311,11 +311,13 @@ jobs:
         set(finalName "${projectName}_${projectVersion}")
         set(archiveName "${finalName}_${{ matrix.config.ext }}.7z")
         set(debName "${finalName}_${{ matrix.config.ext }}.deb")
+        set(dmgName "${finalName}_${{ matrix.config.ext }}.dmg")
         set(nsisName "${finalName}_${{ matrix.config.ext }}_nsis.exe")
         set(wixName "${finalName}_${{ matrix.config.ext }}_wix.msi")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "finalName=${finalName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "archiveName=${archiveName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "debName=${debName}\n")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "dmgName=${dmgName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "nsisName=${nsisName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "wixName=${wixName}")
     
@@ -350,6 +352,13 @@ jobs:
         cpack -G DEB
         mv package/${{ steps.generate-name.outputs.finalName }}.deb ../${{ steps.generate-name.outputs.debName }}
 
+    - name: Pack MacOS DMG
+      if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
+      working-directory: build
+      run: |
+        cpack -G DragNDrop
+        mv package/${{ steps.generate-name.outputs.finalName }}.dmg ../${{ steps.generate-name.outputs.dmgName }}
+
     - name: Upload Archive
       uses: actions/upload-artifact@v3
       with:
@@ -377,6 +386,13 @@ jobs:
         name: ${{ steps.generate-name.outputs.debName }}
         path: ./${{ steps.generate-name.outputs.debName }}
 
+    - name: Upload MacOS DMG
+      if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.generate-name.outputs.dmgName }}
+        path: ./${{ steps.generate-name.outputs.dmgName }}
+
     - name: Release Archive
       uses: softprops/action-gh-release@v0.1.15
       if: startsWith(github.ref, 'refs/tags/')
@@ -389,4 +405,5 @@ jobs:
           ${{ steps.generate-name.outputs.nsisName }}
           ${{ steps.generate-name.outputs.wixName }}
           ${{ steps.generate-name.outputs.debName }}
+          ${{ steps.generate-name.outputs.dmgName }}
 
