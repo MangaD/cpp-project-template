@@ -173,6 +173,10 @@ cmake .. --list-presets
 ## GitHub Actions tips
 
 1. GitHub Actions uses the [latest runners](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources) available and for this reason may need maintenance.
+2. CI/CD scripts should be made executable, like so:
+```sh
+git update-index --chmod=+x ./.github/scripts/*.cmake
+```
 
 ### Releases
 
