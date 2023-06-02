@@ -1,10 +1,10 @@
 #include "UserOpt.hpp"
 
 #include <iostream>
+#include <span>
 #include <stdexcept>  // std::runtime_error
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "config.h"
 
@@ -40,32 +40,30 @@ void printVersionAndExit()
 	exit(EXIT_SUCCESS);
 }
 
-void parseUserOptions(int argc, char *argv[])  // NOLINT
+void parseUserOptions(const std::span<char*>& args)
 {
-	// First argument is the program's name. Next argument *must* be a flag.
-	if (argc < 2)
+	if (args.size() == 0)
 	{
 		return;
 	}
 
-	std::vector<std::string_view> args(argv + 1, argv + argc);
-
 	// May have more than one flag enabled in the future.
 	// NOLINTNEXTLINE
-	for (auto i = args.begin(); i != args.end(); ++i)
+	for (std::string_view arg : args)
 	{
-		if (*i == "-h" || *i == "--help")
+		if (arg == "-h" || arg == "--help")
 		{
 			printHelpAndExit();
 		}
-		else if (*i == "-v" || *i == "--version")
+		else if (arg == "-v" || arg == "--version")
 		{
 			printVersionAndExit();
 		}
 		else
 		{
-			throw std::runtime_error(std::string("Option not recognized: ") +
-			                         std::string(*i));
+			using namespace std::string_literals;
+			throw std::runtime_error("Option not recognized: "s +
+			                         std::string(arg));
 		}
 	}
 }

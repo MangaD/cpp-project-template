@@ -26,7 +26,7 @@
   - [x] CTest
   - [x] CPack
     - [ ] Sign the executables (see: https://stackoverflow.com/a/252245/3049315)
-  - [ ] CDash
+  - [x] CDash
 - [x] Package manager
   - [x] vcpkg
   - [ ] conan
@@ -71,3 +71,6 @@
   - [ ] GitLab CI/CD
   - [ ] Travis CI
   - [ ] Appveyor
+  - [ ] Azure Pipelines
+  - [ ] [GitHub Codespaces](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-a-predefined-dev-container-configuration)
+  - [ ] Docker

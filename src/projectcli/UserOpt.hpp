@@ -7,6 +7,7 @@
 #ifndef CPP_PROJ_USEROPT_HPP
 #define CPP_PROJ_USEROPT_HPP
 
+#include <span>
 #include <string_view>
 
 /**
@@ -27,13 +28,11 @@ inline std::string_view
 /**
  * Gets the user options from the command line.
  *
- * @param argc The command line argument count.
- * @param argv An array of C-style strings containing the command line
- * arguments.
+ * @param args The command line arguments.
  *
  * @return void
  */
-void parseUserOptions(int argc, char *argv[]);  // NOLINT
+void parseUserOptions(const std::span<char*>& args);
 
 /**
  * Print the usage of the application.
@@ -44,11 +43,11 @@ void printHelp();
  */
 void printVersion();
 /**
- * Calls DG_Tickingbot::printHelp and exits with success.
+ * Calls cpp_proj::printHelp and exits with success.
  */
 [[noreturn]] void printHelpAndExit();
 /**
- * Calls DG_Tickingbot::printVersion and exits with success.
+ * Calls cpp_proj::printVersion and exits with success.
  */
 [[noreturn]] void printVersionAndExit();
 

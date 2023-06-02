@@ -7,6 +7,7 @@
   - [Dynamic analysis](#dynamic-analysis)
     - [Valgrind](#valgrind)
     - [Sanitizers](#sanitizers)
+  - [CDash](#cdash)
 - [CMake tips](#cmake-tips)
 - [Doxygen tips](#doxygen-tips)
 - [GitHub Actions tips](#github-actions-tips)
@@ -149,6 +150,16 @@ More about sanitizers:
 - https://hpc-wiki.info/hpc/Compiler_Sanitizers
 - https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
 
+### CDash
+
+CDash Dashboard: https://my.cdash.org/index.php?project=cpp-project-template
+
+```sh
+cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Coverage
+cmake --build build
+ctest --test-dir build -D Experimental -T Test -T Coverage -T memcheck
+```
+
 ## CMake tips
 
 1. Check the available targets with:
@@ -198,6 +209,7 @@ A release is created when creating and pushing a tag that starts with `v`.
 
 - [GoogleTest User's Guide](https://google.github.io/googletest/)
 - [CMake GoogleTest](https://cmake.org/cmake/help/latest/module/GoogleTest.html)
+- [CDash](https://cmake.org/cmake/help/book/mastering-cmake/chapter/CDash.html)
 
 ### Coverage
 

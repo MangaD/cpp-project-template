@@ -46,8 +46,8 @@ void showSplashScreen(const wxImage& splashImg, const unsigned long durationMs)
 
 	// yield main loop so splash screen can show
 	wxYield();
-	// Sleep for `durationMs/1000` seconds before destroying the splash screen and showing
-	// main frame
+	// Sleep for `durationMs/1000` seconds before destroying the splash screen
+	// and showing main frame
 	wxMilliSleep(durationMs);
 }
 
