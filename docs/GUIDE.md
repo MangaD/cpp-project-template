@@ -250,6 +250,7 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 ### Licenses
 
 - [tl;drLegal: Software Licenses in Plain English](https://tldrlegal.com)
+- [OSI Approved Licenses](https://opensource.org/licenses/)
 
 ### Signing
 
