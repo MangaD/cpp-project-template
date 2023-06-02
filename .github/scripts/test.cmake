@@ -5,7 +5,7 @@ ProcessorCount(N)
 
 set(ENV{CTEST_OUTPUT_ON_FAILURE} "ON")
 
-if ("$ENV{RUNNER_OS}" STREQUAL "Windows")
+if (NOT "$ENV{RUNNER_OS}" STREQUAL "Windows")
 	set(DoCovMemChk "-T Coverage -T memcheck")
 endif()
 

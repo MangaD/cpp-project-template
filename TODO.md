@@ -49,7 +49,7 @@
     - [ ] publishing with: https://readthedocs.org/ , github pages , and gitlab pages
 - [x] CI/CD
   - [x] GitHub Actions
-    - [ ] CDash
+    - [x] CDash
     - [ ] Coverage
     - [ ] Windows 32-bit
     - [x] Windows Latest MSVC
@@ -70,6 +70,7 @@
     - [ ] Raspbian
       - [ ] [arm-runner](https://github.com/marketplace/actions/arm-runner)
       - [ ] [Install wxWidgets on RPI](https://yasriady.blogspot.com/2015/10/how-to-build-wxwidgets-for-raspberry-pi.html)
+      - [ ] [GH Actions self-hosted runners](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners)
   - [ ] GitLab CI/CD
   - [ ] Travis CI
   - [ ] Appveyor

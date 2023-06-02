@@ -218,6 +218,7 @@ Adding libraries to the project requires modifying the `vcpkg.json` file, the CI
 
 ### Coverage
 
+- [Codecov example](https://github.com/codecov/example-c)
 - [GCov: How to Set Up Codecov with C and GitHub Actions](https://about.codecov.io/blog/how-to-set-up-codecov-with-c-and-github-actions/)
 - [OpenCppCoverage: How to Set Up Codecov with C++ and GitHub Actions](https://about.codecov.io/blog/how-to-set-up-codecov-with-c-plus-plus-and-github-actions/)
 - [How to use gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html)

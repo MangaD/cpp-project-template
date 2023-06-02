@@ -36,12 +36,12 @@ jobs:
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows-static
           }
-        # - {
-        #     name: "Windows Latest MinGW", ext: "windows-mingw",
-        #     os: windows-latest,
-        #     cc: "gcc", cxx: "g++",
-        #     vcpkg_triplet: x64-mingw-static
-        #   }
+        - {
+            name: "Windows Latest MinGW", ext: "windows-mingw",
+            os: windows-latest,
+            cc: "gcc", cxx: "g++",
+            vcpkg_triplet: x64-mingw-static
+          }
         - {
             name: "Ubuntu Latest GCC", ext: "linux",
             os: ubuntu-latest,
@@ -65,8 +65,45 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
+        # Use path because of issue: https://github.com/johnwason/vcpkg-action/issues/14#issuecomment-1558312751
+        # where vcpkg searches the parent directory tree for vcpkg.json, even if we do not want to use it
         path: project
-        
+
+    # vcpkg wxwidgets build failts with Chocolatey's packaging of MinGW.
+    # https://github.com/microsoft/vcpkg/issues/31496
+    # https://stackoverflow.com/a/59361133/3049315
+    - name: Remove Chocolatey's MinGW
+      if: matrix.config.ext == 'windows-mingw'
+      run: choco uninstall mingw
+    - name: Install MinGW
+      if: matrix.config.ext == 'windows-mingw'
+      shell: cmake -P {0}
+      run: |
+        set(mingw_url "https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/x86_64-12.2.0-release-posix-seh-msvcrt-rt_v10-rev2.7z")
+        file(DOWNLOAD "${mingw_url}" ./mingw.7z SHOW_PROGRESS)
+        file(ARCHIVE_EXTRACT INPUT ./mingw.7z DESTINATION mingw)
+
+        # Add to PATH environment variable
+        set(mingw_dir "./mingw/mingw64/bin")
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${mingw_dir}" mingw_dir)
+        file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE};${mingw_dir}")
+
+    - name: Prepare cache timestamp
+      id: cache_timestamp
+      shell: cmake -P {0}
+      run: |
+        string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
+
+    - name: Cache MinGW
+      if: matrix.config.ext == 'windows-mingw'
+      uses: actions/cache@v3.2.1
+      with:
+        path: ./mingw
+        key: ${{ runner.os }}-mingw-cache-${{ steps.cache_timestamp.outputs.timestamp }}
+        restore-keys: |
+          ${{ runner.os }}-mingw-cache-
+
     - name: Install Ninja
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
@@ -121,6 +158,16 @@ jobs:
         revision: master
         token: ${{ github.token }}
 
+    # vcpkg wxwidgets build failts with Chocolatey's packaging of MinGW. This step is
+    # used for retrieving the error log.
+    # https://stackoverflow.com/a/59361133/3049315
+    # - name: Get error log
+    #   if: always()
+    #   uses: actions/upload-artifact@v1
+    #   with:
+    #     name: install-x64-mingw-static-dbg-out.log
+    #     path: ./vcpkg/buildtrees/wxwidgets/install-x64-mingw-static-dbg-out.log
+
     - name: Prepare ccache timestamp
       id: ccache_cache_timestamp
       shell: cmake -P {0}
@@ -132,7 +179,7 @@ jobs:
       uses: actions/cache@v3.2.1
       with:
         path: .ccache
-        key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+        key: ${{ matrix.config.name }}-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
         restore-keys: |
           ${{ matrix.config.name }}-ccache-
 

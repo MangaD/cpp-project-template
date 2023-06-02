@@ -337,11 +337,13 @@ cd .\vcpkg
 ## Install libraries (x86 for 32-bit, x64 for 64-bit)
 # wxWidgets with vcpkg: https://www.wxwidgets.org/blog/2019/01/wxwidgets-and-vcpkg/
 #.\vcpkg.exe install wxwidgets:x86-windows
-.\vcpkg.exe install wxwidgets:x64-windows
-.\vcpkg.exe install wxwidgets:x64-windows-release
+#.\vcpkg.exe install wxwidgets:x64-windows
+#.\vcpkg.exe install wxwidgets:x64-windows-release
 .\vcpkg.exe install wxwidgets:x64-windows-static
+.\vcpkg.exe install gtest:x64-windows-static
 ## For MinGW
 .\vcpkg.exe install wxwidgets:x64-mingw-static
+.\vcpkg.exe install gtest:x64-mingw-static
 
 # Make libraries available
 .\vcpkg.exe integrate install

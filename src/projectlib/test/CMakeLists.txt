@@ -14,7 +14,7 @@ target_include_directories("${PROJECT_LIB_NAME}_gtest" PUBLIC
 
 # Optionally link `GTest::gtest_main` to generate a default
 # main function for us.
-target_link_libraries("${PROJECT_LIB_NAME}_gtest"
+target_link_libraries("${PROJECT_LIB_NAME}_gtest" PRIVATE
 	${GTEST_LIBRARIES})
 
 if (MINGW)

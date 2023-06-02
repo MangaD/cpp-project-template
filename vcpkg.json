@@ -1,6 +1,0 @@
-{
-	"dependencies": [
-		"wxwidgets",
-		"gtest"
-	]
-}
