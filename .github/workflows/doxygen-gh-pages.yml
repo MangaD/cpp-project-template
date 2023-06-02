@@ -24,7 +24,8 @@ jobs:
 
       - name: Generate Doxygen Documentation
         run: |
-          mkdir build && cd build && cmake .. -DBUILD_PROJECTWX=OFF
+          mkdir build && cd build
+          cmake .. -DBUILD_PROJECTWX=OFF -DBUILD_TESTING=OFF
           cmake --build . --target doxygen
         shell: bash
 

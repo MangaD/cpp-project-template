@@ -15,7 +15,7 @@ add_executable(${PROJECT_CLI_NAME}
 # See: https://cmake.org/cmake/help/latest/guide/tutorial/A%20Basic%20Starting%20Point.html
 target_include_directories(${PROJECT_CLI_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
 
-target_include_directories(${PROJECT_CLI_NAME} PUBLIC "${PROJECT_LIB_DIR}")
+target_include_directories(${PROJECT_CLI_NAME} PUBLIC "${PROJECT_LIB_DIR}/src")
 
 target_link_libraries(${PROJECT_CLI_NAME} PUBLIC ${PROJECT_LIB_NAME})
 

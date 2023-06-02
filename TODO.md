@@ -12,7 +12,7 @@
 - [ ] i18n and L10n
 - [ ] Boost
 - [ ] Unit testing
-  - [ ] GoogleTest
+  - [x] GoogleTest
   - [ ] Boost.Test
   - [ ] Catch2
   - [ ] Doctest
@@ -40,7 +40,7 @@
   - [x] Doxygen
     - [x] GitHub Pages
   - [x] Sphinx
-    - [ ] layout + organization
+    - [ ] layout + organization (inspiration: https://discordpy.readthedocs.io)
     - [ ] publishing with: https://readthedocs.org/ , github pages , and gitlab pages
 - [x] CI/CD
   - [x] GitHub Actions

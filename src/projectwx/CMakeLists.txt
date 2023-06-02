@@ -35,7 +35,7 @@ target_compile_definitions(${PROJECT_WX_NAME} PUBLIC
 # See: https://cmake.org/cmake/help/latest/guide/tutorial/A%20Basic%20Starting%20Point.html
 target_include_directories(${PROJECT_WX_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
 
-target_include_directories(${PROJECT_WX_NAME} PUBLIC "${PROJECT_LIB_DIR}")
+target_include_directories(${PROJECT_WX_NAME} PUBLIC "${PROJECT_LIB_DIR}/src")
 
 target_link_libraries(${PROJECT_WX_NAME} PUBLIC ${PROJECT_LIB_NAME})
 

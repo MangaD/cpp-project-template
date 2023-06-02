@@ -69,13 +69,19 @@ sudo pacman -Sy valgrind
 CPack DEB:
 
 ```sh
-sudo apt install dpkg
+sudo pacman -Sy dpkg
 ```
 
 CPack RPM:
 
 ```sh
-sudo apt install rpm-tools
+sudo pacman -Sy rpm-tools
+```
+
+GoogleTest:
+
+```sh
+sudo pacman -Sy gtest
 ```
 
 ### Debian / Linux Mint / Ubuntu
@@ -134,6 +140,12 @@ CPack RPM:
 sudo apt install rpm
 ```
 
+GoogleTest:
+
+```sh
+sudo apt install libgtest-dev
+```
+
 ### RedHat / Fedora / CentOS
 
 Build tools:
@@ -182,6 +194,12 @@ CPack RPM:
 
 ```sh
 sudo yum -y install rpm-build
+```
+
+GoogleTest:
+
+```sh
+sudo yum -y install gtest
 ```
 
 ## Windows

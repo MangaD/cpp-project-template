@@ -74,9 +74,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ### TARGETS ###
 ###############
 
+enable_testing()
+include (CTest)
+
 set(PROJECT_LIB_NAME projectlib)
 set(PROJECT_LIB_DIR ${SOURCE_DIR}/${PROJECT_LIB_NAME})
-add_subdirectory(${PROJECT_LIB_DIR})
+add_subdirectory(${PROJECT_LIB_DIR}/src)
+if(BUILD_TESTING)
+	add_subdirectory(${PROJECT_LIB_DIR}/test)
+endif()
 
 set(PROJECT_CLI_NAME projectcli)
 set(PROJECT_CLI_DIR ${SOURCE_DIR}/${PROJECT_CLI_NAME})
@@ -103,19 +109,21 @@ include(cmake/clang-format.cmake)
 #############
 
 # See:
+# - https://cmake.org/cmake/help/latest/module/CTest.html
 # - https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html
 # - https://coderefinery.github.io/cmake-workshop/testing/
 # - https://stackoverflow.com/a/40437731/3049315
 
-include (CTest)
+if(BUILD_TESTING)
+	add_test(NAME Runs
+		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}>)
+	add_test(NAME Runs-v
+		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}> -v)
+	add_test(NAME Runs-h
+		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}> -h)
 
-enable_testing()
-
-# does the application run
-add_test(NAME Runs
-	COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}>)
-
-include(cmake/memcheck.cmake)
+	include(cmake/memcheck.cmake)
+endif()
 
 #############
 ### CPACK ###

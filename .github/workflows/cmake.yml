@@ -110,21 +110,16 @@ jobs:
       if: runner.os != 'Linux'
       uses: johnwason/vcpkg-action@v4
       with:
-        pkgs: wxwidgets
+        pkgs: wxwidgets gtest
         triplet: ${{ matrix.config.vcpkg_triplet }}
         cache-key: ${{ matrix.config.os }}
         revision: master
         token: ${{ github.token }}
 
-    - name: Install rpmbuild
+    - name: Install Ubuntu dependencies
       if: runner.os == 'Linux'
       shell: bash
-      run: sudo apt-get -y install rpm
-
-    - name: Install wxWidgets
-      if: runner.os == 'Linux'
-      shell: bash
-      run: sudo apt-get -y install libwxgtk3.0-gtk3-dev
+      run: sudo apt-get -y install libwxgtk3.0-gtk3-dev rpm libgtest-dev
 
     - name: Download ccache
       id: ccache

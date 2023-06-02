@@ -4,6 +4,7 @@
 /.vscode/
 /.cache/
 /build/
+/out/
 /docs/doxygen/build/
 /docs/sphinx/build/
 /docs/sphinx/index.rst
