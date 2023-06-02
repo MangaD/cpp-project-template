@@ -295,27 +295,10 @@ jobs:
         # Save artifact name to GitHub environment variable
         set(artifactName "${projectName}_${projectVersion}_${{ matrix.config.artifact }}")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "artifactName=${artifactName}")
-        
-        # Save project name and version to a file for using with other jobs
-        # https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
-        file(WRITE "projectName.txt" ${projectName})
-        file(WRITE "projectVersion.txt" ${projectVersion})
     
     - name: Pack
       working-directory: instdir
       run: cmake -E tar cfv ../${{ steps.generate-name.outputs.artifactName }} --format=7zip .
-
-    - name: Upload project name
-      uses: actions/upload-artifact@v3
-      with:
-        name: projectName
-        path: ./projectName.txt
-
-    - name: Upload project version
-      uses: actions/upload-artifact@v3
-      with:
-        name: projectVersion
-        path: ./projectVersion.txt
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
@@ -323,45 +306,12 @@ jobs:
         name: ${{ steps.generate-name.outputs.artifactName }}
         path: ./${{ steps.generate-name.outputs.artifactName }}
 
-  release:
-    if: contains(github.ref, 'tags/v')
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v3
-      with:
-        path: ./
-
-    - name: Get project name and version
-      id: get_name_version
-      shell: bash
-      run: |
-        projectName=`cat projectName/projectName.txt`
-        projectVersion=`cat projectVersion/projectVersion.txt`
-        echo "projectName=$projectName" >> "$GITHUB_OUTPUT"
-        echo "projectVersion=$projectVersion" >> "$GITHUB_OUTPUT"
-
-    - name: Create Release
-      id: create_release
+    - name: Release
       uses: softprops/action-gh-release@v0.1.15
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
         files: |
-          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-msvc.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-msvc.7z
-          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-mingw.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-mingw.7z
-          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_linux.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_linux.7z
-          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_macos.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_macos.7z
-        body: |
-          ## Downloads:
-          | Name                    | File | OS |
-          |-------------------------|------|----|
-          | Windows MSVC (archive)  | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-msvc.7z |    |
-          | Windows MinGW (archive) | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-mingw.7z |    |
-          | Ubuntu (archive)        | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_linux.7z |    |
-          | Mac OS X (archive)      | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_macos.7z |    |
-
+          ${{ steps.generate-name.outputs.artifactName }}
