@@ -123,6 +123,7 @@ A release is created when creating and pushing a tag that starts with `v`.
 - [Mastering CMake](https://cmake.org/cmake/help/book/mastering-cmake/index.html)
 - [CMake Reference Documentation](https://cmake.org/cmake/help/latest/index.html)
 - [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
+- [Semantic Versioning](https://semver.org/)
 - [CTest tutorial and options](https://coderefinery.github.io/cmake-workshop/testing/)
 - [VS Code with CMake](https://code.visualstudio.com/docs/cpp/cmake-linux)
 - For Sphinx instructions, see:
