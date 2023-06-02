@@ -66,6 +66,18 @@ Memory checker:
 sudo pacman -Sy valgrind
 ```
 
+CPack DEB:
+
+```sh
+sudo apt install dpkg
+```
+
+CPack RPM:
+
+```sh
+sudo apt install rpm-tools
+```
+
 ### Debian / Linux Mint / Ubuntu
 
 Build tools:
@@ -110,6 +122,12 @@ Memory checker:
 sudo apt install valgrind
 ```
 
+CPack DEB:
+
+```sh
+sudo apt install dpkg
+```
+
 CPack RPM:
 
 ```sh
@@ -152,6 +170,12 @@ Memory checker:
 
 ```sh
 sudo yum -y install valgrind
+```
+
+CPack DEB:
+
+```sh
+sudo yum -y install dpkg
 ```
 
 CPack RPM:
