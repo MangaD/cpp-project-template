@@ -42,6 +42,9 @@ endif()
 # Inspired by: https://dev.to/theprogrammerdavid/packaging-with-cmake-cpack-and-nsis-on-windows-4gnb
 # Also see: https://cmake.org/cmake/help/latest/cpack_gen/nsis.html
 if(WIN32)
+	########
+	# NSIS #
+	########
 	set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
 	set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	set(CPACK_NSIS_MODIFY_PATH ON)
@@ -109,6 +112,13 @@ if(WIN32)
 		VIAddVersionKey /LANG=${VER_VERSION_LANG} \\\"ProductVersion\\\" \\\"v${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}.${CMAKE_PROJECT_VERSION_TWEAK}\\\"
 		VIAddVersionKey /LANG=${VER_VERSION_LANG} \\\"Comments\\\" \\\"${CPACK_PACKAGE_DESCRIPTION}\\\""
 	)
+
+	#######
+	# WIX #
+	#######
+	set(CPACK_WIX_PRODUCT_ICON "${ASSETS_DIR}/icon.ico")
+	SET(CPACK_WIX_UI_BANNER "${ASSETS_DIR}/wix\\\\banner.bmp")
+	SET(CPACK_WIX_UI_DIALOG "${ASSETS_DIR}/wix\\\\dialog.bmp")
 else()
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.32), libstdc++6 (>= 3.4.29)")
 endif()

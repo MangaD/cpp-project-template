@@ -39,7 +39,10 @@ set(ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)
 set(DOXYGEN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen)
 set(SPHINX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx)
 
-# Read LICENSE file into a variable
+# use your own default generated GUID (must comment this line)
+set(CPACK_WIX_UPGRADE_GUID "02FBAAA4-B5EE-435B-AF4A-ADA99C5EAFA0")
+
+# Read LICENSE file into a variable to be used by config.h
 file(STRINGS LICENSE LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
 string(REGEX REPLACE "\n\n" "\\\\n\\\\n" LICENSE "${LICENSE}") # keep double newlines
 string(REGEX REPLACE "\n" " " LICENSE "${LICENSE}") # remove single newlines
