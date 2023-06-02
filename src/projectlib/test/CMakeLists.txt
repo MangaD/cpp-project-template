@@ -29,7 +29,6 @@ elseif (MSVC)
 	)
 endif()
 
-
 # Enable CMake's test runner to discover the tests
 # included in the binary, using the GoogleTest CMake module.
 include(GoogleTest)

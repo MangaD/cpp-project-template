@@ -11,7 +11,7 @@ TEST(HelloTest, BasicAssertions) {
 }
 
 TEST(Tutorial1, Factorial) {
-  EXPECT_EQ(tut1::factorial(4), 25);
+  EXPECT_EQ(tut1::factorial(4), 24);
 }
 
 int main(int argc, char **argv) {
