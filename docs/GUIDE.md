@@ -26,6 +26,13 @@ The current script is set to format all the source files with the following exte
 
 ## Static analysis
 
+With Clang Static Analyzer:
+
+```sh
+scan-build cmake .. -G "Ninja"
+scan-build ninja
+```
+
 With `clang-tidy`:
 
 ```sh
