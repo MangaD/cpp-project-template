@@ -15,6 +15,4 @@ if (CLANG_FORMAT)
 		-style=file
 		${ALL_CXX_SOURCE_FILES}
 	)
-else ()
-	message(WARNING "clang-format not found.")
 endif()

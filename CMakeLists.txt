@@ -99,7 +99,7 @@ set(PROJECT_WX_NAME projectwx)
 option(BUILD_PROJECTWX "Build ${PROJECT_WX_NAME}" ON)
 set(PROJECT_WX_DIR ${SOURCE_DIR}/${PROJECT_WX_NAME})
 if(BUILD_PROJECTWX)
-	add_subdirectory(${PROJECT_WX_DIR})
+	add_subdirectory(${PROJECT_WX_DIR}/src)
 endif()
 
 #############

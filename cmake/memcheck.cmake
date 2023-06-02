@@ -22,8 +22,6 @@ else()
 				--force-new-ctest-process --test-action memcheck
 			COMMAND cat "${CMAKE_BINARY_DIR}/Testing/Temporary/MemoryChecker.*.log"
 			WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
-	else ()
-		message(WARNING "valgrind not found.")
 	endif()
 
 endif()

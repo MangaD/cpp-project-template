@@ -10,6 +10,7 @@
     - [MinGW](#mingw)
     - [Dependencies](#dependencies)
       - [vcpkg](#vcpkg)
+  - [macOS](#macos)
 - [Compile](#compile)
   - [Linux & Mac](#linux--mac)
   - [Windows](#windows-compile)
@@ -254,29 +255,69 @@ In Visual Studio Installer, click "Modify" and install "Desktop development with
 - [NSIS](https://nsis.sourceforge.io/Download)
 - [WiX Toolset](https://wixtoolset.org/)
 
-**wxWidgets** (manual method):
+#### wxWidgets
 
-Download wxWidgets installer from [https://www.wxwidgets.org/](https://www.wxwidgets.org/) and install it. Compile and install wxWidgets:
+1. Download Windows binaries from: https://www.wxwidgets.org/downloads
 
-```bat
-cd C:\wxWidgets-X.Y.Z\build
-cmake .. -DCMAKE_INSTALL_PREFIX=C:/wxwidgets-build -DwxBUILD_SHARED=OFF
-cmake --build . --target install
+We need the **Header Files**, the **Development Files**, and the **Release DLLs** for the chosen compiler and architecture.
+
+After extracting the files to a directory (e.g. C:\wxwidgets), we should end up with a file tree like this:
+
 ```
-
-Set environment variable `wxWidgets_ROOT_DIR` to `C:/wxwidgets-build`.
-
-Alternatively to the environment variable, compile the project with:
+C:\wxwidgets
+├───build
+│   └───msw
+├───include
+│   ├───msvc
+│   │   └───wx
+│   └───wx
+│       ├───android
+│       ├───...
+│       └───xrc
+└───lib
+    └───vc14x_x64_dll
+        ├───mswu
+        │   └───wx
+        │       └───msw
+        └───mswud
+            └───wx
+                └───msw
+```
 
 ```sh
-mkdir build
-cd build
 # https://stackoverflow.com/a/48947121/3049315
-cmake -DwxWidgets_ROOT_DIR:PATH=C:/wxwidgets-build ..
-cmake --build .
+set wxWidgets_ROOT_DIR=C:\wxwidgets
+set wxWidgets_LIB_DIR=C:\wxwidgets\lib\vc14x_x64_dll
+cd <project_root>
+mkdir build && cd build
+cmake .. -DBUILD_TESTING=OFF
+cmake --build . --config Release
 ```
 
-Detailed instructions at [wxWidgets CMake Overview](https://docs.wxwidgets.org/trunk/overview_cmake.html)
+Instructions at: https://docs.wxwidgets.org/stable/plat_msw_binaries.html
+
+#### Google Test
+
+Install Google Test:
+
+```sh
+cd C:
+git clone https://github.com/google/googletest.git -b v1.13.0
+cd googletest
+mkdir build && cd build
+cmake .. #-DBUILD_GMOCK=OFF
+cmake --build . --config Debug
+cmake --build . --config Release
+```
+
+```sh
+cd <project_root>
+# https://stackoverflow.com/a/32749652/3049315
+cd <project_root>
+mkdir build && cd build
+cmake .. -DGTEST_ROOT:PATH="C:\googletest\googletest" -DGTEST_LIBRARY:PATH="C:\googletest\build\lib\Release\gtest.lib" -DGTEST_MAIN_LIBRARY:PATH="C:\googletest\build\lib\Release\gtest_main.lib" #-DBUILD_PROJECTWX=OFF
+cmake --build . --config Release
+```
 
 #### vcpkg
 
@@ -302,9 +343,6 @@ cd .\vcpkg
 ## For MinGW
 .\vcpkg.exe install wxwidgets:x64-mingw-static
 
-.\vcpkg.exe install gtest:x64-windows
-.\vcpkg.exe install gtest:x64-windows-static
-
 # Make libraries available
 .\vcpkg.exe integrate install
 
@@ -317,10 +355,15 @@ cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>
 #-DVCPKG_TARGET_TRIPLET=x64-windows-release
 #-DVCPKG_TARGET_TRIPLET=x64-windows
 
-
 # If your generator is a single-config generator like "Unix Makefiles" or "Ninja", then the build type is specified by the CMAKE_BUILD_TYPE variable, which can be set in the configure command by using -DCMAKE_BUILD_TYPE:STRING=Release. For multi-config generators like the Visual Studio generators and "Ninja Multi-Config", the config to build is specified in the build command using the --config argument argument like --config Release. A default value can be specified at configure time by setting the value of the CMAKE_DEFAULT_BUILD_TYPE variable, which will be used if the --config argument isn't passed to the build command.
 # https://stackoverflow.com/a/74077157/3049315
 cmake --build . --config Release
+```
+
+## macOS
+
+```sh
+brew install wxwidgets googletest
 ```
 
 ## Compile
@@ -367,7 +410,7 @@ mkdir build && cd build
 # without vcpkg:
 cmake ..
 # with vcpkg:
-cmake .. -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+cmake .. -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -DVCPKG_HOST_TRIPLET=x64-windows-static
 
 cmake --build . --config Release
 ```

@@ -3,7 +3,7 @@
 # - https://github.com/cristianadam/HelloWorld/blob/master/.github/workflows/build_cmake.yml
 # - https://github.com/marketplace/actions/vcpkg-action
 
-name: CMake Release Build Matrix
+name: GH Release
 
 on:
   workflow_dispatch: {} # allow running it manually
@@ -36,12 +36,12 @@ jobs:
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows-static
           }
-        #- {
-        #    name: "Windows Latest MinGW", ext: "windows-mingw",
-        #    os: windows-latest,
-        #    cc: "gcc", cxx: "g++",
-        #    vcpkg_triplet: x64-mingw-static
-        #  }
+        # - {
+        #     name: "Windows Latest MinGW", ext: "windows-mingw",
+        #     os: windows-latest,
+        #     cc: "gcc", cxx: "g++",
+        #     vcpkg_triplet: x64-mingw-static
+        #   }
         - {
             name: "Ubuntu Latest GCC", ext: "linux",
             os: ubuntu-latest,
@@ -64,9 +64,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
+      with:
+        path: project
+        
     - name: Install Ninja
-      shell: bash
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo apt-get install -y ninja-build
@@ -77,7 +78,6 @@ jobs:
         fi
 
     - name: Install ccache
-      shell: bash
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo apt-get install -y ccache
@@ -87,18 +87,37 @@ jobs:
           brew install ccache
         fi
 
-    - name: Install Ubuntu dependencies
-      if: runner.os == 'Linux'
-      shell: bash
-      run: sudo apt-get install -y libwxgtk3.0-gtk3-dev libgtest-dev rpm
+    # vcpkg is too slow and it's giving problems on Linux, so we use it
+    # only for Windows
+    - name: Install dependencies
+      if: runner.os != 'Windows'
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo apt-get install -y libwxgtk3.0-gtk3-dev libgtest-dev
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          brew install wxwidgets googletest
+        fi
 
-    - name: vcpkg build
-      if: runner.os != 'Linux'
-      uses: johnwason/vcpkg-action@v4
+    # - name: Install Ubuntu dependencies for vcpkg packages
+    #   if: runner.os == 'Linux'
+    #   run: |
+    #     sudo apt-get install -y libx11-dev libxft-dev libxext-dev libwayland-dev \
+    #       libxkbcommon-dev libegl1-mesa-dev libibus-1.0-dev \
+    #       libdbus-1-dev libxi-dev libxtst-dev
+
+    - name: vcpkg
+      id: vcpkg
+      if: runner.os == 'Windows'
+      uses: johnwason/vcpkg-action@master
+      env:
+        # Because we have the vcpkg.json file but don't use it, we must turn manifest mode off
+        VCPKG_MANIFEST_MODE: OFF
       with:
+        # Manifest builds on every CMake configure, which is not acceptable
+        #manifest-dir: ${{ github.workspace }}
         pkgs: wxwidgets gtest
         triplet: ${{ matrix.config.vcpkg_triplet }}
-        cache-key: ${{ matrix.config.ext }}
+        cache-key: ${{ matrix.config.ext }}_release
         revision: master
         token: ${{ github.token }}
 
@@ -124,6 +143,7 @@ jobs:
         ENVIRONMENT_SCRIPT: ${{ matrix.config.environment_script }}
         RUNNER_OS: ${{ runner.os }}
         VCPKG_TRIPLET: ${{ matrix.config.vcpkg_triplet }}
+      working-directory: project
       run: |
         chmod a+x ./.github/scripts/*.cmake
         cmake -P ./.github/scripts/configure.cmake
@@ -133,6 +153,7 @@ jobs:
         CXX: ${{ matrix.config.cxx }}
         ENVIRONMENT_SCRIPT: ${{ matrix.config.environment_script }}
         RUNNER_OS: ${{ runner.os }}
+      working-directory: project
       run: |
         cmake -P ./.github/scripts/build.cmake
 
@@ -146,14 +167,17 @@ jobs:
         execute_process(COMMAND ccache -s)
 
     - name: Run tests
+      working-directory: project
       run: cmake -P ./.github/scripts/test.cmake
 
     - name: Install Strip
-      run: cmake --install build --prefix instdir --strip
+      working-directory: project
+      run: cmake --install build --prefix instdir --strip --config $BUILD_TYPE
 
     - name: Generate artifact name
       id: generate-name
       shell: cmake -P {0}
+      working-directory: project
       run: |
         execute_process(
           COMMAND cmake --system-information
@@ -195,74 +219,78 @@ jobs:
         scoop install wixtoolset
 
     - name: Pack Archive
-      working-directory: instdir
+      working-directory: project/instdir
       run: cmake -E tar cfv ../${{ steps.generate-name.outputs.archiveName }} --format=7zip .
 
     - name: Pack Windows Installer
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
-      working-directory: build
+      working-directory: project/build
       run: |
-        cpack -G NSIS64
-        cpack -G WIX
+        cpack -C Release -G NSIS64
+        cpack -C Release -G WIX
         mv package/${{ steps.generate-name.outputs.finalName }}.exe ../${{ steps.generate-name.outputs.nsisName }}
         mv package/${{ steps.generate-name.outputs.finalName }}.msi ../${{ steps.generate-name.outputs.wixName }}
 
+    - name: Install RPM in Ubuntu
+      if: runner.os == 'Linux'
+      run: sudo apt-get install -y  rpm
+
     - name: Pack Linux DEB & RPM
       if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
-      working-directory: build
+      working-directory: project/build
       run: |
-        cpack -G DEB
-        cpack -G RPM
+        cpack -C Release -G DEB
+        cpack -C Release -G RPM
         mv package/${{ steps.generate-name.outputs.finalName }}.deb ../${{ steps.generate-name.outputs.debName }}
         mv package/${{ steps.generate-name.outputs.finalName }}.rpm ../${{ steps.generate-name.outputs.rpmName }}
 
     - name: Pack MacOS DMG
       if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
-      working-directory: build
+      working-directory: project/build
       run: |
-        cpack -G DragNDrop
+        cpack -C Release -G DragNDrop
         mv package/${{ steps.generate-name.outputs.finalName }}.dmg ../${{ steps.generate-name.outputs.dmgName }}
 
     - name: Upload Archive
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.generate-name.outputs.archiveName }}
-        path: ./${{ steps.generate-name.outputs.archiveName }}
+        path: ./project/${{ steps.generate-name.outputs.archiveName }}
 
     - name: Upload Installer NSIS
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.generate-name.outputs.nsisName }}
-        path: ./${{ steps.generate-name.outputs.nsisName }}
+        path: ./project/${{ steps.generate-name.outputs.nsisName }}
 
     - name: Upload Installer WIX
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.generate-name.outputs.wixName }}
-        path: ./${{ steps.generate-name.outputs.wixName }}
+        path: ./project/${{ steps.generate-name.outputs.wixName }}
 
     - name: Upload Linux DEB
       if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.generate-name.outputs.debName }}
-        path: ./${{ steps.generate-name.outputs.debName }}
+        path: ./project/${{ steps.generate-name.outputs.debName }}
 
     - name: Upload Linux RPM
       if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.generate-name.outputs.rpmName }}
-        path: ./${{ steps.generate-name.outputs.rpmName }}
+        path: ./project/${{ steps.generate-name.outputs.rpmName }}
 
     - name: Upload MacOS DMG
       if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.generate-name.outputs.dmgName }}
-        path: ./${{ steps.generate-name.outputs.dmgName }}
+        path: ./project/${{ steps.generate-name.outputs.dmgName }}
 
     - name: Release Archive
       uses: softprops/action-gh-release@v0.1.15
@@ -272,10 +300,10 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          ${{ steps.generate-name.outputs.archiveName }}
-          ${{ steps.generate-name.outputs.nsisName }}
-          ${{ steps.generate-name.outputs.wixName }}
-          ${{ steps.generate-name.outputs.debName }}
-          ${{ steps.generate-name.outputs.rpmName }}
-          ${{ steps.generate-name.outputs.dmgName }}
+          ./project/${{ steps.generate-name.outputs.archiveName }}
+          ./project/${{ steps.generate-name.outputs.nsisName }}
+          ./project/${{ steps.generate-name.outputs.wixName }}
+          ./project/${{ steps.generate-name.outputs.debName }}
+          ./project/${{ steps.generate-name.outputs.rpmName }}
+          ./project/${{ steps.generate-name.outputs.dmgName }}
 

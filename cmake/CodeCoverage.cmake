@@ -19,44 +19,44 @@ if(MSVC)
 
 	find_program(OpenCppCoverage_PATH OpenCppCoverage.exe)
 
-	if(NOT OpenCppCoverage_PATH)
-		message(FATAL_ERROR "OpenCppCoverage not found!")
-	else()
+	if(OpenCppCoverage_PATH)
+	
 		message(STATUS "Found OpenCppCoverage: ${OpenCppCoverage_PATH}")
+
+		# List source arguments
+		file(GLOB_RECURSE SRC_FILES LIST_DIRECTORIES false RELATIVE ${CMAKE_SOURCE_DIR} "*.[ch]pp")
+		set(sourceArgs "")
+		foreach(srcFile ${SRC_FILES})
+			get_filename_component(srcFile ${srcFile} NAME)
+			set(sourceArgs "${sourceArgs} --sources ${srcFile} ")
+		endforeach()
+		get_filename_component(OpenCppCoverage_PATH ${OpenCppCoverage_PATH} NAME)
+
+		# Output file name
+		get_property(counter GLOBAL PROPERTY OpenCppCoverage_COUNTER)
+		if(NOT counter)
+			set(counter 1)
+		else()
+			math(EXPR counter "${counter} + 1")
+		endif()
+		set_property(GLOBAL PROPERTY OpenCppCoverage_COUNTER "${counter}")
+		set(outputFile ${CMAKE_CURRENT_BINARY_DIR}/OpenCppCoverage/cov-${counter}-coverage)
+
+		add_custom_command(OUTPUT ${outputFile}
+			DEPENDS coverage
+			COMMAND ${OpenCppCoverage_PATH}
+				--working_dir ${CMAKE_CURRENT_BINARY_DIR}
+				--export_type html:${outputFile}
+				--cover_children
+				#--excluded_line_regex "\\s*\\}.*"
+				-- ${CMAKE_CTEST_COMMAND} -C Debug
+			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+			VERBATIM
+			COMMENT "Running OpenCppCoverage to produce HTML coverage report."
+		)
+		add_custom_target(coverage DEPENDS ${outputFile})
+	
 	endif()
-
-	# List source arguments
-	file(GLOB_RECURSE SRC_FILES LIST_DIRECTORIES false RELATIVE ${CMAKE_SOURCE_DIR} "*.[ch]pp")
-	set(sourceArgs "")
-	foreach(srcFile ${SRC_FILES})
-		get_filename_component(srcFile ${srcFile} NAME)
-		set(sourceArgs "${sourceArgs} --sources ${srcFile} ")
-	endforeach()
-	get_filename_component(OpenCppCoverage_PATH ${OpenCppCoverage_PATH} NAME)
-
-	# Output file name
-	get_property(counter GLOBAL PROPERTY OpenCppCoverage_COUNTER)
-	if(NOT counter)
-		set(counter 1)
-	else()
-		math(EXPR counter "${counter} + 1")
-	endif()
-	set_property(GLOBAL PROPERTY OpenCppCoverage_COUNTER "${counter}")
-	set(outputFile ${CMAKE_CURRENT_BINARY_DIR}/OpenCppCoverage/cov-${counter}-coverage)
-
-	add_custom_command(OUTPUT ${outputFile}
-		DEPENDS coverage
-		COMMAND ${OpenCppCoverage_PATH}
-			--working_dir ${CMAKE_CURRENT_BINARY_DIR}
-			--export_type html:${outputFile}
-			--cover_children
-			#--excluded_line_regex "\\s*\\}.*"
-			-- ${CMAKE_CTEST_COMMAND} -C Debug
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-		VERBATIM
-		COMMENT "Running OpenCppCoverage to produce HTML coverage report."
-	)
-	add_custom_target(coverage DEPENDS ${outputFile})
 	
 elseif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
@@ -84,67 +84,63 @@ elseif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 		message(STATUS "Found gcov: ${GCOV_PATH}")
 	endif()
 
-	if(NOT LCOV_PATH)
-		message(FATAL_ERROR "lcov not found!")
-	else()
+	if(LCOV_PATH)
 		message(STATUS "Found lcov: ${LCOV_PATH}")
 	endif()
 
-	if(NOT GENHTML_PATH)
-		message(FATAL_ERROR "genhtml not found!")
-	else()
+	if(GENHTML_PATH)
 		message(STATUS "Found genhtml: ${GENHTML_PATH}")
 	endif()
 
-	if(NOT GCOVR_PATH)
-		message(FATAL_ERROR "gcovr not found!")
-	else()
-		message(STATUS "Found gcovr: ${GCOVR_PATH}")
+	if(LCOV_PATH AND GENHTML_PATH)
+		# Setup target
+		set(_outputname lcov_html)
+		add_custom_target(lcov_html
+			
+			# Cleanup lcov
+			${LCOV_PATH} --directory . --zerocounters
+			
+			# Run tests
+			COMMAND ${CMAKE_CTEST_COMMAND}
+			
+			# Capturing lcov counters and generating report
+			COMMAND ${LCOV_PATH} --directory . --capture --output-file ${_outputname}.info --rc lcov_branch_coverage=1
+			COMMAND ${LCOV_PATH} --remove ${_outputname}.info 'build/*' 'tests/*' '/usr/*' --output-file ${_outputname}.info.cleaned
+			COMMAND ${GENHTML_PATH} -o ${_outputname} ${_outputname}.info.cleaned
+			COMMAND ${CMAKE_COMMAND} -E remove ${_outputname}.info ${_outputname}.info.cleaned
+			
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+			COMMENT "Running lcov to produce HTML coverage report."
+		)
+		# Show info where to find the report
+		add_custom_command(TARGET lcov_html POST_BUILD
+			COMMAND ;
+			COMMENT "Open ./${_outputname}/index.html in your browser to view the coverage report."
+		)
+		message(STATUS "-- lcov HTML coverage report enabled through 'lcov_html' target.")
 	endif()
 
-	# Setup target
-	set(_outputname lcov_html)
-	add_custom_target(lcov_html
-		
-		# Cleanup lcov
-		${LCOV_PATH} --directory . --zerocounters
-		
-		# Run tests
-		COMMAND ${CMAKE_CTEST_COMMAND}
-		
-		# Capturing lcov counters and generating report
-		COMMAND ${LCOV_PATH} --directory . --capture --output-file ${_outputname}.info --rc lcov_branch_coverage=1
-		COMMAND ${LCOV_PATH} --remove ${_outputname}.info 'build/*' 'tests/*' '/usr/*' --output-file ${_outputname}.info.cleaned
-		COMMAND ${GENHTML_PATH} -o ${_outputname} ${_outputname}.info.cleaned
-		COMMAND ${CMAKE_COMMAND} -E remove ${_outputname}.info ${_outputname}.info.cleaned
-		
-		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		COMMENT "Running lcov to produce HTML coverage report."
-	)
-	# Show info where to find the report
-	add_custom_command(TARGET lcov_html POST_BUILD
-		COMMAND ;
-		COMMENT "Open ./${_outputname}/index.html in your browser to view the coverage report."
-	)
-	message(STATUS "-- lcov HTML coverage report enabled through 'lcov_html' target.")
+	if(GCOVR_PATH)
+		message(STATUS "Found gcovr: ${GCOVR_PATH}")
 
-	set(_outputname gcovr_html)
-	add_custom_target(gcovr_html
-		# Run tests
-		COMMAND ${CMAKE_CTEST_COMMAND}
-		# Create output directory
-		COMMAND mkdir -p ${_outputname}
-		# Run gcovr
-		COMMAND ${GCOVR_PATH} --html --html-details -r ${CMAKE_SOURCE_DIR} -o ${_outputname}/index.html
-		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		COMMENT "Running gcovr to produce HTML coverage report."
-	)
-	# Show info where to find the report
-	add_custom_command(TARGET gcovr_html POST_BUILD
-		COMMAND ;
-		COMMENT "HTML coverage report saved in ${_outputname}/index.html."
-	)
-	message(STATUS "-- gcovr HTML coverage report enabled through 'gcovr_html' target.")
+		set(_outputname gcovr_html)
+		add_custom_target(gcovr_html
+			# Run tests
+			COMMAND ${CMAKE_CTEST_COMMAND}
+			# Create output directory
+			COMMAND mkdir -p ${_outputname}
+			# Run gcovr
+			COMMAND ${GCOVR_PATH} --html --html-details -r ${CMAKE_SOURCE_DIR} -o ${_outputname}/index.html
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+			COMMENT "Running gcovr to produce HTML coverage report."
+		)
+		# Show info where to find the report
+		add_custom_command(TARGET gcovr_html POST_BUILD
+			COMMAND ;
+			COMMENT "HTML coverage report saved in ${_outputname}/index.html."
+		)
+		message(STATUS "-- gcovr HTML coverage report enabled through 'gcovr_html' target.")
+	endif()
 
 else()
 	message(STATUS "Coverage not supported with the current compiler.")

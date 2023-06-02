@@ -23,7 +23,4 @@ if (DOXYGEN_FOUND)
 	doxygen_add_docs(doxygen
 		README.md
 		${SOURCE_DIR})
-
-else()
-	message(WARNING "Doxygen not found.")
 endif()

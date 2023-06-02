@@ -2,8 +2,7 @@
 
 find_package(Sphinx COMPONENTS breathe sphinx_rtd_theme)
 
-	set(SPHINX_AUTHOR ${AUTHOR_NAME}) # If omitted, will be "@PROJECT_NAME@'s committers"
-
+set(SPHINX_AUTHOR ${AUTHOR_NAME}) # If omitted, will be "@PROJECT_NAME@'s committers"
 
 if(Sphinx_FOUND)
 	message(STATUS "-- Sphinx documentation enabled through 'sphinx' target.")
@@ -16,6 +15,4 @@ if(Sphinx_FOUND)
 		BUILDER html
 		SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx"
 		OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx/build")
-else()
-	message(WARNING "Sphinx not found.")
 endif()

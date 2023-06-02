@@ -49,6 +49,8 @@
     - [ ] publishing with: https://readthedocs.org/ , github pages , and gitlab pages
 - [x] CI/CD
   - [x] GitHub Actions
+    - [ ] CDash
+    - [ ] Coverage
     - [ ] Windows 32-bit
     - [x] Windows Latest MSVC
       - [x] Archive
@@ -71,6 +73,7 @@
   - [ ] GitLab CI/CD
   - [ ] Travis CI
   - [ ] Appveyor
+  - [ ] TeamCity
   - [ ] Azure Pipelines
   - [ ] [GitHub Codespaces](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-a-predefined-dev-container-configuration)
   - [ ] Docker

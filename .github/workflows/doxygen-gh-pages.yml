@@ -2,7 +2,7 @@
 # - https://github.com/marketplace/actions/doxygen-github-pages-deploy-action
 # - https://github.com/DenverCoder1/doxygen-github-pages-action/blob/main/action.yml
 
-name: Doxygen GitHub Pages Deploy Action
+name: GH Doxygen
 
 on:
   push:

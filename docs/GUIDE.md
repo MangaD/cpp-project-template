@@ -12,6 +12,7 @@
 - [Doxygen tips](#doxygen-tips)
 - [GitHub Actions tips](#github-actions-tips)
   - [Releases](#releases)
+- [Adding libraries](#adding-libraries)
 - [Tutorial links](#tutorial-links)
 
 ## Autoformatting
@@ -143,7 +144,7 @@ cmake .. -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer
 cmake .. -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -fsanitize-blacklist=/full/path/to/SanitizerBlacklist.txt"
 
 # Executing wxWidgets project with lsan suppressions:
-ASAN_OPTIONS=detect_leaks=1 LSAN_OPTIONS=suppressions=../wx_lsan_suppressions.txt ./bin/projectwx
+ASAN_OPTIONS=detect_leaks=1 LSAN_OPTIONS=suppressions=../src/projectwx/wx_lsan_suppressions.txt ./bin/projectwx
 ```
 
 More about sanitizers: 
@@ -192,6 +193,10 @@ git update-index --chmod=+x ./.github/scripts/*.cmake
 ### Releases
 
 A release is created when creating and pushing a tag that starts with `v`.
+
+## Adding libraries
+
+Adding libraries to the project requires modifying the `vcpkg.json` file, the CI/CD workflow files, the `docs/INSTALL.md` file, and the `CMakeLists.txt` file of the project that you are adding the library to..
 
 ## Tutorial links
 
