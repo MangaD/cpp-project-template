@@ -12,8 +12,10 @@
 - [ ] i18n and L10n
 - [ ] Boost
 - [ ] Unit testing
-  - [ ] Catch2
   - [ ] GoogleTest
+  - [ ] Boost.Test
+  - [ ] Catch2
+  - [ ] Doctest
 - [ ] Code coverage (lcov, gcov) + codecov
 - [x] CMake integration
   - [x] CTest
@@ -42,6 +44,7 @@
     - [ ] publishing with: https://readthedocs.org/ , github pages , and gitlab pages
 - [x] CI/CD
   - [x] GitHub Actions
+    - [ ] Windows 32-bit
     - [x] Windows Latest MSVC
       - [x] Archive
       - [x] NSIS installer
