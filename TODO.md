@@ -54,7 +54,7 @@
     - [x] coveralls
     - [ ] coverity
     - [x] Windows Latest MSVC
-      - [ ] 32-bit
+      - [x] 32-bit
       - [x] 64-bit
       - [x] Archive
       - [x] NSIS installer

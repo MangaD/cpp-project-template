@@ -30,6 +30,14 @@ jobs:
       matrix:
         config:
         - {
+            name: "Windows Latest MSVC i686", ext: "windows-msvc-i686",
+            os: windows-latest,
+            cc: "cl", cxx: "cl",
+            # https://learn.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170
+            environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars32.bat",
+            vcpkg_triplet: x86-windows
+          }
+        - {
             name: "Windows Latest MSVC x86_64", ext: "windows-msvc-x86_64",
             os: windows-latest,
             cc: "cl", cxx: "cl",
