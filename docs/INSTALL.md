@@ -272,12 +272,22 @@ make package_source
 
 ### NSIS on Windows
 
-Download and Install Null Soft Installer (NSIS) from [here](https://nsis.sourceforge.io/Download).
+Download and Install the Null Soft Installer (NSIS) from [here](https://nsis.sourceforge.io/Download).
 
 ```sh
 cmake ..
 cmake --build . --config Release
 cpack -G NSIS
+```
+
+### WiX on Windows
+
+Download and Install the WiX Toolset from [here](https://wixtoolset.org/)
+
+```sh
+cmake ..
+cmake --build . --config Release
+cpack -G WIX
 ```
 
 ### DEB on Ubuntu

@@ -26,8 +26,8 @@ set(CPACK_OUTPUT_FILE_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/package")
 set(CPACK_PACKAGE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 string(TOLOWER ${CMAKE_SYSTEM_NAME} _sys)
 string(TOLOWER ${PROJECT_NAME} _project_lower)
-set(CPACK_PACKAGE_FILE_NAME "${_project_lower}-${_sys}")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME "${_project_lower}-${PROJECT_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "${_project_lower}_${PROJECT_VERSION}")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${_project_lower}_${PROJECT_VERSION}_${_sys}")
 
 # not .gitignore as its regex syntax is distinct
 file(READ ${CMAKE_CURRENT_LIST_DIR}/.cpack_ignore _cpack_ignore)
@@ -60,7 +60,10 @@ if(WIN32)
 	## Look & Feel
 	set(CPACK_NSIS_MUI_ICON "${ASSETS_DIR}/icon.ico")
 	set(CPACK_NSIS_MUI_UNIICON "${ASSETS_DIR}/icon.ico")
-	set(CPACK_NSIS_INSTALLED_ICON_NAME "${ASSETS_DIR}/icon.ico")
+
+	# Icon in the add/remove control panel. Must be an .exe file 
+	set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\${PROJECT_CLI_NAME}.exe")
+
 	# The bitmap has some tricks to work: https://stackoverflow.com/a/28768495/3049315
 	# With GIMP, when exporting BMP, expand "compatibility options" and tick
 	# "Do not write color space information". Tick 24 bits.
@@ -81,7 +84,8 @@ if(WIN32)
 	# Convert license encoding to UTF-8 with BOM, because:
 	# https://gitlab.kitware.com/cmake/cmake/-/issues/21318
 	execute_process(COMMAND cscript "${CMAKE_CURRENT_SOURCE_DIR}/cmake/utf8_to_utf8bom.vbs" "${CMAKE_CURRENT_BINARY_DIR}/License.txt" "${CMAKE_CURRENT_BINARY_DIR}/License_utf8bom.txt")
-	set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_BINARY_DIR}/License_utf8bom.txt")
+	file(RENAME "${CMAKE_CURRENT_BINARY_DIR}/License_utf8bom.txt" "${CMAKE_CURRENT_BINARY_DIR}/License.txt")
+	set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_BINARY_DIR}/License.txt")
 
 	## VERSION
 	if(${PROJECT_LANGUAGE_NEUTRAL} EQUAL 0)
