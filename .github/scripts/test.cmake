@@ -5,12 +5,13 @@ ProcessorCount(N)
 
 set(ENV{CTEST_OUTPUT_ON_FAILURE} "ON")
 
-if (NOT "$ENV{RUNNER_OS}" STREQUAL "Windows")
-	set(DoCovMemChk "-T Coverage -T memcheck")
+set(DoCovMemChk "")
+if ("$ENV{RUNNER_OS}" STREQUAL "Linux" AND "$ENV{BUILD_TYPE}" STREQUAL "Coverage")
+	set(DoCovMemChk "-D Continuous -T Test -T Coverage -T memcheck")
 endif()
 
 execute_process(
-	COMMAND ctest -j ${N} -C $ENV{BUILD_TYPE} -D Continuous -T Test ${DoCovMemChk}
+	COMMAND ctest -j ${N} -C $ENV{BUILD_TYPE} ${DoCovMemChk}
 	WORKING_DIRECTORY build
 	RESULT_VARIABLE result
 	OUTPUT_VARIABLE output

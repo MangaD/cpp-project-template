@@ -13,25 +13,28 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: "true"
 
+      - name: Update Ubuntu package list
+        run: sudo apt-get update
+
       - name: Install Doxygen and CMake
         run: sudo apt-get install doxygen cmake -y
-        shell: bash
 
       - name: Generate Doxygen Documentation
         run: |
           mkdir build && cd build
           cmake .. -DBUILD_PROJECTWX=OFF -DBUILD_TESTING=OFF
           cmake --build . --target doxygen
-        shell: bash
 
       - name: Create .nojekyll (ensures pages with underscores work on gh pages)
         run: touch docs/doxygen/build/html/.nojekyll
-        shell: bash
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.1

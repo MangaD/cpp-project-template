@@ -13,6 +13,7 @@
 - [GitHub Actions tips](#github-actions-tips)
   - [Releases](#releases)
 - [Adding libraries](#adding-libraries)
+- [Windows XP](#windows-xp)
 - [Tutorial links](#tutorial-links)
 
 ## Autoformatting
@@ -198,6 +199,12 @@ A release is created when creating and pushing a tag that starts with `v`.
 
 Adding libraries to the project requires modifying the `vcpkg.json` file, the CI/CD workflow files, the `docs/INSTALL.md` file, and the `CMakeLists.txt` file of the project that you are adding the library to..
 
+## Windows XP
+
+For MSVC see [here](https://learn.microsoft.com/en-us/cpp/build/configuring-programs-for-windows-xp?view=msvc-170). For MinGW see [here](https://github.com/msys2/MSYS2-packages/issues/1784).
+
+Naturally, the Windows API has evolved since Windows XP and modern features will not work with this OS.
+
 ## Tutorial links
 
 ### CMake
@@ -221,6 +228,7 @@ Adding libraries to the project requires modifying the `vcpkg.json` file, the CI
 - [Codecov example](https://github.com/codecov/example-c)
 - [GCov: How to Set Up Codecov with C and GitHub Actions](https://about.codecov.io/blog/how-to-set-up-codecov-with-c-and-github-actions/)
 - [OpenCppCoverage: How to Set Up Codecov with C++ and GitHub Actions](https://about.codecov.io/blog/how-to-set-up-codecov-with-c-plus-plus-and-github-actions/)
+- [coveralls and gcovr](https://github.com/marketplace/actions/gcovr-action)
 - [How to use gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html)
 - [VSCode Gcov Viewer](https://marketplace.visualstudio.com/items?itemName=JacquesLucke.gcov-viewer)
 - [OpenCppCoverage Wiki](https://github.com/OpenCppCoverage/OpenCppCoverage/wiki)

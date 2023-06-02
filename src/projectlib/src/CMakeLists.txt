@@ -14,12 +14,12 @@ target_compile_definitions(${PROJECT_LIB_NAME} PUBLIC
 
 # Enable warnings - inspired by: https://stackoverflow.com/a/50882216/3049315
 target_compile_options(${PROJECT_LIB_NAME} PUBLIC
-        $<$<CXX_COMPILER_ID:MSVC>:/W4> # /WX
-        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -pedantic -Wmain -Weffc++ -Wswitch-default
-                -Wswitch-enum -Wmissing-include-dirs -Wmissing-declarations -Wunreachable-code -Winline
-                -Wfloat-equal -Wundef -Wcast-align -Wredundant-decls -Winit-self -Wshadow -Wnon-virtual-dtor
-                -Wconversion -Wstrict-aliasing -Wold-style-cast -Wsign-conversion>
-        $<$<CXX_COMPILER_ID:GNU>:-Wzero-as-null-pointer-constant -Wsuggest-override>
-        $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_GREATER:$<CXX_COMPILER_VERSION>,10.1>>: -Warith-conversion>
-        $<$<CXX_COMPILER_ID:Clang>:-Wthread-safety>
+	$<$<CXX_COMPILER_ID:MSVC>:/W4> # /WX
+	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -pedantic -Wmain -Weffc++ -Wswitch-default
+		-Wswitch-enum -Wmissing-include-dirs -Wmissing-declarations -Wunreachable-code -Winline
+		-Wfloat-equal -Wundef -Wcast-align -Wredundant-decls -Winit-self -Wshadow -Wnon-virtual-dtor
+		-Wconversion -Wstrict-aliasing -Wold-style-cast -Wsign-conversion>
+	$<$<CXX_COMPILER_ID:GNU>:-Wzero-as-null-pointer-constant -Wsuggest-override>
+	$<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_GREATER:$<CXX_COMPILER_VERSION>,10.1>>: -Warith-conversion>
+	$<$<CXX_COMPILER_ID:Clang>:-Wthread-safety>
 )

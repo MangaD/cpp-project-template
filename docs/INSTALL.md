@@ -230,13 +230,13 @@ In Visual Studio Installer, click "Modify" and install "Desktop development with
 
 ### MinGW
 
-1. Download latest [MinGW](http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/)
-2. Install MinGW
-   *   Architecture: i686 - for compiling 32 bit programs
-   *   Architecture: x86_64 - for compiling 64 bit programs
-   * Threads: posix
-3. Copy `mingw32-make.exe` and rename the copy to `make.exe`
-4. Put the MinGW bin folder in the path
+Download latest [MinGW builds](https://github.com/niXman/mingw-builds-binaries/releases/).
+
+Example:
+- [Architecture: i686](https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/i686-12.2.0-release-posix-dwarf-msvcrt-rt_v10-rev2.7z) - for compiling 32 bit programs
+- [Architecture: x86_64](https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/x86_64-12.2.0-release-posix-seh-msvcrt-rt_v10-rev2.7z) - for compiling 64 bit programs
+
+Put the MinGW bin folder in the path for the intended architecture.
 
 ### Dependencies
 

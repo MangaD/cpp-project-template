@@ -14,12 +14,12 @@
 - [ ] Unit testing
   - [x] GoogleTest
   - [ ] Boost.Test
-  - [ ] Catch2
+  - [ ] Catch2 + [wxWidgets testing](https://github.com/wxWidgets/wxWidgets/blob/master/docs/contributing/how-to-write-unit-tests.md)
   - [ ] Doctest
 - [ ] Code coverage
   - [x] gcov + lcov + genhtml
   - [x] codecov
-  - [ ] coveralls
+  - [x] coveralls
   - [ ] coverity
   - [ ] OpenCppCoverage
 - [x] CMake integration
@@ -29,7 +29,7 @@
   - [x] CDash
 - [x] Package manager
   - [x] vcpkg
-  - [ ] conan
+  - [ ] conan - Does not have wxWidgets and apparently requires modifying the `CMakeLists.txt` file. I prefer to not integrate it here.
 - [x] Static analysis
   - [x] Clang Static Analyzer
   - [x] cppcheck
@@ -51,14 +51,17 @@
   - [x] GitHub Actions
     - [x] CDash
     - [x] codecov
-    - [ ] coveralls
+    - [x] coveralls
     - [ ] coverity
-    - [ ] Windows 32-bit
     - [x] Windows Latest MSVC
+      - [ ] 32-bit
+      - [x] 64-bit
       - [x] Archive
       - [x] NSIS installer
       - [x] WiX Toolset
     - [x] Windows Latest MinGW
+      - [x] 32-bit
+      - [x] 64-bit
       - [x] Archive
       - [x] NSIS installer
       - [x] WiX Toolset

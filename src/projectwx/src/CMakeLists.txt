@@ -7,10 +7,10 @@
 # https://docs.wxwidgets.org/2.8/wx_librarieslist.html
 
 find_package(wxWidgets REQUIRED
-    COMPONENTS
-    core
-    base
-    adv)
+	COMPONENTS
+	core
+	base
+	adv)
 
 # Bring the headers into the project
 include(${wxWidgets_USE_FILE})
@@ -28,7 +28,7 @@ add_executable(${PROJECT_WX_NAME} WIN32 ${SRC_FILES}
 	$<$<PLATFORM_ID:Windows>:${PROJECT_BINARY_DIR}/${PROJECT_WX_NAME}_version.rc>)
 
 target_compile_definitions(${PROJECT_WX_NAME} PUBLIC
-    UNICODE _UNICODE wxUSE_DPI_AWARE_MANIFEST=2
+	UNICODE _UNICODE wxUSE_DPI_AWARE_MANIFEST=2
 )
 
 # For including config.h and version.rc
@@ -47,10 +47,10 @@ if (MINGW)
 	target_link_libraries(${PROJECT_WX_NAME} PRIVATE
 		$<$<CONFIG:Release>:-static-libgcc -static-libstdc++ -static>
 	)
-    # https://stackoverflow.com/a/51602330/3049315
-    target_link_libraries(${PROJECT_WX_NAME} PRIVATE
-        $<$<CONFIG:Release>:-static gcc stdc++ winpthread -dynamic>
-    )
+	# https://stackoverflow.com/a/51602330/3049315
+	target_link_libraries(${PROJECT_WX_NAME} PRIVATE
+		$<$<CONFIG:Release>:-static gcc stdc++ winpthread -dynamic>
+	)
 elseif (MSVC)
 	# MT vs MD vs MTd vs MDd https://social.msdn.microsoft.com/Forums/en-US/9474efb9-49cd-46e1-8935-ee2bebe95203/difference-in-mt-and-md-run-time-lib-setting?forum=vcgeneral
 	# Might have to use MDd with wxWidgets because: https://forums.wxwidgets.org/viewtopic.php?t=47650

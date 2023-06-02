@@ -30,17 +30,29 @@ jobs:
       matrix:
         config:
         - {
-            name: "Windows Latest MSVC", ext: "windows-msvc",
+            name: "Windows Latest MSVC x86_64", ext: "windows-msvc-x86_64",
             os: windows-latest,
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows
           }
         - {
-            name: "Windows Latest MinGW", ext: "windows-mingw",
+            name: "Windows Latest MinGW i686", ext: "windows-mingw-i686",
             os: windows-latest,
             cc: "gcc", cxx: "g++",
-            vcpkg_triplet: x64-mingw-dynamic
+            vcpkg_triplet: x86-mingw-dynamic,
+            mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/i686-12.2.0-release-posix-dwarf-msvcrt-rt_v10-rev2.7z",
+            mingw_dir: "./mingw/mingw32/bin",
+            mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw32/bin"
+          }
+        - {
+            name: "Windows Latest MinGW x86_64", ext: "windows-mingw-x86_64",
+            os: windows-latest,
+            cc: "gcc", cxx: "g++",
+            vcpkg_triplet: x64-mingw-dynamic,
+            mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/x86_64-12.2.0-release-posix-seh-msvcrt-rt_v10-rev2.7z",
+            mingw_dir: "./mingw/mingw64/bin",
+            mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin"
           }
         - {
             name: "Ubuntu Latest GCC", ext: "linux",
@@ -65,28 +77,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
+        submodules: "true"
         # Use path because of issue: https://github.com/johnwason/vcpkg-action/issues/14#issuecomment-1558312751
         # where vcpkg searches the parent directory tree for vcpkg.json, even if we do not want to use it
         path: project
 
-    # vcpkg wxwidgets build failts with Chocolatey's packaging of MinGW.
-    # https://github.com/microsoft/vcpkg/issues/31496
-    # https://stackoverflow.com/a/59361133/3049315
-    - name: Remove Chocolatey's MinGW
-      if: matrix.config.ext == 'windows-mingw'
-      run: choco uninstall mingw
-    - name: Install MinGW
-      if: matrix.config.ext == 'windows-mingw'
-      shell: cmake -P {0}
-      run: |
-        set(mingw_url "https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/x86_64-12.2.0-release-posix-seh-msvcrt-rt_v10-rev2.7z")
-        file(DOWNLOAD "${mingw_url}" ./mingw.7z SHOW_PROGRESS)
-        file(ARCHIVE_EXTRACT INPUT ./mingw.7z DESTINATION mingw)
-
-        # Add to PATH environment variable
-        set(mingw_dir "./mingw/mingw64/bin")
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${mingw_dir}" mingw_dir)
-        file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE};${mingw_dir}")
+    - name: Update Ubuntu package list
+      if: runner.os == 'Linux'
+      run: sudo apt-get update
 
     - name: Prepare cache timestamp
       id: cache_timestamp
@@ -95,14 +93,41 @@ jobs:
         string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
         file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
 
+    # # Chocolatey's MinGW does not work with vcpkg for some reason
+    # - name: Set MinGW path
+    #   if: contains(matrix.config.ext, 'windows-mingw')
+    #   run: echo "${{ matrix.config.mingw_chocolatey_dir }}" >> $GITHUB_PATH
+
     - name: Cache MinGW
-      if: matrix.config.ext == 'windows-mingw'
+      id: cache-mingw
+      if: contains(matrix.config.ext, 'windows-mingw')
       uses: actions/cache@v3.2.1
       with:
         path: ./mingw
-        key: ${{ runner.os }}-mingw-cache-${{ steps.cache_timestamp.outputs.timestamp }}
+        key: ${{ runner.os }}-${{ matrix.config.ext }}-cache-${{ steps.cache_timestamp.outputs.timestamp }}
         restore-keys: |
-          ${{ runner.os }}-mingw-cache-
+          ${{ runner.os }}-${{ matrix.config.ext }}-cache-
+
+    # vcpkg wxwidgets build fails with Chocolatey's packaging of MinGW.
+    # https://github.com/microsoft/vcpkg/issues/31496
+    # https://stackoverflow.com/a/59361133/3049315
+    # - name: Remove Chocolatey's MinGW
+    #   if: contains(matrix.config.ext, 'windows-mingw')
+    #   run: choco uninstall mingw
+    - name: Install MinGW
+      if: ${{ contains(matrix.config.ext, 'windows-mingw') && steps.cache-mingw.outputs.cache-hit != 'true' }}
+      shell: cmake -P {0}
+      run: |
+        file(DOWNLOAD "${{ matrix.config.mingw_url }}" ./mingw.7z SHOW_PROGRESS)
+        file(ARCHIVE_EXTRACT INPUT ./mingw.7z DESTINATION mingw)
+
+    - name: Add MinGW to PATH
+      shell: cmake -P {0}
+      if: contains(matrix.config.ext, 'windows-mingw')
+      run: |
+        # Add to PATH environment variable
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${{ matrix.config.mingw_dir }}" mingw_dir)
+        file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE};${mingw_dir}")
 
     - name: Install Ninja
       run: |
@@ -134,7 +159,7 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y libwxgtk3.0-gtk3-dev libgtest-dev
+          sudo apt-get install -y lcov libwxgtk3.0-gtk3-dev libgtest-dev
         elif [ "$RUNNER_OS" == "macOS" ]; then
           brew install wxwidgets googletest
         fi
@@ -187,6 +212,7 @@ jobs:
         ENVIRONMENT_SCRIPT: ${{ matrix.config.environment_script }}
         RUNNER_OS: ${{ runner.os }}
         VCPKG_TRIPLET: ${{ matrix.config.vcpkg_triplet }}
+        EXT: ${{ matrix.config.ext }}
       working-directory: project
       run: |
         chmod a+x ./.github/scripts/*.cmake
@@ -220,18 +246,34 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Coveralls GitHub Action
-      uses: coverallsapp/github-action@v1
-      if: runner.os == 'Linux'
-      with:
-        format: gcov
+    # - name: Generate lcov.info for coveralls
+    #   if: runner.os == 'Linux'
+    #   working-directory: project
+    #   run: cmake --build build --config $BUILD_TYPE --target lcov
 
-    - name: Coverity scan
-      uses: vapier/coverity-scan-action@v1
+    # - name: Coveralls GitHub Action
+    #   uses: coverallsapp/github-action@v1
+    #   if: runner.os == 'Linux'
+    #   with:
+    #     base-path: project
+    #     path-to-lcov: ./build/coverage/lcov.info
+    #     debug: true
+
+    - name: Coveralls GitHub Action
+      uses: threeal/gcovr-action@latest
       if: runner.os == 'Linux'
       with:
-        email: ${{ secrets.COVERITY_SCAN_EMAIL }}
-        token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        root: project
+        coveralls-send: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    # - name: Coverity scan
+    #   uses: vapier/coverity-scan-action@v1
+    #   if: runner.os == 'Linux'
+    #   with:
+    #     email: ${{ secrets.COVERITY_SCAN_EMAIL }}
+    #     token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+    #     command: 'ninja'
 
     - name: Install Strip
       working-directory: project
