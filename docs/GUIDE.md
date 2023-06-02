@@ -127,14 +127,32 @@ A release is created when creating and pushing a tag that starts with `v`.
 
 ## Tutorial links
 
+### CMake
+
 - [Mastering CMake](https://cmake.org/cmake/help/book/mastering-cmake/index.html)
 - [CMake Reference Documentation](https://cmake.org/cmake/help/latest/index.html)
 - [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
-- [Semantic Versioning](https://semver.org/)
-- [CTest tutorial and options](https://coderefinery.github.io/cmake-workshop/testing/)
 - [VS Code with CMake](https://code.visualstudio.com/docs/cpp/cmake-linux)
+- [CTest tutorial and options](https://coderefinery.github.io/cmake-workshop/testing/)
+
+### Testing
+
+- [GoogleTest User's Guide](https://google.github.io/googletest/)
+
+### Documentation
+
 - For Sphinx instructions, see:
   - https://www.sphinx-doc.org/en/master/index.html
   - https://sphinx-themes.org/sample-sites/sphinx-rtd-theme
-- [How to avoid the "Windows Defender SmartScreen prevented an unrecognized app from starting" warning](https://stackoverflow.com/a/66582477/3049315)
+
+### Versioning
+
+- [Semantic Versioning](https://semver.org/)
+
+### Licenses
+
 - [tl;drLegal: Software Licenses in Plain English](https://tldrlegal.com)
+
+### Signing
+
+- [How to avoid the "Windows Defender SmartScreen prevented an unrecognized app from starting" warning](https://stackoverflow.com/a/66582477/3049315)
