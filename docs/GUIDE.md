@@ -137,3 +137,4 @@ A release is created when creating and pushing a tag that starts with `v`.
   - https://www.sphinx-doc.org/en/master/index.html
   - https://sphinx-themes.org/sample-sites/sphinx-rtd-theme
 - [How to avoid the "Windows Defender SmartScreen prevented an unrecognized app from starting" warning](https://stackoverflow.com/a/66582477/3049315)
+- [tl;drLegal: Software Licenses in Plain English](https://tldrlegal.com)

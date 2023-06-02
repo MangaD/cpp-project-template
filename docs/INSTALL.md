@@ -7,20 +7,28 @@
     - [RedHat / Fedora / CentOS](#redhat--fedora--centos)
   - [Windows](#windows)
     - [MSVC](#msvc)
-    - [MinGW](mingw)
+    - [MinGW](#mingw)
     - [Dependencies](#dependencies)
-      - [vcpkg](vcpkg)
+      - [vcpkg](#vcpkg)
 - [Compile](#compile)
   - [Linux & Mac](#linux--mac)
   - [Windows](#windows-compile)
   - [Sanitizer builds](#sanitizer-builds)
 - [Package](#package)
   - [Archive](#archive)
-  - [NSIS on Windows](#nsis-on-windows)
-  - [DEB on Ubuntu](#deb-on-ubuntu)
+  - Windows
+    - [NSIS](#NSIS)
+    - [WiX](#WiX)
+  - Ubuntu
+    - [DEB](#deb)
+    - [RPM](#rpm)
+  - MacOS
+    - [DMG](#dmg)
 - [Documentation](#documentation)
 
-## Arch Linux / Manjaro Linux
+## Linux
+
+### Arch Linux / Manjaro Linux
 
 Build tools:
 
@@ -58,8 +66,7 @@ Memory checker:
 sudo pacman -Sy valgrind
 ```
 
-
-## Debian / Linux Mint / Ubuntu
+### Debian / Linux Mint / Ubuntu
 
 Build tools:
 
@@ -103,7 +110,13 @@ Memory checker:
 sudo apt install valgrind
 ```
 
-## RedHat / Fedora / CentOS
+CPack RPM:
+
+```sh
+sudo apt install rpm
+```
+
+### RedHat / Fedora / CentOS
 
 Build tools:
 
@@ -141,7 +154,7 @@ Memory checker:
 sudo yum -y install valgrind
 ```
 
-CPack:
+CPack RPM:
 
 ```sh
 sudo yum -y install rpm-build
@@ -168,18 +181,18 @@ In Visual Studio Installer, click "Modify" and install "Desktop development with
 ### Dependencies
 
 - [git](https://git-scm.com/)
-- CMake: Get the Windows installer at https://cmake.org/download/
-- Doxygen: Get the binary distribution for Windows at https://www.doxygen.nl/download.html
+- [CMake](https://cmake.org/download/)
+- [Doxygen](https://www.doxygen.nl/download.html)
 - Sphinx:
   - Get Python at the Windows Store
   - `pip install sphinx`
   - `pip install breathe`
   - `pip install sphinx_rtd_theme`
-- cppcheck:
-  - Download at https://cppcheck.sourceforge.io/
+- [cppcheck](https://cppcheck.sourceforge.io/)
   - Add `C:\Program Files\Cppcheck` to the Path environment variable
-- LLVM (includes clang-tidy and clang-format): Get installer for Windows at https://releases.llvm.org/download.html (tick option to add to PATH during installation)
+- [LLVM](https://releases.llvm.org/download.html) (includes clang-tidy and clang-format). Tick option to add to PATH during installation.
 - [NSIS](https://nsis.sourceforge.io/Download)
+- [WiX Toolset](https://wixtoolset.org/)
 
 **wxWidgets** (manual method):
 
@@ -316,7 +329,9 @@ cpack --config CPackSourceConfig.cmake
 make package_source
 ```
 
-### NSIS on Windows
+### Windows
+
+#### NSIS
 
 Download and Install the Null Soft Installer (NSIS) from [here](https://nsis.sourceforge.io/Download).
 
@@ -326,7 +341,7 @@ cmake --build . --config Release
 cpack -G NSIS64
 ```
 
-### WiX on Windows
+#### WiX
 
 Download and Install the WiX Toolset from [here](https://wixtoolset.org/)
 
@@ -336,14 +351,25 @@ cmake --build . --config Release
 cpack -G WIX
 ```
 
-### DEB on Ubuntu
+### Ubuntu
+
+#### DEB
 
 ```sh
 cmake ..
 cpack -G DEB
 ```
 
-### DMG on MacOS
+#### RPM
+
+```sh
+cmake ..
+cpack -G RPM
+```
+
+### MacOS
+
+#### DMG
 
 ```sh
 cmake ..

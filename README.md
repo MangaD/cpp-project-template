@@ -21,5 +21,3 @@ See [development guide](docs/GUIDE.md).
 ## License
 
 See [LICENSE](LICENSE).
-
-Popular software licenses summarized: https://tldrlegal.com

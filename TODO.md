@@ -53,8 +53,7 @@
     - [x] Ubuntu Latest GCC
       - [x] Archive
       - [x] DEB
-    - [ ] Fedora
-      - [ ] RPM
+      - [x] RPM
     - [x] macOS Latest Clang
       - [x] DMG
     - [ ] Raspbian
