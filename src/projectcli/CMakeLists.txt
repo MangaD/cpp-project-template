@@ -1,9 +1,15 @@
 file(GLOB SRC_FILES "*.cpp")
 
+# Version information on windows
+if (WIN32)
+	set(ORIGINAL_FILE_NAME "${PROJECT_CLI_NAME}.exe")
+	configure_file("${ASSETS_DIR}/version.rc.in" "${PROJECT_BINARY_DIR}/${PROJECT_CLI_NAME}_version.rc")
+endif()
+
 add_executable(${PROJECT_CLI_NAME}
 	${SRC_FILES}
 	$<$<PLATFORM_ID:Windows>:${ASSETS_DIR}/icon.rc>
-	$<$<PLATFORM_ID:Windows>:${PROJECT_BINARY_DIR}/version.rc>)
+	$<$<PLATFORM_ID:Windows>:${PROJECT_BINARY_DIR}/${PROJECT_CLI_NAME}_version.rc>)
 
 # For including config.h and version.rc
 # See: https://cmake.org/cmake/help/latest/guide/tutorial/A%20Basic%20Starting%20Point.html

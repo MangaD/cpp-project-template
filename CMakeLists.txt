@@ -33,6 +33,7 @@ set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(PROJECT_LANGUAGE_NEUTRAL 0) # if 0, language will be set to English in version.rc, otherwise neutral
 string(TIMESTAMP COPYRIGHT_YEAR "%Y")
+set(CPACK_PACKAGE_COPYRIGHT "© ${COPYRIGHT_YEAR} ${CPACK_PACKAGE_VENDOR}")
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)
 set(DOXYGEN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen)
@@ -50,11 +51,6 @@ string(REPLACE "\"" "\\\"" LICENSE "${LICENSE}") # Escape quotes for using as C-
 
 # CMake variables in source code
 configure_file("${SOURCE_DIR}/config.h.in" config.h)
-
-# Version information on windows
-if (WIN32)
-	configure_file("${ASSETS_DIR}/version.rc.in" version.rc)
-endif()
 
 # Why cache: https://cliutils.gitlab.io/modern-cmake/chapters/features/cpp11.html
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
@@ -83,7 +79,7 @@ set(PROJECT_CLI_DIR ${SOURCE_DIR}/${PROJECT_CLI_NAME})
 add_subdirectory(${PROJECT_CLI_DIR})
 
 set(PROJECT_WX_NAME projectwx)
-option(BUILD_PROJECTWX "Build ${PROJECT_WX_NAME}" YES)
+option(BUILD_PROJECTWX "Build ${PROJECT_WX_NAME}" ON)
 set(PROJECT_WX_DIR ${SOURCE_DIR}/${PROJECT_WX_NAME})
 if(BUILD_PROJECTWX)
 	add_subdirectory(${PROJECT_WX_DIR})

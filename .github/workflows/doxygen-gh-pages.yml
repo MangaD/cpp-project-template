@@ -14,17 +14,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
         with:
           submodules: "true"
 
       - name: Install Doxygen and CMake
-        run: sudo apt-get install doxygen cmake libwxgtk3.0-gtk3-dev -y
+        run: sudo apt-get install doxygen cmake -y
         shell: bash
 
       - name: Generate Doxygen Documentation
         run: |
-          mkdir build && cd build && cmake ..
+          mkdir build && cd build && cmake .. -DBUILD_PROJECTWX=OFF
           cmake --build . --target doxygen
         shell: bash
 
@@ -33,9 +33,8 @@ jobs:
         shell: bash
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           folder: docs/doxygen/build/html
 

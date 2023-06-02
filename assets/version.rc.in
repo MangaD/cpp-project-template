@@ -66,11 +66,11 @@ BEGIN
             VALUE "FileDescription",  "@PROJECT_DESCRIPTION@"
             VALUE "FileVersion",      VER_FILEVERSION_STR
             VALUE "InternalName",     "@PROJECT_NAME@"
-            VALUE "LegalCopyright",   "© @COPYRIGHT_YEAR@ @CPACK_PACKAGE_VENDOR@"
-            VALUE "OriginalFilename", "@PROJECT_NAME@.exe"
+            VALUE "LegalCopyright",   "@CPACK_PACKAGE_COPYRIGHT@"
+            VALUE "OriginalFilename", "@ORIGINAL_FILE_NAME@"
             VALUE "ProductName",      "@PROJECT_NAME@"
-            VALUE "Comments",         "@PROJECT_DESCRIPTION@"
             VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
+            VALUE "Comments",         "@PROJECT_DESCRIPTION@"
         END
     END
 END

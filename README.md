@@ -13,6 +13,7 @@ This repository aims to provide a modern C++ cross-platform codebase template, f
 - [x] Console app
 - [x] GUI app
   - [x] wxWidgets
+  - [ ] QT (see: https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
 - [x] Windows resources
   - [x] Icon
   - [x] Version data
@@ -25,6 +26,7 @@ This repository aims to provide a modern C++ cross-platform codebase template, f
 - [x] CMake integration
   - [x] CTest
   - [x] CPack
+    - [ ] Sign the executables (see: https://stackoverflow.com/a/252245/3049315)
   - [ ] CDash
 - [x] Package manager
   - [x] vcpkg
@@ -51,9 +53,11 @@ This repository aims to provide a modern C++ cross-platform codebase template, f
     - [x] Windows Latest MSVC
       - [x] Archive
       - [ ] NSIS installer
+      - [ ] WiX Toolset
     - [x] Windows Latest MinGW
       - [x] Archive
       - [ ] NSIS installer
+      - [ ] WiX Toolset
     - [x] Ubuntu Latest GCC
       - [x] Archive
       - [ ] DEB
@@ -65,11 +69,15 @@ This repository aims to provide a modern C++ cross-platform codebase template, f
   - [ ] Travis CI
   - [ ] Appveyor
 
-## Installation
+## Download
+
+For downloading the app, see [latest release](https://github.com/MangaD/cpp-project-template/releases/latest).
+
+## Developer Install
 
 See [installation guide](docs/INSTALL.md).
 
-## Guide
+## Developer Guide
 
 See [development guide](docs/GUIDE.md).
 

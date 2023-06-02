@@ -5,13 +5,18 @@
 
 name: CMake Build Matrix
 
-on: 
+on:
+  workflow_dispatch: {} # allow running it manually
   push:
     branches:
       - main
+    tags:
+      - v**
   pull_request:
     branches:
       - main
+    tags:
+      - v**
 
 env:
   CMAKE_VERSION: 3.26.3
@@ -28,33 +33,33 @@ jobs:
       matrix:
         config:
         - {
-            name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
+            name: "Windows Latest MSVC", artifact: "windows-msvc.7z",
             os: windows-latest,
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows-static
           }
         - {
-            name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
+            name: "Windows Latest MinGW", artifact: "windows-mingw.7z",
             os: windows-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x64-windows-static
           }
         - {
-            name: "Ubuntu Latest GCC", artifact: "Linux.7z",
+            name: "Ubuntu Latest GCC", artifact: "linux.7z",
             os: ubuntu-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x64-linux-release
           }
         - {
-            name: "macOS Latest Clang", artifact: "macOS.7z",
+            name: "macOS Latest Clang", artifact: "macos.7z",
             os: macos-latest,
             cc: "clang", cxx: "clang++",
             vcpkg_triplet: x64-osx-release
           }
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
@@ -103,12 +108,13 @@ jobs:
 
     - name: vcpkg build
       if: runner.os != 'Linux'
-      uses: johnwason/vcpkg-action@v3
+      uses: johnwason/vcpkg-action@v4
       with:
         pkgs: wxwidgets
         triplet: ${{ matrix.config.vcpkg_triplet }}
         cache-key: ${{ matrix.config.os }}
         revision: master
+        token: ${{ github.token }}
 
     - name: Install wxWidgets
       if: runner.os == 'Linux'
@@ -129,10 +135,10 @@ jobs:
       shell: cmake -P {0}
       run: |
         string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-        message("::set-output name=timestamp::${current_date}")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
 
     - name: ccache cache files
-      uses: actions/cache@v3
+      uses: actions/cache@v3.2.1
       with:
         path: .ccache
         key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
@@ -270,21 +276,52 @@ jobs:
     - name: Install Strip
       run: cmake --install build --prefix instdir --strip
 
-
+    - name: Generate artifact name
+      id: generate-name
+      shell: cmake -P {0}
+      run: |
+        execute_process(
+          COMMAND cmake --system-information
+          WORKING_DIRECTORY build
+          OUTPUT_VARIABLE sysInfo
+        )
+        
+        string(REGEX MATCH "CMAKE_PROJECT_NAME:STATIC=([^\n]*)" projectName ${sysInfo})
+        set(projectName ${CMAKE_MATCH_1})
+        
+        string(REGEX MATCH "CMAKE_PROJECT_VERSION:STATIC=([^\n]*)" projectVersion ${sysInfo})
+        set(projectVersion ${CMAKE_MATCH_1})
+        
+        # Save artifact name to GitHub environment variable
+        set(artifactName "${projectName}_${projectVersion}_${{ matrix.config.artifact }}")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "artifactName=${artifactName}")
+        
+        # Save project name and version to a file for using with other jobs
+        # https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+        file(WRITE "projectName.txt" ${projectName})
+        file(WRITE "projectVersion.txt" ${projectVersion})
+    
     - name: Pack
       working-directory: instdir
-      run: cmake -E tar cfv ../${{ matrix.config.artifact }} --format=7zip .
+      run: cmake -E tar cfv ../${{ steps.generate-name.outputs.artifactName }} --format=7zip .
 
-     - name: Generate artifact name
-        id: generate-name
-        run: |
-          echo "::set-output name=${{ matrix.config.artifact }}::${{ env.CMAKE_PROJECT_NAME }}-${{ env.CMAKE_PROJECT_VERSION }}-${{ matrix.config.artifact }}"
-
-    - name: Upload
-      uses: actions/upload-artifact@v1
+    - name: Upload project name
+      uses: actions/upload-artifact@v3
       with:
-        path: ./${{ matrix.config.artifact }}
-        name: ${{ steps.generate-name.outputs.${{ matrix.config.artifact }} }}
+        name: projectName
+        path: ./projectName.txt
+
+    - name: Upload project version
+      uses: actions/upload-artifact@v3
+      with:
+        name: projectVersion
+        path: ./projectVersion.txt
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.generate-name.outputs.artifactName }}
+        path: ./${{ steps.generate-name.outputs.artifactName }}
 
   release:
     if: contains(github.ref, 'tags/v')
@@ -292,76 +329,39 @@ jobs:
     needs: build
 
     steps:
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: ./
+
+    - name: Get project name and version
+      id: get_name_version
+      shell: bash
+      run: |
+        projectName=`cat projectName/projectName.txt`
+        projectVersion=`cat projectVersion/projectVersion.txt`
+        echo "projectName=$projectName" >> "$GITHUB_OUTPUT"
+        echo "projectVersion=$projectVersion" >> "$GITHUB_OUTPUT"
+
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v0.1.15
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
+        files: |
+          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-msvc.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-msvc.7z
+          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-mingw.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-mingw.7z
+          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_linux.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_linux.7z
+          ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_macos.7z/${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_macos.7z
+        body: |
+          ## Downloads:
+          | Name                    | File | OS |
+          |-------------------------|------|----|
+          | Windows MSVC (archive)  | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-msvc.7z |    |
+          | Windows MinGW (archive) | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_windows-mingw.7z |    |
+          | Ubuntu (archive)        | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_linux.7z |    |
+          | Mac OS X (archive)      | ${{ steps.get_name_version.outputs.projectName }}_${{ steps.get_name_version.outputs.projectVersion }}_macos.7z |    |
 
-    - name: Store Release url
-      run: |
-        echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
-
-    - uses: actions/upload-artifact@v1
-      with:
-        path: ./upload_url
-        name: upload_url
-
-  publish:
-    if: contains(github.ref, 'tags/v')
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - {
-            name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
-            os: ubuntu-latest
-          }
-        - {
-            name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
-            os: ubuntu-latest
-          }
-        - {
-            name: "Ubuntu Latest GCC", artifact: "Linux.7z",
-            os: ubuntu-latest
-          }
-        - {
-            name: "macOS Latest Clang", artifact: "macOS.7z",
-            os: ubuntu-latest
-          }
-    needs: release
-
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v1
-      with:
-        name: ${{ matrix.config.artifact }}
-        path: ./
-
-    - name: Download URL
-      uses: actions/download-artifact@v1
-      with:
-        name: upload_url
-        path: ./
-    - id: set_upload_url
-      run: |
-        upload_url=`cat ./upload_url`
-        echo ::set-output name=upload_url::$upload_url
-
-    - name: Upload to Release
-      id: upload_to_release
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-        asset_path: ./${{ matrix.config.artifact }}
-        asset_name: ${{ matrix.config.artifact }}
-        asset_content_type: application/x-gtar
