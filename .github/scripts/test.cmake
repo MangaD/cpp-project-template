@@ -5,10 +5,21 @@ ProcessorCount(N)
 
 set(ENV{CTEST_OUTPUT_ON_FAILURE} "ON")
 
-set(DoCovMemChk "")
-if ("$ENV{RUNNER_OS}" STREQUAL "Linux" AND "$ENV{BUILD_TYPE}" STREQUAL "Coverage")
-	set(DoCovMemChk "-D Continuous -T Test -T Coverage -T memcheck")
+# CDash: https://cmake.org/cmake/help/book/mastering-cmake/chapter/CDash.html
+# ctest -D Continuous
+# performs the start, update, configure, build, test, coverage, and submit commands.
+set(DoCovMemChk "-D ContinuousStart -D ContinuousUpdate -D ContinuousConfigure -D ContinuousBuild -D ContinuousTest")
+# MemoryCheck
+# Perform memory checks using Purify or valgrind.
+if ("$ENV{RUNNER_OS}" STREQUAL "Linux" )
+	set(DoCovMemChk "${DoCovMemChk} -D ContinuousMemCheck")
 endif()
+# Coverage
+# Collect source code coverage information using gcov or Bullseye.
+if ("$ENV{CC}" STREQUAL "gcc" )
+	set(DoCovMemChk "${DoCovMemChk} -D ContinuousCoverage")
+endif()
+set(DoCovMemChk "${DoCovMemChk} -D ContinuousSubmit")
 
 execute_process(
 	COMMAND ctest -j ${N} -C $ENV{BUILD_TYPE} ${DoCovMemChk}

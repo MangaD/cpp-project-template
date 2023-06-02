@@ -1,6 +1,6 @@
 # C++ Project Template
 
-![Release](https://github.com/MangaD/cpp-project-template/actions/workflows/build-release.yml/badge.svg) ![Debug](https://github.com/MangaD/cpp-project-template/actions/workflows/build-debug.yml/badge.svg) ![Doxygen](https://github.com/MangaD/cpp-project-template/actions/workflows/doxygen-gh-pages.yml/badge.svg) ![License](https://img.shields.io/github/license/MangaD/cpp-project-template)
+![Release](https://github.com/MangaD/cpp-project-template/actions/workflows/build-release.yml/badge.svg) ![Debug](https://github.com/MangaD/cpp-project-template/actions/workflows/build-debug.yml/badge.svg) ![Doxygen](https://github.com/MangaD/cpp-project-template/actions/workflows/doxygen-gh-pages.yml/badge.svg) [![CDash](https://img.shields.io/badge/CDash-dashboard-green)](https://my.cdash.org/index.php?project=cpp-project-template)
 
 [![codecov](https://codecov.io/gh/MangaD/cpp-project-template/branch/main/graph/badge.svg?token=4D88K24BF0)](https://codecov.io/gh/MangaD/cpp-project-template) [![Coverage Status](https://coveralls.io/repos/github/MangaD/cpp-project-template/badge.svg?branch=main)](https://coveralls.io/github/MangaD/cpp-project-template?branch=main) <a href="https://scan.coverity.com/projects/mangad-cpp-project-template">
   <img alt="Coverity Scan Build Status"

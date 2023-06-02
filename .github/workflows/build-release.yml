@@ -163,7 +163,7 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y libwxgtk3.0-gtk3-dev libgtest-dev
+          sudo apt-get install -y valgrind libwxgtk3.0-gtk3-dev libgtest-dev
         elif [ "$RUNNER_OS" == "macOS" ]; then
           brew install wxwidgets googletest
         fi
@@ -223,7 +223,6 @@ jobs:
         ENVIRONMENT_SCRIPT: ${{ matrix.config.environment_script }}
         RUNNER_OS: ${{ runner.os }}
         VCPKG_TRIPLET: ${{ matrix.config.vcpkg_triplet }}
-        EXT: ${{ matrix.config.ext }}
       working-directory: project
       run: |
         chmod a+x ./.github/scripts/*.cmake
@@ -248,6 +247,10 @@ jobs:
         execute_process(COMMAND ccache -s)
 
     - name: Run tests
+      env:
+        CC: ${{ matrix.config.cc }}
+        CXX: ${{ matrix.config.cxx }}
+        RUNNER_OS: ${{ runner.os }}
       working-directory: project
       run: cmake -P ./.github/scripts/test.cmake
 
