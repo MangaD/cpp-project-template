@@ -1,6 +1,6 @@
 # Note: Cannot name this module 'cpack.cmake' because it will not work on Windows
 
-# Taken from:
+# Inspired from:
 # - https://cmake.org/cmake/help/latest/guide/tutorial/Packaging%20an%20Installer.html
 # - https://www.scivision.dev/cmake-cpack-basic/
 
@@ -22,6 +22,7 @@ set(CPACK_PACKAGE_DESCRIPTION ${PROJECT_DESCRIPTION})
 set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+set(CPACK_PACKAGE_ICON "${PACKAGING_DIR}/apple/icon.png")
 set(CPACK_OUTPUT_FILE_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/package")
 set(CPACK_PACKAGE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 string(TOLOWER ${CMAKE_SYSTEM_NAME} _sys)
@@ -61,8 +62,8 @@ if(WIN32)
 	#)
 
 	## Look & Feel
-	set(CPACK_NSIS_MUI_ICON "${ASSETS_DIR}/icon.ico")
-	set(CPACK_NSIS_MUI_UNIICON "${ASSETS_DIR}/icon.ico")
+	set(CPACK_NSIS_MUI_ICON "${PACKAGING_DIR}/windows/icon.ico")
+	set(CPACK_NSIS_MUI_UNIICON "${PACKAGING_DIR}/windows/icon.ico")
 
 	# Icon in the add/remove control panel. Must be an .exe file 
 	set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\${PROJECT_CLI_NAME}.exe")
@@ -72,14 +73,14 @@ if(WIN32)
 	# "Do not write color space information". Tick 24 bits.
 	# If using imagemagick, do: convert banner.bmp BMP3:banner.bmp
 	# Path must have 4 backspaces
-	set(CPACK_PACKAGE_ICON "${ASSETS_DIR}/nsis\\\\icon.bmp")
-	set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${ASSETS_DIR}/nsis\\\\welcomefinishpage.bmp")
-	set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP "${ASSETS_DIR}/nsis\\\\welcomefinishpage.bmp")
+	set(CPACK_PACKAGE_ICON "${PACKAGING_DIR}/windows/nsis\\\\icon.bmp")
+	set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${PACKAGING_DIR}/windows/nsis\\\\welcomefinishpage.bmp")
+	set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP "${PACKAGING_DIR}/windows/nsis\\\\welcomefinishpage.bmp")
 	set(CPACK_NSIS_MUI_FINISHPAGE_RUN "${PROJECT_WX_NAME}")
 
 	## LICENSE
 	# Remove single new lines in license
-	file(STRINGS LICENSE LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
+	file(STRINGS ${CPACK_RESOURCE_FILE_LICENSE} LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
 	string(REGEX REPLACE "\n\n" "#CMAKE_DOUBLE_NEWLINE#" LICENSE "${LICENSE}") # keep double newlines
 	string(REGEX REPLACE "\n" " " LICENSE "${LICENSE}") # remove single newlines
 	string(REGEX REPLACE "#CMAKE_DOUBLE_NEWLINE#" "\n\n" LICENSE "${LICENSE}") # keep double newlines
@@ -116,48 +117,59 @@ if(WIN32)
 	#######
 	# WIX #
 	#######
-	set(CPACK_WIX_PRODUCT_ICON "${ASSETS_DIR}/icon.ico")
-	SET(CPACK_WIX_UI_BANNER "${ASSETS_DIR}/wix\\\\banner.bmp")
-	SET(CPACK_WIX_UI_DIALOG "${ASSETS_DIR}/wix\\\\dialog.bmp")
+	set(CPACK_WIX_PRODUCT_ICON "${PACKAGING_DIR}/windows/icon.ico")
+	SET(CPACK_WIX_UI_BANNER "${PACKAGING_DIR}/windows/wix\\\\banner.bmp")
+	SET(CPACK_WIX_UI_DIALOG "${PACKAGING_DIR}/windows/wix\\\\dialog.bmp")
 
 elseif(APPLE)
 
 	set(MACOSX_BUNDLE_BUNDLE_NAME ${CPACK_PACKAGE_NAME})
-	set(MACOSX_BUNDLE_ICON_FILE "${ASSETS_DIR}/apple/icon.icns")
+	set(MACOSX_BUNDLE_ICON_FILE "${PACKAGING_DIR}/apple/icon.icns")
 
-	set_source_files_properties("${ASSETS_DIR}/apple/icon.icns"
+	set_source_files_properties("${PACKAGING_DIR}/apple/icon.icns"
 		PROPERTIES
 		MACOSX_PACKAGE_LOCATION "Resources")
 
 	set(CPACK_DMG_VOLUME_NAME "${PROJECT_NAME}")
-	set(CPACK_DMG_BACKGROUND_IMAGE "${ASSETS_DIR}/images/logo.png")
+	set(CPACK_DMG_BACKGROUND_IMAGE "${PACKAGING_DIR}/apple/icon.png")
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
+	find_program(RPMBUILD_PATH rpmbuild)
+	if(RPMBUILD_PATH)
+		message(STATUS "-- rpmbuild found")
+	endif()
+
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.32), libstdc++6 (>= 3.4.29)")
+	set(CPACK_RPM_PACKAGE_REQUIRES "libc6 (>= 2.32), libstdc++6 (>= 3.4.29)")
+
+	set(CPACK_RPM_PACKAGE_LICENSE "${CPACK_RESOURCE_FILE_LICENSE}")
+	set(CPACK_RPM_PACKAGE_URL "${CMAKE_PROJECT_HOMEPAGE_URL}")
 
 	if(BUILD_PROJECTWX)	
+		set(CPACK_DEBIAN_PACKAGE_DEPENDS "libwxgtk3.0-gtk3-dev")
+		set(CPACK_RPM_PACKAGE_REQUIRES "wxGTK-devel")
+
 		# Icon and app shortcut for Linux systems
 		# Note: .desktop file must have same name as executable
-		configure_file("${ASSETS_DIR}/linux/template.desktop.in" "${PROJECT_WX_NAME}.desktop")
+		configure_file("${PACKAGING_DIR}/linux/template.desktop.in" "${PROJECT_WX_NAME}.desktop")
 		
 		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_WX_NAME}.desktop"
 			DESTINATION share/applications/
 			PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 		)
-		install(FILES "${ASSETS_DIR}/linux/icon_256x256.png"
+		install(FILES "${PACKAGING_DIR}/linux/icon_256x256.png"
 			RENAME ${PROJECT_WX_NAME}.png
 			DESTINATION "share/icons/hicolor/256x256/apps/"
 			PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
 		)
-		# License file
-		install(FILES ${PROJECT_SOURCE_DIR}/LICENSE
-			DESTINATION share/doc/${PROJECT_NAME}/
-			PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
-			RENAME copyright)
-		# set package icon
-		set(CPACK_PACKAGE_ICON "${ASSETS_DIR}/linux/${PROJECT_WX_NAME}.png")
 	endif()
+
+	# License file
+	install(FILES "${CPACK_RESOURCE_FILE_LICENSE}"
+	DESTINATION "share/doc/${PROJECT_NAME}/"
+	PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+	RENAME copyright)
 
 endif()
 

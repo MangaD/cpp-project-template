@@ -116,11 +116,15 @@ jobs:
         revision: master
         token: ${{ github.token }}
 
+    - name: Install rpmbuild
+      if: runner.os == 'Linux'
+      shell: bash
+      run: sudo apt-get -y install rpm
+
     - name: Install wxWidgets
       if: runner.os == 'Linux'
-      shell: cmake -P {0}
-      run: |
-        execute_process(COMMAND sudo apt-get -y install libwxgtk3.0-gtk3-dev)
+      shell: bash
+      run: sudo apt-get -y install libwxgtk3.0-gtk3-dev
 
     - name: Download ccache
       id: ccache
@@ -311,12 +315,14 @@ jobs:
         set(finalName "${projectName}_${projectVersion}")
         set(archiveName "${finalName}_${{ matrix.config.ext }}.7z")
         set(debName "${finalName}_${{ matrix.config.ext }}.deb")
+        set(rpmName "${finalName}_${{ matrix.config.ext }}.rpm")
         set(dmgName "${finalName}_${{ matrix.config.ext }}.dmg")
         set(nsisName "${finalName}_${{ matrix.config.ext }}_nsis.exe")
         set(wixName "${finalName}_${{ matrix.config.ext }}_wix.msi")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "finalName=${finalName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "archiveName=${archiveName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "debName=${debName}\n")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "rpmName=${rpmName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "dmgName=${dmgName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "nsisName=${nsisName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "wixName=${wixName}")
@@ -345,12 +351,14 @@ jobs:
         mv package/${{ steps.generate-name.outputs.finalName }}.exe ../${{ steps.generate-name.outputs.nsisName }}
         mv package/${{ steps.generate-name.outputs.finalName }}.msi ../${{ steps.generate-name.outputs.wixName }}
 
-    - name: Pack Linux DEB
+    - name: Pack Linux DEB & RPM
       if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
       working-directory: build
       run: |
         cpack -G DEB
+        cpack -G RPM
         mv package/${{ steps.generate-name.outputs.finalName }}.deb ../${{ steps.generate-name.outputs.debName }}
+        mv package/${{ steps.generate-name.outputs.finalName }}.rpm ../${{ steps.generate-name.outputs.rpmName }}
 
     - name: Pack MacOS DMG
       if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
@@ -386,6 +394,13 @@ jobs:
         name: ${{ steps.generate-name.outputs.debName }}
         path: ./${{ steps.generate-name.outputs.debName }}
 
+    - name: Upload Linux RPM
+      if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.generate-name.outputs.rpmName }}
+        path: ./${{ steps.generate-name.outputs.rpmName }}
+
     - name: Upload MacOS DMG
       if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
@@ -405,5 +420,6 @@ jobs:
           ${{ steps.generate-name.outputs.nsisName }}
           ${{ steps.generate-name.outputs.wixName }}
           ${{ steps.generate-name.outputs.debName }}
+          ${{ steps.generate-name.outputs.rpmName }}
           ${{ steps.generate-name.outputs.dmgName }}
 

@@ -3,12 +3,12 @@ file(GLOB SRC_FILES "*.cpp")
 # Version information on windows
 if (WIN32)
 	set(ORIGINAL_FILE_NAME "${PROJECT_CLI_NAME}.exe")
-	configure_file("${ASSETS_DIR}/version.rc.in" "${PROJECT_BINARY_DIR}/${PROJECT_CLI_NAME}_version.rc")
+	configure_file("${PACKAGING_DIR}/windows/version.rc.in" "${PROJECT_BINARY_DIR}/${PROJECT_CLI_NAME}_version.rc")
 endif()
 
 add_executable(${PROJECT_CLI_NAME}
 	${SRC_FILES}
-	$<$<PLATFORM_ID:Windows>:${ASSETS_DIR}/icon.rc>
+	$<$<PLATFORM_ID:Windows>:${PACKAGING_DIR}/windows/icon.rc>
 	$<$<PLATFORM_ID:Windows>:${PROJECT_BINARY_DIR}/${PROJECT_CLI_NAME}_version.rc>)
 
 # For including config.h and version.rc

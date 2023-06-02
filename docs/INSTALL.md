@@ -4,6 +4,7 @@
   - Linux
     - [Arch Linux / Manjaro Linux](#arch-linux--manjaro-linux)
     - [Debian / Linux Mint / Ubuntu](#debian--linux-mint--ubuntu)
+    - [RedHat / Fedora / CentOS](#redhat--fedora--centos)
   - [Windows](#windows)
     - [MSVC](#msvc)
     - [MinGW](mingw)
@@ -100,6 +101,50 @@ Memory checker:
 
 ```sh
 sudo apt install valgrind
+```
+
+## RedHat / Fedora / CentOS
+
+Build tools:
+
+```sh
+sudo yum -y install git cmake make ninja-build gcc gcc-c++ clang llvm
+```
+
+wxWidgets:
+
+```sh
+sudo yum -y install wxBase3 wxGTK3 wxGTK-devel
+```
+
+Documentation:
+
+```sh
+sudo yum -y install doxygen sphinx python3-breathe python3-sphinx_rtd_theme
+```
+
+Static analysis & Formatting:
+
+```sh
+sudo yum -y install cppcheck clang-tools-extra
+```
+
+Debugging:
+
+```sh
+sudo yum -y install gdb lldb
+```
+
+Memory checker:
+
+```sh
+sudo yum -y install valgrind
+```
+
+CPack:
+
+```sh
+sudo yum -y install rpm-build
 ```
 
 ## Windows

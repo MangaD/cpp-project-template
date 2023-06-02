@@ -24,6 +24,7 @@
   - [x] vcpkg
   - [ ] conan
 - [x] Static analysis
+  - [x] Clang Static Analyzer
   - [x] cppcheck
   - [x] clang-tidy
 - [x] Dynamic analysis
@@ -33,7 +34,6 @@
   - [ ] GNU Profiler (gprof)
   - [ ] Intel VTune Profiler
   - [ ] perf
-
 - [x] Documentation
   - [x] Doxygen
     - [x] GitHub Pages
@@ -52,11 +52,11 @@
       - [x] WiX Toolset
     - [x] Ubuntu Latest GCC
       - [x] Archive
-      - [ ] DEB
+      - [x] DEB
     - [ ] Fedora
       - [ ] RPM
     - [x] macOS Latest Clang
-      - [ ] DMG
+      - [x] DMG
     - [ ] Raspbian
       - [ ] [arm-runner](https://github.com/marketplace/actions/arm-runner)
       - [ ] [Install wxWidgets on RPI](https://yasriady.blogspot.com/2015/10/how-to-build-wxwidgets-for-raspberry-pi.html)
