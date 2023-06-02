@@ -18,7 +18,7 @@
   - [ ] Doctest
 - [ ] Code coverage
   - [x] gcov + lcov + genhtml
-  - [ ] codecov
+  - [x] codecov
   - [ ] coveralls
   - [ ] coverity
   - [ ] OpenCppCoverage
@@ -50,7 +50,9 @@
 - [x] CI/CD
   - [x] GitHub Actions
     - [x] CDash
-    - [ ] Coverage
+    - [x] codecov
+    - [ ] coveralls
+    - [ ] coverity
     - [ ] Windows 32-bit
     - [x] Windows Latest MSVC
       - [x] Archive
