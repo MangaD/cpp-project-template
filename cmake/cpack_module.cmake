@@ -119,11 +119,38 @@ if(WIN32)
 	set(CPACK_WIX_PRODUCT_ICON "${ASSETS_DIR}/icon.ico")
 	SET(CPACK_WIX_UI_BANNER "${ASSETS_DIR}/wix\\\\banner.bmp")
 	SET(CPACK_WIX_UI_DIALOG "${ASSETS_DIR}/wix\\\\dialog.bmp")
-else()
+
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.32), libstdc++6 (>= 3.4.29)")
+
+	if(BUILD_PROJECTWX)	
+		# Icon and app shortcut for Linux systems
+		# Note: .desktop file must have same name as executable
+		configure_file("${ASSETS_DIR}/linux/template.desktop.in" "${PROJECT_WX_NAME}.desktop")
+		
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_WX_NAME}.desktop"
+			DESTINATION share/applications/
+			PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+		)
+		install(FILES "${ASSETS_DIR}/linux/icon_256x256.png"
+			RENAME ${PROJECT_WX_NAME}.png
+			DESTINATION "share/icons/hicolor/256x256/apps/"
+			PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+		)
+		# License file
+		install(FILES ${PROJECT_SOURCE_DIR}/LICENSE
+			DESTINATION share/doc/${PROJECT_NAME}/
+			PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+			RENAME copyright)
+		# set package icon
+		set(CPACK_PACKAGE_ICON "${ASSETS_DIR}/linux/${PROJECT_WX_NAME}.png")
+	endif()
+
 endif()
 
 install(FILES ${CPACK_RESOURCE_FILE_README} ${CPACK_RESOURCE_FILE_LICENSE}
 	DESTINATION share/docs/${PROJECT_NAME})
 
 include(CPack)
+

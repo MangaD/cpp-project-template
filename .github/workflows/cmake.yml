@@ -308,10 +308,16 @@ jobs:
         set(projectVersion ${CMAKE_MATCH_1})
         
         # Save artifact name to GitHub environment variable
-        set(archiveName "${projectName}_${projectVersion}_${{ matrix.config.ext }}.7z")
-        set(nsisName "${projectName}_${projectVersion}")
+        set(finalName "${projectName}_${projectVersion}")
+        set(archiveName "${finalName}_${{ matrix.config.ext }}.7z")
+        set(debName "${finalName}_${{ matrix.config.ext }}.deb")
+        set(nsisName "${finalName}_${{ matrix.config.ext }}_nsis.exe")
+        set(wixName "${finalName}_${{ matrix.config.ext }}_wix.msi")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "finalName=${finalName}\n")
         file(APPEND "$ENV{GITHUB_OUTPUT}" "archiveName=${archiveName}\n")
-        file(APPEND "$ENV{GITHUB_OUTPUT}" "nsisName=${nsisName}")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "debName=${debName}\n")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "nsisName=${nsisName}\n")
+        file(APPEND "$ENV{GITHUB_OUTPUT}" "wixName=${wixName}")
     
     # https://github.com/NSIS-Dev/ci-examples/tree/main
     - name: Install NSIS & WiX Toolset
@@ -328,14 +334,21 @@ jobs:
       working-directory: instdir
       run: cmake -E tar cfv ../${{ steps.generate-name.outputs.archiveName }} --format=7zip .
 
-    - name: Pack Installer
+    - name: Pack Windows Installer
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       working-directory: build
       run: |
         cpack -G NSIS64
         cpack -G WIX
-        mv package/${{ steps.generate-name.outputs.nsisName }}.exe ../${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_nsis.exe
-        mv package/${{ steps.generate-name.outputs.nsisName }}.msi ../${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_wix.msi
+        mv package/${{ steps.generate-name.outputs.finalName }}.exe ../${{ steps.generate-name.outputs.nsisName }}
+        mv package/${{ steps.generate-name.outputs.finalName }}.msi ../${{ steps.generate-name.outputs.wixName }}
+
+    - name: Pack Linux DEB
+      if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+      working-directory: build
+      run: |
+        cpack -G DEB
+        mv package/${{ steps.generate-name.outputs.finalName }}.deb ../${{ steps.generate-name.outputs.debName }}
 
     - name: Upload Archive
       uses: actions/upload-artifact@v3
@@ -347,15 +360,22 @@ jobs:
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_nsis.exe
-        path: ./${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_nsis.exe
+        name: ${{ steps.generate-name.outputs.nsisName }}
+        path: ./${{ steps.generate-name.outputs.nsisName }}
 
     - name: Upload Installer WIX
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_wix.msi
-        path: ./${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_wix.msi
+        name: ${{ steps.generate-name.outputs.wixName }}
+        path: ./${{ steps.generate-name.outputs.wixName }}
+
+    - name: Upload Linux DEB
+      if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.generate-name.outputs.debName }}
+        path: ./${{ steps.generate-name.outputs.debName }}
 
     - name: Release Archive
       uses: softprops/action-gh-release@v0.1.15
@@ -366,6 +386,7 @@ jobs:
         prerelease: false
         files: |
           ${{ steps.generate-name.outputs.archiveName }}
-          ${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_nsis.exe
-          ${{ steps.generate-name.outputs.nsisName }}_${{ matrix.config.ext }}_wix.msi
+          ${{ steps.generate-name.outputs.nsisName }}
+          ${{ steps.generate-name.outputs.wixName }}
+          ${{ steps.generate-name.outputs.debName }}
 

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=@PROJECT_WX_NAME@
+GenericName=@PROJECT_NAME@
+Version=@CMAKE_PROJECT_VERSION@
+Comment=@PROJECT_DESCRIPTION@
+Exec=@PROJECT_WX_NAME@
+Icon=@PROJECT_WX_NAME@
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=Utility;
+Keywords=cpp;cmake;example;
