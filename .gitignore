@@ -1,4 +1,5 @@
 /CMakeUserPresets.json
+/CMakeLists.txt.user
 /vcpkg/
 /.vscode/
 /.cache/
