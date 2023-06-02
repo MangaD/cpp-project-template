@@ -1,3 +1,13 @@
+/**
+ * @file MainFrame.hpp
+ * @author David Gonçalves (11088596+MangaD@users.noreply.github.com)
+ * @brief This class represents the main window.
+ * @version 0.1
+ * @date 2023-06-01
+ *
+ * @copyright Copyright (c) 2023 David Gonçalves
+ */
+
 #ifndef CPP_PROJ_MAINFRAME
 #define CPP_PROJ_MAINFRAME
 
@@ -8,12 +18,26 @@
 	#include <wx/wx.h>
 #endif
 
+namespace cpp_proj
+{
+
 class App;
 
+/**
+ * @brief This class represents the main window.
+ */
 class MainFrame : public wxFrame
 {
 public:
-	MainFrame(const App* app, const wxString& title, const wxPoint& pos,
+	/**
+	 * @brief Construct a new Main Frame object.
+	 *
+	 * @param[in] app
+	 * @param[in] title
+	 * @param[in] pos
+	 * @param[in] size
+	 */
+	MainFrame(const App& app, const wxString& title, const wxPoint& pos,
 	          const wxSize& size);
 
 	~MainFrame() override = default;
@@ -32,7 +56,7 @@ private:
 	void OnAbout(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();
 
-	const App* app_;
+	const App& app_;
 
 	// These will be deleted automatically at the end, using unique_ptr
 	// would cause segmentation fault due to double deletion
@@ -43,5 +67,7 @@ private:
 
 	wxIcon logoIco_;
 };
+
+}  // namespace cpp_proj
 
 #endif  // CPP_PROJ_MAINFRAME

@@ -10,12 +10,17 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  DOXYGEN_VERSION: 1.9.7
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         shell: bash
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,13 +29,45 @@ jobs:
       - name: Update Ubuntu package list
         run: sudo apt-get update
 
-      - name: Install Doxygen and CMake
-        run: sudo apt-get install doxygen cmake -y
+      - name: Install CMake
+        run: sudo apt-get install -y cmake
+
+      - name: Install Graphviz (for doxygen 'dot' component)
+        run: sudo apt-get install -y graphviz
+
+      - name: Prepare cache timestamp
+        id: cache_timestamp
+        shell: cmake -P {0}
+        run: |
+          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+          file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
+
+      - name: Cache Doxygen
+        id: cache-doxygen
+        uses: actions/cache@v3.2.1
+        with:
+          path: doxygen-${{ env.DOXYGEN_VERSION }}
+          key: doxygen-cache-${{ steps.cache_timestamp.outputs.timestamp }}
+          restore-keys: |
+            doxygen-cache-
+
+      - name: Install Doxygen from GitHub
+        if: steps.cache-doxygen.outputs.cache-hit != 'true'
+        run: |
+          version_underscore=$(echo "$DOXYGEN_VERSION" | sed -r 's/\./_/g')
+          dirname=doxygen-$DOXYGEN_VERSION
+          filename_tar=$dirname.linux.bin.tar
+          filename_gz=$filename_tar.gz
+          url=https://github.com/doxygen/doxygen/releases/download/Release_$version_underscore/$filename_gz
+          wget $url
+          gunzip $filename_gz
+          tar xf $filename_tar
+          echo "${GITHUB_WORKSPACE}/$dirname/bin" >> $GITHUB_PATH
 
       - name: Generate Doxygen Documentation
         run: |
           mkdir build && cd build
-          cmake .. -DBUILD_PROJECTWX=OFF -DBUILD_TESTING=OFF
+          cmake .. -DBUILD_PROJECTWX=OFF -DBUILD_TESTING=OFF -DDOXYGEN_GENERATE_LATEX=FALSE
           cmake --build . --target doxygen
 
       - name: Create .nojekyll (ensures pages with underscores work on gh pages)

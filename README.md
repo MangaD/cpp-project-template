@@ -22,12 +22,12 @@ For downloading the app, see [latest release](https://github.com/MangaD/cpp-proj
 
 ## Developer Install
 
-See [installation guide](docs/INSTALL.md).
+See [installation guide](./docs/INSTALL.md).
 
 ## Developer Guide
 
-See [development guide](docs/GUIDE.md).
+See [development guide](./docs/GUIDE.md).
 
 ## License
 
-See [LICENSE](LICENSE).
+See [LICENSE](./LICENSE).

@@ -16,6 +16,7 @@
 - [Windows XP](#windows-xp)
 - [Tutorial links](#tutorial-links)
 
+<a id="autoformatting"></a>
 ## Autoformatting
 
 Some IDEs recognize the `.clang-format` file located in the root directory of the project and autoformat the code upon saving, according to the style and rules specified in the file. However, the clang-format tool is also integrated in the CMake script of this project, in the module `cmake/clang-format.cmake`, so it is possible to autoformat the entire source code by calling the `format` target, such as:
@@ -28,6 +29,7 @@ make format
 
 The current script is set to format all the source files with the following extensions: `.h`, `.hpp`, `.c`, `.cpp`.
 
+<a id="static-analysis"></a>
 ## Static analysis
 
 With Clang Static Analyzer:
@@ -61,6 +63,7 @@ cmake .. -DCMAKE_CXX_CPPCHECK="cppcheck;--enable=all;--force;--inline-suppr;--su
 cmake --build .
 ```
 
+<a id="testing"></a>
 ## Testing
 
 Using a multi-config generator:
@@ -73,6 +76,7 @@ ctest -C Debug #-j10
 ctest -C Debug -T memcheck
 ```
 
+<a id="coverage"></a>
 ### Coverage
 
 #### GCC / Clang
@@ -121,8 +125,10 @@ ctest -C Debug
 cmake --build . --target projectlib_gtest_coverage
 ```
 
+<a id="dynamic-analysis"></a>
 ### Dynamic analysis
 
+<a id="valgrind"></a>
 #### Valgrind
 
 ```sh
@@ -133,6 +139,7 @@ cmake --build . --target test_memcheck
 make test_memcheck
 ```
 
+<a id="sanitizers"></a>
 #### Sanitizers
 
 If using Clang, customize `SanitizerBlacklist.txt` at your will.
@@ -152,6 +159,7 @@ More about sanitizers:
 - https://hpc-wiki.info/hpc/Compiler_Sanitizers
 - https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
 
+<a id="cdash"></a>
 ### CDash
 
 CDash Dashboard: https://my.cdash.org/index.php?project=cpp-project-template
@@ -162,6 +170,7 @@ cmake --build build
 ctest --test-dir build -D Experimental -T Test -T Coverage -T memcheck
 ```
 
+<a id="cmake-tips"></a>
 ## CMake tips
 
 1. Check the available targets with:
@@ -176,6 +185,7 @@ cmake --build . --target help
 cmake .. --list-presets
 ```
 
+<a id="doxygen-tips"></a>
 ## Doxygen tips
 
 1. Files are considered private by default. Having a file command will have documentation be generated for it. See: https://linux.m2osw.com/doxygen-does-not-generate-documentation-my-c-functions-or-any-global-function
@@ -183,6 +193,7 @@ cmake .. --list-presets
 3. The main page of doxygen is set with the `\mainpage` command. See: https://www.doxygen.nl/manual/commands.html#cmdmainpage
    But it is possible to set an MD file as the main page. See: https://stackoverflow.com/a/26244558/3049315
 
+<a id="github-actions-tips"></a>
 ## GitHub Actions tips
 
 1. GitHub Actions uses the [latest runners](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources) available and for this reason may need maintenance.
@@ -191,20 +202,24 @@ cmake .. --list-presets
 git update-index --chmod=+x ./.github/scripts/*.cmake
 ```
 
+<a id="releases"></a>
 ### Releases
 
 A release is created when creating and pushing a tag that starts with `v`.
 
+<a id="adding-libraries"></a>
 ## Adding libraries
 
 Adding libraries to the project requires modifying the `vcpkg.json` file, the CI/CD workflow files, the `docs/INSTALL.md` file, and the `CMakeLists.txt` file of the project that you are adding the library to..
 
+<a id="windows-xp"></a>
 ## Windows XP
 
 For MSVC see [here](https://learn.microsoft.com/en-us/cpp/build/configuring-programs-for-windows-xp?view=msvc-170). For MinGW see [here](https://github.com/msys2/MSYS2-packages/issues/1784).
 
 Naturally, the Windows API has evolved since Windows XP and modern features will not work with this OS.
 
+<a id="tutorial-links"></a>
 ## Tutorial links
 
 ### CMake

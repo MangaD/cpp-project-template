@@ -1,3 +1,13 @@
+/**
+ * @file App.hpp
+ * @author David Gonçalves (11088596+MangaD@users.noreply.github.com)
+ * @brief This class is the entry point for this wxWidgets app.
+ * @version 0.1
+ * @date 2023-06-01
+ *
+ * @copyright Copyright (c) 2023 David Gonçalves
+ */
+
 #ifndef CPP_PROJ_APP
 #define CPP_PROJ_APP
 
@@ -13,9 +23,25 @@
 
 #include "MainFrame.hpp"
 
+/**
+ * @brief Namespace for this application.
+ */
+namespace cpp_proj
+{
+
+/**
+ * @brief This class is the entry point for this wxWidgets app.
+ */
 class App : public wxApp
 {
 public:
+	/**
+	 * @brief The wxWidgets equivalent of a main procedure.
+	 *
+	 * @note https://docs.wxwidgets.org/3.0/overview_app.html
+	 *
+	 * @return True if processing should continue, false otherwise.
+	 */
 	bool OnInit() override;
 
 	App();
@@ -25,6 +51,11 @@ public:
 	App(const App&&) = delete;
 	App& operator=(const App&&) = delete;
 
+	/**
+	 * @brief Get the Logo Img object.
+	 *
+	 * @return The logo image.
+	 */
 	const wxImage& getLogoImg() const { return logoImg_; }
 
 private:
@@ -45,5 +76,7 @@ private:
 	// https://docs.wxwidgets.org/trunk/overview_windowdeletion.html
 	MainFrame* frame_;
 };
+
+}  // namespace cpp_proj
 
 #endif  // CPP_PROJ_APP

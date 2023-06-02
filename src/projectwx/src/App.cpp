@@ -8,6 +8,8 @@
 #include "config.h"
 #include "splashscreen.hpp"
 
+using namespace cpp_proj;
+
 App::App()
     : appPath_(),
       logoImg_(),
@@ -63,7 +65,7 @@ bool App::OnInit()
 	showSplashScreen(this->logoImg_, SPLASHSCREEN_DURATION_MS);
 
 	frame_ =
-	    new MainFrame(this, CPP_PROJ_NAME, wxPoint(WINDOW_POS_X, WINDOW_POS_Y),
+	    new MainFrame(*this, CPP_PROJ_NAME, wxPoint(WINDOW_POS_X, WINDOW_POS_Y),
 	                  wxSize(WINDOW_WIDTH, WINDOW_HEIGHT));
 	frame_->Centre();
 	frame_->Show(true);

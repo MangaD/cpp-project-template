@@ -5,6 +5,9 @@
 #include <cstddef>
 #include <span>
 
+namespace cpp_proj
+{
+
 void showSplashScreen(const wxString& fileName, const unsigned long durationMs,
                       const wxBitmapType bitmapType)
 {
@@ -105,3 +108,5 @@ wxImage alphaToBlackAndWhiteMask(const wxImage& imgParam)
 
 	return img;
 }
+
+}  // namespace cpp_proj

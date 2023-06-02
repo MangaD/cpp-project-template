@@ -11,13 +11,13 @@
 #include <string_view>
 
 /**
- * User options for this application.
+ * @brief Namespace for this application.
  */
 namespace cpp_proj
 {
 
 /**
- * This application's executable name, to be set at the start of the main
+ * @brief This application's executable name, to be set at the start of the main
  * function.
  */
 inline std::string_view
@@ -26,28 +26,26 @@ inline std::string_view
                // In this case it should be fine.
 
 /**
- * Gets the user options from the command line.
+ * @brief Gets the user options from the command line.
  *
  * @param args The command line arguments.
- *
- * @return void
  */
 void parseUserOptions(const std::span<char*>& args);
 
 /**
- * Print the usage of the application.
+ * @brief Print the usage of the application.
  */
 void printHelp();
 /**
- * Print the version of the application.
+ * @brief Print the version of the application.
  */
 void printVersion();
 /**
- * Calls cpp_proj::printHelp and exits with success.
+ * @brief Calls \ref cpp_proj::printHelp and exits with success.
  */
 [[noreturn]] void printHelpAndExit();
 /**
- * Calls cpp_proj::printVersion and exits with success.
+ * @brief Calls \ref cpp_proj::printVersion and exits with success.
  */
 [[noreturn]] void printVersionAndExit();
 

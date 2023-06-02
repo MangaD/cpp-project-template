@@ -10,12 +10,14 @@
 #include "config.h"
 #include "utils.hpp"
 
+using namespace cpp_proj;
+
 enum
 {
 	ID_Hello = 1
 };
 
-MainFrame::MainFrame(const App* app, const wxString& title, const wxPoint& pos,
+MainFrame::MainFrame(const App& app, const wxString& title, const wxPoint& pos,
                      const wxSize& size)
     : wxFrame(nullptr, wxID_ANY, title, pos, size),
       app_(app),
@@ -42,10 +44,10 @@ MainFrame::MainFrame(const App* app, const wxString& title, const wxPoint& pos,
 	CreateStatusBar();
 	SetStatusText(_("Welcome to the C++ Project Template!"));
 
-	if (app_->getLogoImg().IsOk())
+	if (app_.getLogoImg().IsOk())
 	{
 		wxBitmap logoBm{
-		    app_->getLogoImg().Scale(LOGO_FINAL_WIDTH, LOGO_FINAL_HEIGHT)};
+		    app_.getLogoImg().Scale(LOGO_FINAL_WIDTH, LOGO_FINAL_HEIGHT)};
 		logoIco_.CopyFromBitmap(logoBm);
 		SetIcon(logoIco_);
 	}

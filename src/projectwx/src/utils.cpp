@@ -4,7 +4,10 @@
 #include <string>
 #include <vector>
 
-std::string wordWrap(std::string &s, size_t width)
+namespace cpp_proj
+{
+
+std::string wordWrap(const std::string &s, size_t width)
 {
 	std::stringstream ss(s);
 	std::string line;
@@ -34,3 +37,5 @@ std::string wordWrap(std::string &s, size_t width)
 
 	return out;
 }
+
+}  // namespace cpp_proj

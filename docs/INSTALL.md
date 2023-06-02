@@ -24,10 +24,12 @@
     - [RPM](#rpm)
   - MacOS
     - [DMG](#dmg)
+    - [ProductBuild](#productbuild)
 - [Documentation](#documentation)
 
 ## Linux
 
+<a id="arch-linux--manjaro-linux"></a>
 ### Arch Linux / Manjaro Linux
 
 Build tools:
@@ -90,6 +92,7 @@ Coverage:
 sudo pacman -Sy lcov gcovr
 ```
 
+<a id="debian--linux-mint--ubuntu"></a>
 ### Debian / Linux Mint / Ubuntu
 
 Build tools:
@@ -158,6 +161,7 @@ Coverage:
 sudo apt install lcov gcovr
 ```
 
+<a id="redhat--fedora--centos"></a>
 ### RedHat / Fedora / CentOS
 
 Build tools:
@@ -220,14 +224,17 @@ Coverage:
 sudo yum -y install lcov gcovr
 ```
 
+<a id="windows"></a>
 ## Windows
 
+<a id="msvc"></a>
 ### MSVC
 
 Download and install [Visual Studio](https://www.visualstudio.com/).
 
 In Visual Studio Installer, click "Modify" and install "Desktop development with C++".
 
+<a id="mingw"></a>
 ### MinGW
 
 Download latest [MinGW builds](https://github.com/niXman/mingw-builds-binaries/releases/).
@@ -238,6 +245,7 @@ Example:
 
 Put the MinGW bin folder in the path for the intended architecture.
 
+<a id="dependencies"></a>
 ### Dependencies
 
 - [git](https://git-scm.com/)
@@ -261,7 +269,7 @@ Put the MinGW bin folder in the path for the intended architecture.
 
 We need the **Header Files**, the **Development Files**, and the **Release DLLs** for the chosen compiler and architecture.
 
-After extracting the files to a directory (e.g. C:\wxwidgets), we should end up with a file tree like this:
+After extracting the files to a directory (e.g. `C:\wxwidgets`), we should end up with a file tree like this:
 
 ```
 C:\wxwidgets
@@ -319,6 +327,7 @@ cmake .. -DGTEST_ROOT:PATH="C:\googletest\googletest" -DGTEST_LIBRARY:PATH="C:\g
 cmake --build . --config Release
 ```
 
+<a id="vcpkg"></a>
 #### vcpkg
 
 ```sh
@@ -362,12 +371,14 @@ cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>
 cmake --build . --config Release
 ```
 
+<a id="macos"></a>
 ## macOS
 
 ```sh
 brew install wxwidgets googletest
 ```
 
+<a id="compile"></a>
 ## Compile
 
 Tip: Use Ninja. It can run faster, is less noisy, defaults to multiple cores, and can use the same directory for debug and release builds.
@@ -391,6 +402,7 @@ cmake --build . --target clean
 
 Reference: https://cmake.org/cmake/help/v3.22/guide/user-interaction/index.html#invoking-the-buildsystem
 
+<a id="linux--mac"></a>
 ### Linux & Mac
 
 ```sh
@@ -417,8 +429,10 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.
 cmake --build . --config Release
 ```
 
+<a id="package"></a>
 ## Package
 
+<a id="archive"></a>
 ### Archive
 
 **Package the binary:**
@@ -439,6 +453,7 @@ make package_source
 
 ### Windows
 
+<a id="NSIS"></a>
 #### NSIS
 
 Download and Install the Null Soft Installer (NSIS) from [here](https://nsis.sourceforge.io/Download).
@@ -449,6 +464,7 @@ cmake --build . --config Release
 cpack -G NSIS64
 ```
 
+<a id="WiX"></a>
 #### WiX
 
 Download and Install the WiX Toolset from [here](https://wixtoolset.org/)
@@ -461,6 +477,7 @@ cpack -G WIX
 
 ### Ubuntu
 
+<a id="deb"></a>
 #### DEB
 
 ```sh
@@ -468,6 +485,7 @@ cmake ..
 cpack -G DEB
 ```
 
+<a id="rpm"></a>
 #### RPM
 
 ```sh
@@ -477,6 +495,7 @@ cpack -G RPM
 
 ### MacOS
 
+<a id="dmg"></a>
 #### DMG
 
 ```sh
@@ -484,6 +503,15 @@ cmake ..
 cpack -G DragNDrop
 ```
 
+<a id="productbuild"></a>
+#### ProductBuild
+
+```sh
+cmake ..
+cpack -G productbuild
+```
+
+<a id="documentation"></a>
 ## Documentation
 
 ```sh
