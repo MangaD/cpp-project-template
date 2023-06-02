@@ -70,19 +70,26 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 # https://clang.llvm.org/docs/HowToSetupToolingForLLVM.html
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+#####################
+### CMake modules ###
+#####################
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(cmake/doxygen.cmake)
+include(cmake/sphinx.cmake)
+include(cmake/clang-format.cmake)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+	include(CodeCoverage)
+endif()
+
 ###############
 ### TARGETS ###
 ###############
 
-enable_testing()
-include (CTest)
-
 set(PROJECT_LIB_NAME projectlib)
 set(PROJECT_LIB_DIR ${SOURCE_DIR}/${PROJECT_LIB_NAME})
 add_subdirectory(${PROJECT_LIB_DIR}/src)
-if(BUILD_TESTING)
-	add_subdirectory(${PROJECT_LIB_DIR}/test)
-endif()
 
 set(PROJECT_CLI_NAME projectcli)
 set(PROJECT_CLI_DIR ${SOURCE_DIR}/${PROJECT_CLI_NAME})
@@ -95,24 +102,12 @@ if(BUILD_PROJECTWX)
 	add_subdirectory(${PROJECT_WX_DIR})
 endif()
 
-#####################
-### CMake modules ###
-#####################
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-include(cmake/doxygen.cmake)
-include(cmake/sphinx.cmake)
-include(cmake/clang-format.cmake)
-
 #############
 ### CTEST ###
 #############
 
-# See:
-# - https://cmake.org/cmake/help/latest/module/CTest.html
-# - https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html
-# - https://coderefinery.github.io/cmake-workshop/testing/
-# - https://stackoverflow.com/a/40437731/3049315
+enable_testing()
+include (CTest)
 
 if(BUILD_TESTING)
 	add_test(NAME Runs
@@ -121,8 +116,15 @@ if(BUILD_TESTING)
 		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}> -v)
 	add_test(NAME Runs-h
 		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}> -h)
+	add_test(NAME Runs-invalid
+		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}> --invalid)
+		set_tests_properties(Runs-invalid PROPERTIES WILL_FAIL TRUE)
 
+	# CTest with valgring: https://stackoverflow.com/a/40437731/3049315
 	include(cmake/memcheck.cmake)
+
+	# Test projectlib
+	add_subdirectory(${PROJECT_LIB_DIR}/test)
 endif()
 
 #############

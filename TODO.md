@@ -5,7 +5,7 @@
 - [x] Console app
 - [x] GUI app
   - [x] wxWidgets
-  - [ ] QT (see: https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
+  - [ ] Qt (see: https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
 - [x] Windows resources
   - [x] Icon
   - [x] Version data
@@ -16,7 +16,12 @@
   - [ ] Boost.Test
   - [ ] Catch2
   - [ ] Doctest
-- [ ] Code coverage (lcov, gcov) + codecov
+- [ ] Code coverage
+  - [x] gcov + lcov + genhtml
+  - [ ] codecov
+  - [ ] coveralls
+  - [ ] coverity
+  - [ ] OpenCppCoverage
 - [x] CMake integration
   - [x] CTest
   - [x] CPack
@@ -58,7 +63,8 @@
       - [x] DEB
       - [x] RPM
     - [x] macOS Latest Clang
-      - [x] DMG
+      - [ ] DragNDrop
+      - [ ] productbuild
     - [ ] Raspbian
       - [ ] [arm-runner](https://github.com/marketplace/actions/arm-runner)
       - [ ] [Install wxWidgets on RPI](https://yasriady.blogspot.com/2015/10/how-to-build-wxwidgets-for-raspberry-pi.html)

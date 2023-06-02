@@ -18,8 +18,7 @@ set(DOXYGEN_HTML_EXTRA_STYLESHEET
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css)
 
 if (DOXYGEN_FOUND)
-
-	message(STATUS "-- doxygen found, documentation enabled through 'doxygen' target.")
+	message(STATUS "-- Doxygen documentation enabled through 'doxygen' target.")
 
 	doxygen_add_docs(doxygen
 		README.md

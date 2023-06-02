@@ -137,7 +137,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 	find_program(RPMBUILD_PATH rpmbuild)
 	if(RPMBUILD_PATH)
-		message(STATUS "-- rpmbuild found")
+		message(STATUS "Found rpmbuild: ${RPMBUILD_PATH}")
 	endif()
 
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.32), libstdc++6 (>= 3.4.29)")

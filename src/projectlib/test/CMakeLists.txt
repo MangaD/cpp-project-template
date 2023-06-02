@@ -22,8 +22,9 @@ if (MINGW)
 		$<$<CONFIG:Release>:-static-libgcc -static-libstdc++ -static>
 	)
 elseif (MSVC)
+	# Must use DebugDLL in Debug mode because: https://stackoverflow.com/a/66307196/3049315
 	set_property(TARGET "${PROJECT_LIB_NAME}_gtest" PROPERTY
-		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:DebugDLL>")
 	target_link_options("${PROJECT_LIB_NAME}_gtest" PUBLIC
 		$<$<CONFIG:Release>:/INCREMENTAL:NO /NODEFAULTLIB:MSVCRT>
 	)

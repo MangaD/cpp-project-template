@@ -3,7 +3,7 @@
 # - https://github.com/cristianadam/HelloWorld/blob/master/.github/workflows/build_cmake.yml
 # - https://github.com/marketplace/actions/vcpkg-action
 
-name: CMake Build Matrix
+name: CMake Release Build Matrix
 
 on:
   workflow_dispatch: {} # allow running it manually
@@ -112,7 +112,7 @@ jobs:
       with:
         pkgs: wxwidgets gtest
         triplet: ${{ matrix.config.vcpkg_triplet }}
-        cache-key: ${{ matrix.config.os }}
+        cache-key: ${{ matrix.config.ext }}
         revision: master
         token: ${{ github.token }}
 

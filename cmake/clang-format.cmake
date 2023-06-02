@@ -2,7 +2,8 @@ find_program(CLANG_FORMAT "clang-format")
 
 # Format the whole source code with clang-format
 if (CLANG_FORMAT)
-	message(STATUS "-- clang-format found, whole source formatting enabled through 'format' target.")
+	message(STATUS "Found clang-format: ${CLANG_FORMAT}")
+	message(STATUS "-- Source formatting with clang-format enabled through 'format' target.")
 
 	file(GLOB_RECURSE ALL_CXX_SOURCE_FILES
 		${SOURCE_DIR}/*.[ch]pp

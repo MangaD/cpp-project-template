@@ -13,7 +13,6 @@
 - [Compile](#compile)
   - [Linux & Mac](#linux--mac)
   - [Windows](#windows-compile)
-  - [Sanitizer builds](#sanitizer-builds)
 - [Package](#package)
   - [Archive](#archive)
   - Windows
@@ -84,6 +83,12 @@ GoogleTest:
 sudo pacman -Sy gtest
 ```
 
+Coverage:
+
+```sh
+sudo pacman -Sy lcov gcovr
+```
+
 ### Debian / Linux Mint / Ubuntu
 
 Build tools:
@@ -146,6 +151,12 @@ GoogleTest:
 sudo apt install libgtest-dev
 ```
 
+Coverage:
+
+```sh
+sudo apt install lcov gcovr
+```
+
 ### RedHat / Fedora / CentOS
 
 Build tools:
@@ -202,6 +213,12 @@ GoogleTest:
 sudo yum -y install gtest
 ```
 
+Coverage:
+
+```sh
+sudo yum -y install lcov gcovr
+```
+
 ## Windows
 
 ### MSVC
@@ -233,6 +250,7 @@ In Visual Studio Installer, click "Modify" and install "Desktop development with
 - [cppcheck](https://cppcheck.sourceforge.io/)
   - Add `C:\Program Files\Cppcheck` to the Path environment variable
 - [LLVM](https://releases.llvm.org/download.html) (includes clang-tidy and clang-format). Tick option to add to PATH during installation.
+- [OpenCppCoverage](https://github.com/OpenCppCoverage/OpenCppCoverage/releases/latest)
 - [NSIS](https://nsis.sourceforge.io/Download)
 - [WiX Toolset](https://wixtoolset.org/)
 
@@ -283,6 +301,9 @@ cd .\vcpkg
 .\vcpkg.exe install wxwidgets:x64-windows-static
 ## For MinGW
 .\vcpkg.exe install wxwidgets:x64-mingw-static
+
+.\vcpkg.exe install gtest:x64-windows
+.\vcpkg.exe install gtest:x64-windows-static
 
 # Make libraries available
 .\vcpkg.exe integrate install

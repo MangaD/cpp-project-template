@@ -3,9 +3,10 @@
 - [Autoformatting](#autoformatting)
 - [Static analysis](#static-analysis)
 - [Testing](#testing)
-- [Dynamic analysis](#dynamic-analysis)
-  - [Sanitizers](#sanitizers)
-  - [Valgrind](#valgrind)
+  - [Coverage](#coverage)
+  - [Dynamic analysis](#dynamic-analysis)
+    - [Valgrind](#valgrind)
+    - [Sanitizers](#sanitizers)
 - [CMake tips](#cmake-tips)
 - [Doxygen tips](#doxygen-tips)
 - [GitHub Actions tips](#github-actions-tips)
@@ -59,15 +60,67 @@ cmake --build .
 
 ## Testing
 
+Using a multi-config generator:
+
 ```sh
-cmake --build .
-# must specify the configuration with multi-config generators
-ctest -C Debug
+cd build
+cmake .. -G "Ninja Multi-Config"
+cmake --build . --config Debug
+ctest -C Debug #-j10
+ctest -C Debug -T memcheck
 ```
 
-## Dynamic analysis
+### Coverage
 
-### Valgrind
+#### GCC / Clang
+
+```sh
+cd build
+cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Coverage
+cmake --build .
+ctest
+ctest -T coverage
+# or,
+# ctest -T Test -T Coverage
+```
+
+Coverage info can be found in `cpp-project-template/build/Testing/`.
+
+You can also use your IDE's viewer. For VSCode I found the [Gcov Viewer extension](https://marketplace.visualstudio.com/items?itemName=JacquesLucke.gcov-viewer) to be quite good. After running CTest, press Ctrl+Shift+P and type "GCov Viewer: Load" to load the report. Then press Ctrl+Shift+P and type "GCov Viewer: Show" to show the result.
+
+**Generate lcov HTML report:**
+
+```sh
+cmake --build .
+cmake --build . --target lcov_html
+```
+
+Report can be found in `cpp-project-template/build/lcov/`.
+
+**Generate gcovr HTML report:**
+
+After running CTest, do:
+
+```sh
+cmake --build .
+cmake --build . --target gcovr_html
+```
+
+Report can be found in `cpp-project-template/build/gcovr/`.
+
+#### MSVC
+
+```sh
+cd build
+cmake .. -DCMAKE_BUILD_TYPE:STRING=Coverage -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -DVCPKG_HOST_TRIPLET=x64-windows
+cmake --build . --config Debug
+ctest -C Debug
+cmake --build . --target projectlib_gtest_coverage
+```
+
+### Dynamic analysis
+
+#### Valgrind
 
 ```sh
 ctest -T memcheck
@@ -77,7 +130,7 @@ cmake --build . --target test_memcheck
 make test_memcheck
 ```
 
-### Sanitizers
+#### Sanitizers
 
 If using Clang, customize `SanitizerBlacklist.txt` at your will.
 
@@ -133,11 +186,26 @@ A release is created when creating and pushing a tag that starts with `v`.
 - [CMake Reference Documentation](https://cmake.org/cmake/help/latest/index.html)
 - [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
 - [VS Code with CMake](https://code.visualstudio.com/docs/cpp/cmake-linux)
+- [Installing & Testing](https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html)
+- [CTest](https://cmake.org/cmake/help/latest/module/CTest.html)
 - [CTest tutorial and options](https://coderefinery.github.io/cmake-workshop/testing/)
 
 ### Testing
 
 - [GoogleTest User's Guide](https://google.github.io/googletest/)
+- [CMake GoogleTest](https://cmake.org/cmake/help/latest/module/GoogleTest.html)
+
+### Coverage
+
+- [GCov: How to Set Up Codecov with C and GitHub Actions](https://about.codecov.io/blog/how-to-set-up-codecov-with-c-and-github-actions/)
+- [OpenCppCoverage: How to Set Up Codecov with C++ and GitHub Actions](https://about.codecov.io/blog/how-to-set-up-codecov-with-c-plus-plus-and-github-actions/)
+- [How to use gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html)
+- [VSCode Gcov Viewer](https://marketplace.visualstudio.com/items?itemName=JacquesLucke.gcov-viewer)
+- [OpenCppCoverage Wiki](https://github.com/OpenCppCoverage/OpenCppCoverage/wiki)
+
+### Profiling
+
+- [GPROF Tutorial](https://www.thegeekstuff.com/2012/08/gprof-tutorial/)
 
 ### Documentation
 

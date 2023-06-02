@@ -6,7 +6,7 @@ find_package(Sphinx COMPONENTS breathe sphinx_rtd_theme)
 
 
 if(Sphinx_FOUND)
-	message(STATUS "-- sphinx found, documentation enabled through 'sphinx' target.")
+	message(STATUS "-- Sphinx documentation enabled through 'sphinx' target.")
 
 	configure_file("${SPHINX_DIR}/index.rst.in" "${SPHINX_DIR}/index.rst")
 
