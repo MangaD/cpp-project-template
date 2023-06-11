@@ -20,13 +20,17 @@ This repository aims to provide a modern C++ cross-platform codebase template, f
 
 For downloading the app, see [latest release](https://github.com/MangaD/cpp-project-template/releases/latest).
 
+## Getting Started
+
+See [getting started](./docs/getting_started.md).
+
 ## Developer Install
 
-See [installation guide](./docs/INSTALL.md).
+See [installation guide](./docs/install.md).
 
 ## Developer Guide
 
-See [development guide](./docs/GUIDE.md).
+See [development guide](./docs/development_guide.md).
 
 ## License
 

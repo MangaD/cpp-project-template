@@ -210,7 +210,7 @@ A release is created when creating and pushing a tag that starts with `v`.
 <a id="adding-libraries"></a>
 ## Adding libraries
 
-Adding libraries to the project requires modifying the `vcpkg.json` file, the CI/CD workflow files, the `docs/INSTALL.md` file, and the `CMakeLists.txt` file of the project that you are adding the library to..
+Adding libraries to the project requires modifying the `vcpkg.json` file, the CI/CD workflow files, the `docs/install.md` file, and the `CMakeLists.txt` file of the project that you are adding the library to..
 
 <a id="windows-xp"></a>
 ## Windows XP

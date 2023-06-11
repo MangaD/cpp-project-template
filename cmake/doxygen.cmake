@@ -29,8 +29,9 @@ if (DOXYGEN_FOUND)
 
 	doxygen_add_docs(doxygen
 		README.md
-		docs/INSTALL.md
-		docs/GUIDE.md
+		docs/getting_started.md
+		docs/install.md
+		docs/development_guide.md
 		LICENSE
 		${SOURCE_DIR})
 endif()
