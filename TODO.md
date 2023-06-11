@@ -5,7 +5,9 @@
 - [x] Console app
 - [x] GUI app
   - [x] wxWidgets
-  - [ ] Qt (see: https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
+  - [ ] Qt (see:
+      - https://doc.qt.io/qt-6/cmake-get-started.html#building-a-c-gui-application
+      - https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
 - [x] Windows resources
   - [x] Icon
   - [x] Version data
