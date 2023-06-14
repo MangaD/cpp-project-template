@@ -110,7 +110,7 @@ sudo apt install libwxgtk3.0-gtk3-dev
 Documentation:
 
 ```sh
-sudo apt install doxygen sphinx-common python3-breathe python3-sphinx-rtd-theme 
+sudo apt install doxygen sphinx-common python3-breathe python3-sphinx-rtd-theme
 ```
 
 Static analysis:

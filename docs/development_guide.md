@@ -190,8 +190,8 @@ cmake .. --list-presets
 
 1. Files are considered private by default. Having a file command will have documentation be generated for it. See: https://linux.m2osw.com/doxygen-does-not-generate-documentation-my-c-functions-or-any-global-function
 2. Documenting the namespace is necessary for references to work. See: https://stackoverflow.com/q/46845369/3049315
-3. The main page of doxygen is set with the `\mainpage` command. See: https://www.doxygen.nl/manual/commands.html#cmdmainpage
-   But it is possible to set an MD file as the main page. See: https://stackoverflow.com/a/26244558/3049315
+3. The main page of doxygen is set with the `\mainpage` command. See: https://www.doxygen.nl/manual/commands.html#cmdmainpage  
+  But it is possible to set an MD file as the main page. See: https://stackoverflow.com/a/26244558/3049315
 
 <a id="github-actions-tips"></a>
 ## GitHub Actions tips
@@ -210,7 +210,7 @@ A release is created when creating and pushing a tag that starts with `v`.
 <a id="adding-libraries"></a>
 ## Adding libraries
 
-Adding libraries to the project requires modifying the `vcpkg.json` file, the CI/CD workflow files, the `docs/install.md` file, and the `CMakeLists.txt` file of the project that you are adding the library to..
+Adding libraries to the project requires modifying the `vcpkg.json` file **if you use one**, the CI/CD workflow files, the `docs/install.md` file, the `CMakeLists.txt` file of the project that you are adding the library to, and the `.devcontainer/Dockerfile`.
 
 <a id="windows-xp"></a>
 ## Windows XP
@@ -231,12 +231,12 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 - [Installing & Testing](https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html)
 - [CTest](https://cmake.org/cmake/help/latest/module/CTest.html)
 - [CTest tutorial and options](https://coderefinery.github.io/cmake-workshop/testing/)
+- [CDash](https://cmake.org/cmake/help/book/mastering-cmake/chapter/CDash.html)
 
 ### Testing
 
 - [GoogleTest User's Guide](https://google.github.io/googletest/)
 - [CMake GoogleTest](https://cmake.org/cmake/help/latest/module/GoogleTest.html)
-- [CDash](https://cmake.org/cmake/help/book/mastering-cmake/chapter/CDash.html)
 
 ### Coverage
 
@@ -270,3 +270,7 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 ### Signing
 
 - [How to avoid the "Windows Defender SmartScreen prevented an unrecognized app from starting" warning](https://stackoverflow.com/a/66582477/3049315)
+
+### GitHub
+
+- [GitHub Codespaces](https://docs.github.com/en/codespaces/)
