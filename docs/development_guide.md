@@ -235,7 +235,7 @@ Adding libraries to the project requires modifying the `vcpkg.json` file **if yo
 <a id="windows-xp"></a>
 ## Windows XP
 
-For MSVC see [here](https://learn.microsoft.com/en-us/cpp/build/configuring-programs-for-windows-xp?view=msvc-170). For MinGW see [here](https://github.com/msys2/MSYS2-packages/issues/1784).
+For MSVC see [here](https://learn.microsoft.com/en-us/cpp/build/configuring-programs-for-windows-xp?view=msvc-170). For MinGW see [here](https://github.com/msys2/MSYS2-packages/issues/1784). For Clang see [here](https://releases.llvm.org/3.7.0/tools/clang/docs/ReleaseNotes.html#last-release-which-will-run-on-windows-xp-and-windows-vista).
 
 Naturally, the Windows API has evolved since Windows XP and modern features will not work with this OS.
 
