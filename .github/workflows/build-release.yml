@@ -311,7 +311,11 @@ jobs:
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       working-directory: project/build
       run: |
-        cpack -C Release -G NSIS64
+        if [[ ${{ matrix.config.ext }} =~ "i686" ]]; then
+          cpack -C Release -G NSIS
+        else
+          cpack -C Release -G NSIS64
+        fi
         cpack -C Release -G WIX
         mv package/${{ steps.generate-name.outputs.finalName }}.exe ../${{ steps.generate-name.outputs.nsisName }}
         mv package/${{ steps.generate-name.outputs.finalName }}.msi ../${{ steps.generate-name.outputs.wixName }}
