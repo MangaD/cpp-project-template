@@ -205,7 +205,27 @@ git update-index --chmod=+x ./.github/scripts/*.cmake
 <a id="releases"></a>
 ### Releases
 
-A release is created when creating and pushing a tag that starts with `v`.
+A release is created when creating and pushing a tag that starts with `v`. For example:
+
+```sh
+git add .
+git commit -m "Ready for release."
+# Create an annotated tag:
+git tag -a v0.0.1 -m "release v0.0.1"
+# Push to branch main and to tag simultaneously:
+git push --atomic origin main v0.0.1
+```
+
+Deleting a tag in case of mistake:
+
+```sh
+# Delete locally:
+git tag -d v0.0.1
+# Delete remotely:
+git push --delete origin v0.0.1
+```
+
+The release can be deleted manually or with [GitHub CLI](https://cli.github.com/manual/gh_release_delete).
 
 <a id="adding-libraries"></a>
 ## Adding libraries
