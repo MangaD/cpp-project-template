@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Gonçalves"
+  given-names: "David"
+  orcid: "https://orcid.org/0009-0005-3916-4461"
+title: "C++ Project Template"
+version: 0.0.1
+url: "https://github.com/MangaD/cpp-project-template"

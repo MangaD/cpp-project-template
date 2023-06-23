@@ -7,5 +7,6 @@
 5. Change the package's icons and banners in the subdirectories of [packaging](../packaging).
 6. Change the application's logo in [docs/doxygen](./doxygen).
 7. Remove the `.github/FUNDING.yml` file or modify it to suit your needs.
-8. See the [development guide](./development_guide.md) to learn how to work with this template.
-9. When modifying dependencies, update `.devcontainer/Dockerfile`, `.github` workflows, and `docs/install.md` accordingly.
+8. Remove the `CITATION.cff` file or modify it to suit your needs.
+9. See the [development guide](./development_guide.md) to learn how to work with this template.
+10. When modifying dependencies, update `.devcontainer/Dockerfile`, `.github` workflows, and `docs/install.md` accordingly.
