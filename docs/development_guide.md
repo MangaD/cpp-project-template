@@ -293,4 +293,12 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 
 ### GitHub
 
+- [GitHub Actions documentation](https://docs.github.com/en/actions)
 - [GitHub Codespaces](https://docs.github.com/en/codespaces/)
+- [GitHub Sponsorship](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository)
+- [Code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+- [About CITATION files](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files)
+
+### Docker
+
+- [docker docs](https://docs.docker.com/get-started/overview/)
