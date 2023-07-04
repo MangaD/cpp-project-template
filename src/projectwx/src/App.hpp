@@ -48,8 +48,8 @@ public:
 	~App() override = default;
 	App(const App&) = delete;
 	App& operator=(const App&) = delete;
-	App(const App&&) = delete;
-	App& operator=(const App&&) = delete;
+	App(App&&) = delete;
+	App& operator=(App&&) = delete;
 
 	/**
 	 * @brief Get the Logo Img object.

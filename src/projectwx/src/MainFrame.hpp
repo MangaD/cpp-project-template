@@ -43,8 +43,8 @@ public:
 	~MainFrame() override = default;
 	MainFrame(const MainFrame&) = delete;
 	MainFrame& operator=(const MainFrame&) = delete;
-	MainFrame(const MainFrame&&) = delete;
-	MainFrame& operator=(const MainFrame&&) = delete;
+	MainFrame(MainFrame&&) = delete;
+	MainFrame& operator=(MainFrame&&) = delete;
 
 private:
 	static constexpr int LICENSE_COLUMN_WIDTH = 80;
