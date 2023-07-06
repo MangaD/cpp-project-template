@@ -22,7 +22,7 @@
   - [x] gcov + lcov + genhtml
   - [x] codecov
   - [x] coveralls
-  - [ ] coverity
+  - [x] coverity
   - [ ] OpenCppCoverage
 - [x] CMake integration
   - [x] CTest
