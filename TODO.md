@@ -22,7 +22,7 @@
   - [x] gcov + lcov + genhtml
   - [x] codecov
   - [x] coveralls
-  - [ ] coverity
+  - [x] coverity
   - [ ] OpenCppCoverage
 - [x] CMake integration
   - [x] CTest
@@ -54,7 +54,7 @@
     - [x] CDash
     - [x] codecov
     - [x] coveralls
-    - [ ] coverity
+    - [x] coverity
     - [x] Windows Latest MSVC
       - [x] 32-bit
       - [x] 64-bit
