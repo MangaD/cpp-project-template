@@ -272,6 +272,10 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 
 - [GPROF Tutorial](https://www.thegeekstuff.com/2012/08/gprof-tutorial/)
 
+### Debuging
+
+- [Difference between -g, -ggdb and -ggdb3](https://gcc.gnu.org/legacy-ml/gcc-help/2009-02/msg00130.html)
+
 ### Documentation
 
 - For Sphinx instructions, see:
