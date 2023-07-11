@@ -252,7 +252,7 @@ Put the MinGW bin folder in the path for the intended architecture.
 - [CMake](https://cmake.org/download/)
 - [Doxygen](https://www.doxygen.nl/download.html)
 - Sphinx:
-  - Get Python at the Windows Store
+  - Get Python at the Windows Store, and run in an elevated command shell:
   - `pip install sphinx`
   - `pip install breathe`
   - `pip install sphinx_rtd_theme`
@@ -262,6 +262,8 @@ Put the MinGW bin folder in the path for the intended architecture.
 - [OpenCppCoverage](https://github.com/OpenCppCoverage/OpenCppCoverage/releases/latest)
 - [NSIS](https://nsis.sourceforge.io/Download)
 - [WiX Toolset](https://wixtoolset.org/)
+- Ninja:
+  - Open an elevated command shell (cmd/powershell), and type: `choco install ninja`
 
 #### wxWidgets
 
@@ -348,11 +350,19 @@ cd .\vcpkg
 #.\vcpkg.exe install wxwidgets:x86-windows
 #.\vcpkg.exe install wxwidgets:x64-windows
 #.\vcpkg.exe install wxwidgets:x64-windows-release
+
+## With MSVC:
 .\vcpkg.exe install wxwidgets:x64-windows-static
 .\vcpkg.exe install gtest:x64-windows-static
-## For MinGW
+
+## With MinGW:
 .\vcpkg.exe install wxwidgets:x64-mingw-static
 .\vcpkg.exe install gtest:x64-mingw-static
+
+## With Clang:
+git clone https://github.com/Neumann-A/my-vcpkg-triplets.git
+.\vcpkg.exe install wxwidgets:x64-win-llvm-static-md-release --overlay-triplets=my-vcpkg-triplets
+.\vcpkg.exe install gtest:x64-win-llvm-static-md-release  --overlay-triplets=my-vcpkg-triplets
 
 # Make libraries available
 .\vcpkg.exe integrate install
@@ -360,11 +370,18 @@ cd .\vcpkg
 # Build project
 cd ..
 mkdir build && cd build
-# toolchain file must have full path
+
+# Note: toolchain file must by specified with full path.
+
+## With MSVC:
 cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -DVCPKG_HOST_TRIPLET=x64-windows-static
-# -DVCPKG_TARGET_TRIPLET=x64-mingw-static -DVCPKG_HOST_TRIPLET=x64-mingw-static
-#-DVCPKG_TARGET_TRIPLET=x64-windows-release
-#-DVCPKG_TARGET_TRIPLET=x64-windows
+
+## With MinGW:
+cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static -DVCPKG_HOST_TRIPLET=x64-mingw-static
+
+## With Clang:
+cmake .. -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_TOOLCHAIN_FILE=<project_root>/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-win-llvm-static-md-release -DVCPKG_HOST_TRIPLET=x64-win-llvm-static-md-release -G "Ninja Multi-Config" -DCMAKE_CXX_COMPILER=clang++
+#-DVCPKG_OVERLAY_TRIPLETS=vcpkg/my-vcpkg-triplets
 
 # If your generator is a single-config generator like "Unix Makefiles" or "Ninja", then the build type is specified by the CMAKE_BUILD_TYPE variable, which can be set in the configure command by using -DCMAKE_BUILD_TYPE:STRING=Release. For multi-config generators like the Visual Studio generators and "Ninja Multi-Config", the config to build is specified in the build command using the --config argument argument like --config Release. A default value can be specified at configure time by setting the value of the CMAKE_DEFAULT_BUILD_TYPE variable, which will be used if the --config argument isn't passed to the build command.
 # https://stackoverflow.com/a/74077157/3049315

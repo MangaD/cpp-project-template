@@ -49,6 +49,12 @@ string(REGEX REPLACE "\n\n" "\\\\n\\\\n" LICENSE "${LICENSE}") # keep double new
 string(REGEX REPLACE "\n" " " LICENSE "${LICENSE}") # remove single newlines
 string(REPLACE "\"" "\\\"" LICENSE "${LICENSE}") # Escape quotes for using as C-style string
 
+# We add a flag to llvm-rc because of the following issue:
+# https://github.com/llvm/llvm-project/issues/57367
+if(WIN32 AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	set(CMAKE_RC_FLAGS "${CMAKE_RC_FLAGS} /C 65001")
+endif()
+
 # Print CMake variables: https://stackoverflow.com/a/69084164/3049315
 #include(CMakePrintHelpers)
 #cmake_print_variables(PROJECT_SOURCE_DIR CMAKE_CURRENT_BINARY_DIR CMAKE_CURRENT_SOURCE_DIR)

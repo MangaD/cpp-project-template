@@ -201,6 +201,7 @@ cmake .. --list-presets
 ```sh
 git update-index --chmod=+x ./.github/scripts/*.cmake
 ```
+3. [virustotal.com](https://www.virustotal.com) shows that more security vendors flag the program as malicious when [compiled with LLVM](https://www.virustotal.com/gui/file/d9660a64b8b35e8a7756a5c10b1c01f05dc4910feead3008cb7b8c9ff5c7684c?nocache=1), few security vendors flag the program as malicious when [compiled with MinGW](https://www.virustotal.com/gui/file/9a94e7d292349952525b322a5dd6ae4358a4746e16ffc32cfc01008d94dc8cf0?nocache=1), and no security vendors flag the program as malicious when [compiled with MSVC](https://www.virustotal.com/gui/file/eeb757aacc8102b032844d56e40badade5959fe1107038d9e28dad25b077ab2f?nocache=1). Using the latest version of some compilers (e.g. LLVM) can make Windows Defender flag the program as malicious and remove it from the user's file system.
 
 <a id="releases"></a>
 ### Releases
