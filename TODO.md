@@ -5,6 +5,7 @@
 - [x] Console app
 - [x] GUI app
   - [x] wxWidgets
+    - [ ] Change log in About menu item.
   - [ ] Qt (see:
       - https://doc.qt.io/qt-6/cmake-get-started.html#building-a-c-gui-application
       - https://code.qt.io/cgit/qt-creator/qt-creator.git/plain/share/qtcreator/templates/wizards/qtcreatorplugin/github_workflows_build_cmake.yml)
@@ -63,6 +64,12 @@
       - [x] WiX Toolset
     - [x] Windows Latest MinGW
       - [x] 32-bit
+      - [x] 64-bit
+      - [x] Archive
+      - [x] NSIS installer
+      - [x] WiX Toolset
+    - [ ] Windows Latest Clang
+      - [ ] 32-bit
       - [x] 64-bit
       - [x] Archive
       - [x] NSIS installer

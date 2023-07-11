@@ -44,6 +44,18 @@ jobs:
             environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows-static
           }
+        # - {
+        #     name: "Windows Latest LLVM i686", ext: "windows-llvm-i686",
+        #     os: windows-latest,
+        #     cc: "clang", cxx: "clang++",
+        #     vcpkg_triplet: x86-win-llvm-static-md-release
+        #   }
+        - {
+            name: "Windows Latest LLVM x86_64", ext: "windows-llvm-x86_64",
+            os: windows-latest,
+            cc: "clang", cxx: "clang++",
+            vcpkg_triplet: x64-win-llvm-static-md-release
+          }
         - {
             name: "Windows Latest MinGW i686", ext: "windows-mingw-i686",
             os: windows-latest,
@@ -175,6 +187,13 @@ jobs:
     #       libxkbcommon-dev libegl1-mesa-dev libibus-1.0-dev \
     #       libdbus-1-dev libxi-dev libxtst-dev
 
+    - name: Get LLVM vcpkg triplets
+      if: runner.os == 'Windows'
+      uses: actions/checkout@v3
+      with:
+        repository: 'Neumann-A/my-vcpkg-triplets'
+        path: './my-vcpkg-triplets'
+
     - name: vcpkg
       id: vcpkg
       if: runner.os == 'Windows'
@@ -187,6 +206,7 @@ jobs:
         #manifest-dir: ${{ github.workspace }}
         pkgs: wxwidgets gtest
         triplet: ${{ matrix.config.vcpkg_triplet }}
+        extra-args: --overlay-triplets=${{ github.workspace }}/my-vcpkg-triplets
         cache-key: ${{ matrix.config.ext }}_release
         revision: master
         token: ${{ github.token }}
