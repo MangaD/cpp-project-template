@@ -12,10 +12,12 @@ target_include_directories("${PROJECT_LIB_NAME}_gtest" PUBLIC
 	${GTEST_INCLUDE_DIRS}
 	"${PROJECT_LIB_DIR}/src")
 
-# Optionally link `GTest::gtest_main` to generate a default
+# 1. Optionally link `GTest::gtest_main` to generate a default
 # main function for us.
+# 2. May need to link with -pthread on some operating systems
+# (tested with Raspbian). See: https://stackoverflow.com/a/21116684/3049315
 target_link_libraries("${PROJECT_LIB_NAME}_gtest" PRIVATE
-	${GTEST_LIBRARIES})
+	${GTEST_LIBRARIES} -pthread)
 
 if (MINGW)
 	target_link_libraries("${PROJECT_LIB_NAME}_gtest" PRIVATE

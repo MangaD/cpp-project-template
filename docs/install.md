@@ -265,7 +265,8 @@ Put the MinGW bin folder in the path for the intended architecture.
 - Ninja:
   - Open an elevated command shell (cmd/powershell), and type: `choco install ninja`
 
-#### wxWidgets
+<a id="wxwidgets"></a>
+#### wxWidgets (manual install not recommended, prefer vcpkg)
 
 1. Download Windows binaries from: https://www.wxwidgets.org/downloads
 
@@ -306,7 +307,8 @@ cmake --build . --config Release
 
 Instructions at: https://docs.wxwidgets.org/stable/plat_msw_binaries.html
 
-#### Google Test
+<a id="google-test"></a>
+#### Google Test (manual install not recommended, prefer vcpkg)
 
 Install Google Test:
 
@@ -330,7 +332,7 @@ cmake --build . --config Release
 ```
 
 <a id="vcpkg"></a>
-#### vcpkg
+#### vcpkg (recommended)
 
 ```sh
 cd <project_root>
