@@ -14,7 +14,9 @@ set(DOXYGEN_FULL_SIDEBAR NO) # Required by doxygen-awesome-css
 set(DOXYGEN_HTML_COLORSTYLE LIGHT) # Required by doxygen-awesome-css
 set(DOXYGEN_HTML_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/header.html)
 set(DOXYGEN_HTML_FOOTER ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/footer.html)
-set(DOXYGEN_HTML_EXTRA_FILES 
+set(DOXYGEN_HTML_EXTRA_FILES
+	${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
+	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/logo.png
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome-paragraph-link.js
@@ -23,6 +25,8 @@ set(DOXYGEN_HTML_EXTRA_STYLESHEET
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome.css
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome-sidebar-only.css
 	${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css)
+
+set(DOXYGEN_IMAGE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/logo.png)
 
 if (DOXYGEN_FOUND)
 	message(STATUS "-- Doxygen documentation enabled through 'doxygen' target.")
