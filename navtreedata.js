@@ -25,7 +25,18 @@
 var NAVTREE =
 [
   [ "cpp-project-template", "index.html", [
-    [ "C++ Project Template", "index.html", "index" ],
+    [ "C++ Project Template", "index.html#autotoc_md0", [
+      [ "About", "index.html#autotoc_md1", [
+        [ "Status", "index.html#autotoc_md2", null ]
+      ] ],
+      [ "Download", "index.html#autotoc_md3", null ],
+      [ "Getting Started", "index.html#autotoc_md4", null ],
+      [ "Developer Install", "index.html#autotoc_md5", null ],
+      [ "Developer Guide", "index.html#autotoc_md6", null ],
+      [ "License", "index.html#autotoc_md7", [
+        [ "Third-Party Libraries", "index.html#autotoc_md8", null ]
+      ] ]
+    ] ],
     [ "Getting Started", "md_docs_2getting__started.html", null ],
     [ "Installation Guide", "md_docs_2install.html", [
       [ "Linux", "md_docs_2install.html#autotoc_md11", [
@@ -37,9 +48,9 @@ var NAVTREE =
         [ "MSVC", "md_docs_2install.html#autotoc_md16", null ],
         [ "MinGW", "md_docs_2install.html#autotoc_md17", null ],
         [ "Dependencies", "md_docs_2install.html#autotoc_md18", [
-          [ "wxWidgets", "md_docs_2install.html#autotoc_md19", null ],
-          [ "Google Test", "md_docs_2install.html#autotoc_md20", null ],
-          [ "vcpkg", "md_docs_2install.html#autotoc_md21", null ]
+          [ "wxWidgets (manual install not recommended, prefer vcpkg)", "md_docs_2install.html#autotoc_md19", null ],
+          [ "Google Test (manual install not recommended, prefer vcpkg)", "md_docs_2install.html#autotoc_md20", null ],
+          [ "vcpkg (recommended)", "md_docs_2install.html#autotoc_md21", null ]
         ] ]
       ] ],
       [ "macOS", "md_docs_2install.html#autotoc_md22", null ],

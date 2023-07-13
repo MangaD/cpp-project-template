@@ -17,6 +17,7 @@
     <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+    <link rel="icon" href="logo.png" type="image/png" />
     <link href="doxygen.css" rel="stylesheet" type="text/css" />
     <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
@@ -275,8 +276,9 @@ Dependencies</h2>
 </ul>
 </li>
 </ul>
+<p><a class="anchor" id="wxwidgets"></a> </p>
 <h3><a class="anchor" id="autotoc_md19"></a>
-wxWidgets</h3>
+wxWidgets (manual install not recommended, prefer vcpkg)</h3>
 <ol type="1">
 <li>Download Windows binaries from: <a href="https://www.wxwidgets.org/downloads">https://www.wxwidgets.org/downloads</a></li>
 </ol>
@@ -308,8 +310,9 @@ wxWidgets</h3>
 <div class="line">cmake .. -DBUILD_TESTING=OFF</div>
 <div class="line">cmake --build . --config Release</div>
 </div><!-- fragment --><p>Instructions at: <a href="https://docs.wxwidgets.org/stable/plat_msw_binaries.html">https://docs.wxwidgets.org/stable/plat_msw_binaries.html</a></p>
+<p><a class="anchor" id="google-test"></a> </p>
 <h3><a class="anchor" id="autotoc_md20"></a>
-Google Test</h3>
+Google Test (manual install not recommended, prefer vcpkg)</h3>
 <p>Install Google Test:</p>
 <div class="fragment"><div class="line">cd C:</div>
 <div class="line">git clone https://github.com/google/googletest.git -b v1.13.0</div>
@@ -326,7 +329,7 @@ Google Test</h3>
 <div class="line">cmake --build . --config Release</div>
 </div><!-- fragment --><p><a class="anchor" id="vcpkg"></a> </p>
 <h3><a class="anchor" id="autotoc_md21"></a>
-vcpkg</h3>
+vcpkg (recommended)</h3>
 <div class="fragment"><div class="line">cd &lt;project_root&gt;</div>
 <div class="line"> </div>
 <div class="line"># Install vcpkg - A C++ package manager</div>
