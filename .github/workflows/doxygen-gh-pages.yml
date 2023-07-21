@@ -67,7 +67,7 @@ jobs:
       - name: Generate Doxygen Documentation
         run: |
           mkdir build && cd build
-          cmake .. -DBUILD_PROJECTWX=OFF -DBUILD_TESTING=OFF -DDOXYGEN_GENERATE_LATEX=FALSE
+          cmake .. -DBUILD_SOURCE=OFF -DDOXYGEN_GENERATE_LATEX=FALSE
           cmake --build . --target doxygen
 
       - name: Create .nojekyll (ensures pages with underscores work on gh pages)

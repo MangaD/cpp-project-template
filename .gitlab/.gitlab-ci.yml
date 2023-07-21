@@ -1,0 +1,129 @@
+# References:
+# - https://docs.gitlab.com/ee/ci/quick_start/tutorial.html
+# - https://gitlab.com/vermware/template/c/-/blob/master/.gitlab-ci.yml
+# - https://docs.gitlab.com/ee/ci/yaml/#keywords
+# - https://stackoverflow.com/questions/58154246/how-to-speed-up-gitlab-ci-configuration-with-caching
+
+stages:
+  - docker_images
+  - build
+  - test
+  - deploy
+  - documentation
+
+default:
+  image: gcc
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  DOXYGEN_IMAGE: $CI_REGISTRY_IMAGE/doxygen:latest
+  DOCKER_SCRIPTS_PATH: .gitlab/docker_scripts
+  DOXYGEN_HTML_PATH: docs/doxygen/build/html
+
+workflow:
+  rules: # https://www.bitslovers.com/gitlab-ci-rules/
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' # Run for all changes to a merge request's source branch
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always # Run for all changes to the default branch
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: never
+
+.image:
+  stage: docker_images
+  image: docker
+  services:
+    # Use this if your GitLab runner does not use socket binding
+    - docker:dind
+  before_script:
+    # docker login asks for the password to be passed through stdin for security
+    # we use $CI_REGISTRY_PASSWORD here which is a special variable provided by GitLab
+    # https://docs.gitlab.com/ce/ci/variables/predefined_variables.html
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - TARGET="$(printf '%s\n' "$CI_JOB_NAME" | cut -f 2 -d /)"
+    - cd "$DOCKER_SCRIPTS_PATH/$TARGET"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/$TARGET:latest" .
+    - docker push "$CI_REGISTRY_IMAGE/$TARGET:latest"
+  after_script:
+    - docker logout "$CI_REGISTRY"
+  resource_group: '$CI_JOB_NAME'
+
+image/doxygen:
+  extends: .image
+  rules:
+    - changes:
+      - $DOCKER_SCRIPTS_PATH/doxygen/**/*
+
+
+# build:
+#   stage: build
+#   interruptible: true
+#   script:
+#     - chmod a+x ./.github/scripts/*.cmake
+#     - cmake -P ./.github/scripts/configure.cmake
+#     - cmake -P ./.github/scripts/build.cmake
+
+# build:
+#   stage: build
+#   interruptible: true
+#   before_script:
+#     - apt update && apt -y install make autoconf
+#   script:
+#     - echo "Hello, $GITLAB_USER_LOGIN!"
+#     - g++ helloworld.cpp -o mybinary
+#   artifacts:
+#     paths:
+#       - mybinary
+#       # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
+#       # cache:
+#       #   paths:
+#       #     - "*.o"
+
+# # run tests using the binary built before
+# test:
+#   interruptible: true
+#   stage: test
+#   script:
+#     - ./runmytests.sh
+
+# deploy:
+#   stage: deploy
+#   script: echo "Define your deployment script!"
+#   environment: production
+
+doxygen_html:
+  stage: documentation
+  image: $DOXYGEN_IMAGE
+  dependencies:
+    - image/doxygen
+  interruptible: true
+  cache:
+    key: 'doxygen_html'
+    paths: ['$DOXYGEN_HTML_PATH']
+    policy: push
+  script:
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - mkdir build && cd build
+    - cmake .. -DBUILD_SOURCE=OFF -DDOXYGEN_GENERATE_LATEX=FALSE
+    - cmake --build . --target doxygen
+
+pages:
+  stage: documentation
+  image: busybox # Override the default `image` value with `busybox`, an extremely tiny and fast image.
+  interruptible: false # Deployment jobs usually shouldn't be cancelled, to prevent partial deployments.
+  dependencies:
+    - doxygen_html
+  cache:
+    key: 'doxygen_html'
+    paths: ['$DOXYGEN_HTML_PATH']
+    policy: pull
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - mv $DOXYGEN_HTML_PATH public
+    #- mv build/coverage_report public/coverage
+  artifacts:
+    paths:
+      - public
+  resource_group: pages
+

@@ -25,6 +25,7 @@
   - [x] coveralls
   - [x] coverity
   - [ ] OpenCppCoverage
+  - [ ] llvm-cov
 - [x] CMake integration
   - [x] CTest
   - [x] CPack
@@ -43,15 +44,20 @@
 - [ ] Profiling (https://hackingcpp.com/cpp/tools/profilers.html)
   - [ ] GNU Profiler (gprof)
   - [ ] Intel VTune Profiler
-  - [ ] perf
+  - [ ] perf + [hotspot](https://github.com/KDAB/hotspot)
 - [x] Documentation
   - [x] Doxygen
     - [x] GitHub Pages
   - [x] Sphinx
     - [ ] layout + organization (inspiration: https://discordpy.readthedocs.io)
     - [ ] publishing with: https://readthedocs.org/ , github pages , and gitlab pages
+  - [ ] Coverage report
 - [x] CI/CD
   - [x] GitHub Actions
+    - [ ] clang-format
+    - [ ] cppcheck
+    - [ ] clang-tidy
+    - [ ] Clang Static Analyzer
     - [x] CDash
     - [x] codecov
     - [x] coveralls
@@ -85,7 +91,7 @@
       - [ ] [arm-runner](https://github.com/marketplace/actions/arm-runner)
       - [ ] [Install wxWidgets on RPI](https://yasriady.blogspot.com/2015/10/how-to-build-wxwidgets-for-raspberry-pi.html)
       - [ ] [GH Actions self-hosted runners](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners)
-  - [ ] GitLab CI/CD
+  - [ ] GitLab CI/CD (see: https://gitlab.mel.vin/template/c/-/tree/master/)
   - [ ] Travis CI
   - [ ] Appveyor
   - [ ] TeamCity

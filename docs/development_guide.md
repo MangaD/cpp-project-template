@@ -10,10 +10,12 @@
   - [CDash](#cdash)
 - [CMake tips](#cmake-tips)
 - [Doxygen tips](#doxygen-tips)
-- [GitHub Actions tips](#github-actions-tips)
-  - [Releases](#releases)
 - [Adding libraries](#adding-libraries)
 - [Windows XP](#windows-xp)
+- [GitHub Actions tips](#github-actions-tips)
+  - [Releases](#releases)
+- [GitLab tips](#gitlab-tips)
+  - [Custom Docker images](#custom-docker-images)
 - [Tutorial links](#tutorial-links)
 
 <a id="autoformatting"></a>
@@ -193,6 +195,18 @@ cmake .. --list-presets
 3. The main page of doxygen is set with the `\mainpage` command. See: https://www.doxygen.nl/manual/commands.html#cmdmainpage  
   But it is possible to set an MD file as the main page. See: https://stackoverflow.com/a/26244558/3049315
 
+<a id="adding-libraries"></a>
+## Adding libraries
+
+Adding libraries to the project requires modifying the `vcpkg.json` file **if you use one**, the CI/CD workflow files, the `docs/install.md` file, the `CMakeLists.txt` file of the project that you are adding the library to, and the `.devcontainer/Dockerfile`.
+
+<a id="windows-xp"></a>
+## Windows XP
+
+For MSVC see [here](https://learn.microsoft.com/en-us/cpp/build/configuring-programs-for-windows-xp?view=msvc-170). For MinGW see [here](https://github.com/msys2/MSYS2-packages/issues/1784). For Clang see [here](https://releases.llvm.org/3.7.0/tools/clang/docs/ReleaseNotes.html#last-release-which-will-run-on-windows-xp-and-windows-vista).
+
+Naturally, the Windows API has evolved since Windows XP and modern features will not work with this OS.
+
 <a id="github-actions-tips"></a>
 ## GitHub Actions tips
 
@@ -228,17 +242,37 @@ git push --delete origin v0.0.1
 
 The release can be deleted manually or with [GitHub CLI](https://cli.github.com/manual/gh_release_delete).
 
-<a id="adding-libraries"></a>
-## Adding libraries
 
-Adding libraries to the project requires modifying the `vcpkg.json` file **if you use one**, the CI/CD workflow files, the `docs/install.md` file, the `CMakeLists.txt` file of the project that you are adding the library to, and the `.devcontainer/Dockerfile`.
+<a id="gitlab-tips"></a>
+## GitLab tips
 
-<a id="windows-xp"></a>
-## Windows XP
+Change the path of the CI/CD configuration file in your GitLab project's `Settings -> CI/CD` to `.gitlab/.gitlab-ci.yml`.
 
-For MSVC see [here](https://learn.microsoft.com/en-us/cpp/build/configuring-programs-for-windows-xp?view=msvc-170). For MinGW see [here](https://github.com/msys2/MSYS2-packages/issues/1784). For Clang see [here](https://releases.llvm.org/3.7.0/tools/clang/docs/ReleaseNotes.html#last-release-which-will-run-on-windows-xp-and-windows-vista).
+<a id="custom-docker-images"></a>
+### Custom Docker images
 
-Naturally, the Windows API has evolved since Windows XP and modern features will not work with this OS.
+Tutorial: https://cylab.be/blog/8/using-custom-docker-images-with-gitlab
+
+With the GitLab Container Registry, every project can have its own space to store its Docker images. [More Information](https://docs.gitlab.com/ee/user/packages/container_registry/index.html)
+
+This project's container registry: https://gitlab.com/MangaD/cpp-project-template/container_registry
+
+You can manually add an image to your registry with the following commands:
+
+```sh
+sudo systemctl start docker
+# If you are not already logged in, you need to authenticate to the
+# Container Registry by using your GitLab username and password.
+# If you have Two-Factor Authentication enabled, use a Personal Access
+# Token instead of a password.
+sudo docker login registry.gitlab.com
+# Run the following commands in the directory where the Dockerfile is
+# located. Replace the registry url with your own.
+sudo docker build -t registry.gitlab.com/mangad/cpp-project-template .
+# Replace the registry url with your own.
+sudo docker push registry.gitlab.com/mangad/cpp-project-template
+```
+
 
 <a id="tutorial-links"></a>
 ## Tutorial links
@@ -268,6 +302,7 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 - [How to use gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html)
 - [VSCode Gcov Viewer](https://marketplace.visualstudio.com/items?itemName=JacquesLucke.gcov-viewer)
 - [OpenCppCoverage Wiki](https://github.com/OpenCppCoverage/OpenCppCoverage/wiki)
+- [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html)
 
 ### Profiling
 
@@ -312,7 +347,13 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 - [GitLab Tutorial: Create a complex pipeline](https://docs.gitlab.com/ee/ci/quick_start/tutorial.html)
 - [`.gitlab-ci.yml` keyword reference](https://docs.gitlab.com/ee/ci/yaml/)
 - [GitLab Code Owners file](https://docs.gitlab.com/ee/user/project/codeowners/)
+- [Custom Docker image vs Caching](https://stackoverflow.com/questions/58154246/how-to-speed-up-gitlab-ci-configuration-with-caching)
+- [Custom Docker images](https://cylab.be/blog/8/using-custom-docker-images-with-gitlab)
+- [Best practices for building docker images with GitLab CI](https://blog.callr.tech/building-docker-images-with-gitlab-ci-best-practices/)
 
 ### Docker
 
 - [docker docs](https://docs.docker.com/get-started/overview/)
+- [Dockerfile best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices)
+- [How to Reduce Docker Image Size](https://devopscube.com/reduce-docker-image-size/)
+- [How To Run Docker in Docker Container](https://devopscube.com/run-docker-in-docker/)

@@ -14,15 +14,30 @@ if(CMAKE_CURRENT_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	message(FATAL_ERROR "Building in-source is not supported!\nCreate a \"build\" dir and remove:\n- ${CMAKE_SOURCE_DIR}/CMakeCache.txt\n- ${CMAKE_SOURCE_DIR}/CMakeFiles")
 endif()
 
+###############
+### OPTIONS ###
+###############
+
+# Useful if we only wish to build documentation in a machine or
+# Docker container without compilers available.
+# See: https://cmake.cmake.narkive.com/OMnbmBIb/without-c-c-compiler-check
+option(BUILD_SOURCE "Build primary libraries and executables." ON)
+# The BUILD_TESTING option is automatically created by CTest
+
 #############################
 ### PROJECT CONFIGURATION ###
 #############################
 
+set(PROJECT_LANGUAGES NONE)
+if(${BUILD_SOURCE})
+	set(PROJECT_LANGUAGES CXX)
+endif()
+
 project (cpp-project-template
-	VERSION 1.0.0.0
+	VERSION 0.0.1.0
 	DESCRIPTION "C++ Project Template"
 	HOMEPAGE_URL "https://github.com/MangaD/cpp-project-template"
-	LANGUAGES CXX)
+	LANGUAGES ${PROJECT_LANGUAGES})
 
 # Global variables
 set(AUTHOR_NAME "MangaD")
@@ -93,19 +108,21 @@ endif()
 ### TARGETS ###
 ###############
 
-set(PROJECT_LIB_NAME projectlib)
-set(PROJECT_LIB_DIR ${SOURCE_DIR}/${PROJECT_LIB_NAME})
-add_subdirectory(${PROJECT_LIB_DIR}/src)
+if(${BUILD_SOURCE})
+	set(PROJECT_LIB_NAME projectlib)
+	set(PROJECT_LIB_DIR ${SOURCE_DIR}/${PROJECT_LIB_NAME})
+	add_subdirectory(${PROJECT_LIB_DIR}/src)
 
-set(PROJECT_CLI_NAME projectcli)
-set(PROJECT_CLI_DIR ${SOURCE_DIR}/${PROJECT_CLI_NAME})
-add_subdirectory(${PROJECT_CLI_DIR})
+	set(PROJECT_CLI_NAME projectcli)
+	set(PROJECT_CLI_DIR ${SOURCE_DIR}/${PROJECT_CLI_NAME})
+	add_subdirectory(${PROJECT_CLI_DIR})
 
-set(PROJECT_WX_NAME projectwx)
-option(BUILD_PROJECTWX "Build ${PROJECT_WX_NAME}" ON)
-set(PROJECT_WX_DIR ${SOURCE_DIR}/${PROJECT_WX_NAME})
-if(BUILD_PROJECTWX)
-	add_subdirectory(${PROJECT_WX_DIR}/src)
+	set(PROJECT_WX_NAME projectwx)
+	option(BUILD_PROJECTWX "Build ${PROJECT_WX_NAME}" ON)
+	set(PROJECT_WX_DIR ${SOURCE_DIR}/${PROJECT_WX_NAME})
+	if(BUILD_PROJECTWX)
+		add_subdirectory(${PROJECT_WX_DIR}/src)
+	endif()
 endif()
 
 #############
@@ -115,7 +132,7 @@ endif()
 enable_testing()
 include (CTest)
 
-if(BUILD_TESTING)
+if(BUILD_SOURCE AND BUILD_TESTING)
 	add_test(NAME Runs
 		COMMAND $<TARGET_FILE:${PROJECT_CLI_NAME}>)
 	add_test(NAME Runs-v
@@ -137,11 +154,13 @@ endif()
 ### CPACK ###
 #############
 
-# See: https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html
-install(TARGETS ${PROJECT_CLI_NAME} DESTINATION bin)
-if(BUILD_PROJECTWX)
-	install(TARGETS ${PROJECT_WX_NAME} DESTINATION bin)
-endif()
-install(DIRECTORY "${ASSETS_DIR}/images" DESTINATION ".")
+if(${BUILD_SOURCE})
+	# See: https://cmake.org/cmake/help/latest/guide/tutorial/Installing%20and%20Testing.html
+	install(TARGETS ${PROJECT_CLI_NAME} DESTINATION bin)
+	if(BUILD_PROJECTWX)
+		install(TARGETS ${PROJECT_WX_NAME} DESTINATION bin)
+	endif()
+	install(DIRECTORY "${ASSETS_DIR}/images" DESTINATION ".")
 
-include(cmake/cpack_module.cmake)
+	include(cmake/cpack_module.cmake)
+endif()
