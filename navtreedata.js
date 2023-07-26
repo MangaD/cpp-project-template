@@ -107,7 +107,8 @@ var NAVTREE =
         [ "Licenses", "md_docs_2development__guide.html#autotoc_md63", null ],
         [ "Signing", "md_docs_2development__guide.html#autotoc_md64", null ],
         [ "GitHub", "md_docs_2development__guide.html#autotoc_md65", null ],
-        [ "Docker", "md_docs_2development__guide.html#autotoc_md66", null ]
+        [ "GitLab", "md_docs_2development__guide.html#autotoc_md66", null ],
+        [ "Docker", "md_docs_2development__guide.html#autotoc_md67", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [

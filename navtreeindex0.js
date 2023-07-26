@@ -85,6 +85,7 @@ var NAVTREEINDEX0 =
 "md_docs_2development__guide.html#autotoc_md64":[3,8,8],
 "md_docs_2development__guide.html#autotoc_md65":[3,8,9],
 "md_docs_2development__guide.html#autotoc_md66":[3,8,10],
+"md_docs_2development__guide.html#autotoc_md67":[3,8,11],
 "md_docs_2getting__started.html":[1],
 "md_docs_2install.html":[2],
 "md_docs_2install.html#autotoc_md11":[2,0],
