@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('md_docs_2install.html',''); initResiza
   <div class="headertitle"><div class="title">Installation Guide</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md11"></a></p><ul>
+<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a></p><ul>
 <li>Setup<ul>
 <li>Linux<ul>
 <li><a class="el" href="md_docs_2install.html#arch-linux--manjaro-linux">Arch Linux / Manjaro Linux</a></li>
@@ -159,10 +159,10 @@ $(document).ready(function(){initNavTree('md_docs_2install.html',''); initResiza
 </li>
 <li><a class="el" href="md_docs_2install.html#documentation">Documentation</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Linux</h1>
 <p><a class="anchor" id="arch-linux--manjaro-linux"></a> </p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Arch Linux / Manjaro Linux</h2>
 <p>Build tools:</p>
 <div class="fragment"><div class="line">sudo pacman -Sy git gcc clang llvm cmake make ninja </div>
@@ -185,7 +185,7 @@ Arch Linux / Manjaro Linux</h2>
 </div><!-- fragment --><p>Coverage:</p>
 <div class="fragment"><div class="line">sudo pacman -Sy lcov gcovr</div>
 </div><!-- fragment --><p><a class="anchor" id="debian--linux-mint--ubuntu"></a> </p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Debian / Linux Mint / Ubuntu</h2>
 <p>Build tools:</p>
 <div class="fragment"><div class="line">sudo apt install git cmake make ninja-build build-essential clang llvm</div>
@@ -210,7 +210,7 @@ Debian / Linux Mint / Ubuntu</h2>
 </div><!-- fragment --><p>Coverage:</p>
 <div class="fragment"><div class="line">sudo apt install lcov gcovr</div>
 </div><!-- fragment --><p><a class="anchor" id="redhat--fedora--centos"></a> </p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 RedHat / Fedora / CentOS</h2>
 <p>Build tools:</p>
 <div class="fragment"><div class="line">sudo yum -y install git cmake make ninja-build gcc gcc-c++ clang llvm</div>
@@ -233,15 +233,15 @@ RedHat / Fedora / CentOS</h2>
 </div><!-- fragment --><p>Coverage:</p>
 <div class="fragment"><div class="line">sudo yum -y install lcov gcovr</div>
 </div><!-- fragment --><p><a class="anchor" id="windows"></a> </p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Windows</h1>
 <p><a class="anchor" id="msvc"></a> </p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 MSVC</h2>
 <p>Download and install <a href="https://www.visualstudio.com/">Visual Studio</a>.</p>
 <p>In Visual Studio Installer, click "Modify" and install "Desktop development with C++".</p>
 <p><a class="anchor" id="mingw"></a> </p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 MinGW</h2>
 <p>Download latest <a href="https://github.com/niXman/mingw-builds-binaries/releases/">MinGW builds</a>.</p>
 <p>Example:</p><ul>
@@ -250,7 +250,7 @@ MinGW</h2>
 </ul>
 <p>Put the MinGW bin folder in the path for the intended architecture.</p>
 <p><a class="anchor" id="dependencies"></a> </p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Dependencies</h2>
 <ul>
 <li><a href="https://git-scm.com/">git</a></li>
@@ -277,7 +277,7 @@ Dependencies</h2>
 </li>
 </ul>
 <p><a class="anchor" id="wxwidgets"></a> </p>
-<h3><a class="anchor" id="autotoc_md20"></a>
+<h3><a class="anchor" id="autotoc_md19"></a>
 wxWidgets (manual install not recommended, prefer vcpkg)</h3>
 <ol type="1">
 <li>Download Windows binaries from: <a href="https://www.wxwidgets.org/downloads">https://www.wxwidgets.org/downloads</a></li>
@@ -311,7 +311,7 @@ wxWidgets (manual install not recommended, prefer vcpkg)</h3>
 <div class="line">cmake --build . --config Release</div>
 </div><!-- fragment --><p>Instructions at: <a href="https://docs.wxwidgets.org/stable/plat_msw_binaries.html">https://docs.wxwidgets.org/stable/plat_msw_binaries.html</a></p>
 <p><a class="anchor" id="google-test"></a> </p>
-<h3><a class="anchor" id="autotoc_md21"></a>
+<h3><a class="anchor" id="autotoc_md20"></a>
 Google Test (manual install not recommended, prefer vcpkg)</h3>
 <p>Install Google Test:</p>
 <div class="fragment"><div class="line">cd C:</div>
@@ -328,7 +328,7 @@ Google Test (manual install not recommended, prefer vcpkg)</h3>
 <div class="line">cmake .. -DGTEST_ROOT:PATH=&quot;C:\googletest\googletest&quot; -DGTEST_LIBRARY:PATH=&quot;C:\googletest\build\lib\Release\gtest.lib&quot; -DGTEST_MAIN_LIBRARY:PATH=&quot;C:\googletest\build\lib\Release\gtest_main.lib&quot; #-DBUILD_PROJECTWX=OFF</div>
 <div class="line">cmake --build . --config Release</div>
 </div><!-- fragment --><p><a class="anchor" id="vcpkg"></a> </p>
-<h3><a class="anchor" id="autotoc_md22"></a>
+<h3><a class="anchor" id="autotoc_md21"></a>
 vcpkg (recommended)</h3>
 <div class="fragment"><div class="line">cd &lt;project_root&gt;</div>
 <div class="line"> </div>
@@ -384,11 +384,11 @@ vcpkg (recommended)</h3>
 <div class="line"># https://stackoverflow.com/a/74077157/3049315</div>
 <div class="line">cmake --build . --config Release</div>
 </div><!-- fragment --><p><a class="anchor" id="macos"></a> </p>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 macOS</h1>
 <div class="fragment"><div class="line">brew install wxwidgets googletest</div>
 </div><!-- fragment --><p><a class="anchor" id="compile"></a> </p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 Compile</h1>
 <p>Tip: Use Ninja. It can run faster, is less noisy, defaults to multiple cores, and can use the same directory for debug and release builds.</p>
 <div class="fragment"><div class="line">cmake .. -G &quot;Ninja Multi-Config&quot;</div>
@@ -399,7 +399,7 @@ Compile</h1>
 <div class="fragment"><div class="line">cmake --build . --target clean</div>
 </div><!-- fragment --><p>Reference: <a href="https://cmake.org/cmake/help/v3.22/guide/user-interaction/index.html#invoking-the-buildsystem">https://cmake.org/cmake/help/v3.22/guide/user-interaction/index.html#invoking-the-buildsystem</a></p>
 <p><a class="anchor" id="linux--mac"></a> </p>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Linux &amp; Mac</h2>
 <div class="fragment"><div class="line">git clone --recursive -j4 https://github.com/MangaD/cpp-project-template</div>
 <div class="line">cd cpp-project-template</div>
@@ -407,7 +407,7 @@ Linux &amp; Mac</h2>
 <div class="line">cmake .. -G &quot;Ninja&quot;</div>
 <div class="line">ninja</div>
 </div><!-- fragment --><p><a class="anchor" id="windows-compile"></a> </p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Windows</h2>
 <div class="fragment"><div class="line">git clone --recursive -j4 https://github.com/MangaD/cpp-project-template</div>
 <div class="line">cd cpp-project-template</div>
@@ -420,10 +420,10 @@ Windows</h2>
 <div class="line"> </div>
 <div class="line">cmake --build . --config Release</div>
 </div><!-- fragment --><p><a class="anchor" id="package"></a> </p>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Package</h1>
 <p><a class="anchor" id="archive"></a> </p>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Archive</h2>
 <p><b>Package the binary:</b> </p><div class="fragment"><div class="line"># following is necessary with MSVC:</div>
 <div class="line">cmake --build . --config Release</div>
@@ -433,48 +433,48 @@ Archive</h2>
 </div><!-- fragment --><p><b>Package the source code:</b> </p><div class="fragment"><div class="line">cpack --config CPackSourceConfig.cmake</div>
 <div class="line"># or, on linux:</div>
 <div class="line">make package_source</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md29"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
 Windows</h2>
 <p><a class="anchor" id="NSIS"></a> </p>
-<h3><a class="anchor" id="autotoc_md30"></a>
+<h3><a class="anchor" id="autotoc_md29"></a>
 NSIS</h3>
 <p>Download and Install the Null Soft Installer (NSIS) from <a href="https://nsis.sourceforge.io/Download">here</a>.</p>
 <div class="fragment"><div class="line">cmake ..</div>
 <div class="line">cmake --build . --config Release</div>
 <div class="line">cpack -G NSIS64</div>
 </div><!-- fragment --><p><a class="anchor" id="WiX"></a> </p>
-<h3><a class="anchor" id="autotoc_md31"></a>
+<h3><a class="anchor" id="autotoc_md30"></a>
 WiX</h3>
 <p>Download and Install the WiX Toolset from <a href="https://wixtoolset.org/">here</a></p>
 <div class="fragment"><div class="line">cmake ..</div>
 <div class="line">cmake --build . --config Release</div>
 <div class="line">cpack -G WIX</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
 Ubuntu</h2>
 <p><a class="anchor" id="deb"></a> </p>
-<h3><a class="anchor" id="autotoc_md33"></a>
+<h3><a class="anchor" id="autotoc_md32"></a>
 DEB</h3>
 <div class="fragment"><div class="line">cmake ..</div>
 <div class="line">cpack -G DEB</div>
 </div><!-- fragment --><p><a class="anchor" id="rpm"></a> </p>
-<h3><a class="anchor" id="autotoc_md34"></a>
+<h3><a class="anchor" id="autotoc_md33"></a>
 RPM</h3>
 <div class="fragment"><div class="line">cmake ..</div>
 <div class="line">cpack -G RPM</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md35"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md34"></a>
 MacOS</h2>
 <p><a class="anchor" id="dmg"></a> </p>
-<h3><a class="anchor" id="autotoc_md36"></a>
+<h3><a class="anchor" id="autotoc_md35"></a>
 DMG</h3>
 <div class="fragment"><div class="line">cmake ..</div>
 <div class="line">cpack -G DragNDrop</div>
 </div><!-- fragment --><p><a class="anchor" id="productbuild"></a> </p>
-<h3><a class="anchor" id="autotoc_md37"></a>
+<h3><a class="anchor" id="autotoc_md36"></a>
 ProductBuild</h3>
 <div class="fragment"><div class="line">cmake ..</div>
 <div class="line">cpack -G productbuild</div>
 </div><!-- fragment --><p><a class="anchor" id="documentation"></a> </p>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md37"></a>
 Documentation</h1>
 <div class="fragment"><div class="line"># Doxygen:</div>
 <div class="line">cmake --build . --target doxygen</div>
