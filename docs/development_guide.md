@@ -303,6 +303,15 @@ Naturally, the Windows API has evolved since Windows XP and modern features will
 - [GitHub Sponsorship](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository)
 - [Code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
 - [About CITATION files](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files)
+- [GitHub CLI](https://cli.github.com/)
+
+### GitLab
+
+- [GitLab CI/CD Tutorial for Beginners](https://www.youtube.com/watch?v=qP8kir2GUgo)
+- [GitLab Docs](https://docs.gitlab.com/)
+- [GitLab Tutorial: Create a complex pipeline](https://docs.gitlab.com/ee/ci/quick_start/tutorial.html)
+- [`.gitlab-ci.yml` keyword reference](https://docs.gitlab.com/ee/ci/yaml/)
+- [GitLab Code Owners file](https://docs.gitlab.com/ee/user/project/codeowners/)
 
 ### Docker
 
