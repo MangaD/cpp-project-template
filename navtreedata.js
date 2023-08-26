@@ -91,24 +91,28 @@ var NAVTREE =
       ] ],
       [ "CMake tips", "md_docs_2development__guide.html#autotoc_md49", null ],
       [ "Doxygen tips", "md_docs_2development__guide.html#autotoc_md50", null ],
-      [ "GitHub Actions tips", "md_docs_2development__guide.html#autotoc_md51", [
-        [ "Releases", "md_docs_2development__guide.html#autotoc_md52", null ]
+      [ "Adding libraries", "md_docs_2development__guide.html#autotoc_md51", null ],
+      [ "Windows XP", "md_docs_2development__guide.html#autotoc_md52", null ],
+      [ "GitHub Actions tips", "md_docs_2development__guide.html#autotoc_md53", [
+        [ "Releases", "md_docs_2development__guide.html#autotoc_md54", null ]
       ] ],
-      [ "Adding libraries", "md_docs_2development__guide.html#autotoc_md53", null ],
-      [ "Windows XP", "md_docs_2development__guide.html#autotoc_md54", null ],
-      [ "Tutorial links", "md_docs_2development__guide.html#autotoc_md55", [
-        [ "CMake", "md_docs_2development__guide.html#autotoc_md56", null ],
-        [ "Testing", "md_docs_2development__guide.html#autotoc_md57", null ],
-        [ "Coverage", "md_docs_2development__guide.html#autotoc_md58", null ],
-        [ "Profiling", "md_docs_2development__guide.html#autotoc_md59", null ],
-        [ "Debuging", "md_docs_2development__guide.html#autotoc_md60", null ],
-        [ "Documentation", "md_docs_2development__guide.html#autotoc_md61", null ],
-        [ "Versioning", "md_docs_2development__guide.html#autotoc_md62", null ],
-        [ "Licenses", "md_docs_2development__guide.html#autotoc_md63", null ],
-        [ "Signing", "md_docs_2development__guide.html#autotoc_md64", null ],
-        [ "GitHub", "md_docs_2development__guide.html#autotoc_md65", null ],
-        [ "GitLab", "md_docs_2development__guide.html#autotoc_md66", null ],
-        [ "Docker", "md_docs_2development__guide.html#autotoc_md67", null ]
+      [ "GitLab tips", "md_docs_2development__guide.html#autotoc_md55", [
+        [ "Custom Docker images", "md_docs_2development__guide.html#autotoc_md56", null ]
+      ] ],
+      [ "Tutorial links", "md_docs_2development__guide.html#autotoc_md57", [
+        [ "C++", "md_docs_2development__guide.html#autotoc_md58", null ],
+        [ "CMake", "md_docs_2development__guide.html#autotoc_md59", null ],
+        [ "Testing", "md_docs_2development__guide.html#autotoc_md60", null ],
+        [ "Coverage", "md_docs_2development__guide.html#autotoc_md61", null ],
+        [ "Profiling", "md_docs_2development__guide.html#autotoc_md62", null ],
+        [ "Debuging", "md_docs_2development__guide.html#autotoc_md63", null ],
+        [ "Documentation", "md_docs_2development__guide.html#autotoc_md64", null ],
+        [ "Versioning", "md_docs_2development__guide.html#autotoc_md65", null ],
+        [ "Licenses", "md_docs_2development__guide.html#autotoc_md66", null ],
+        [ "Signing", "md_docs_2development__guide.html#autotoc_md67", null ],
+        [ "GitHub", "md_docs_2development__guide.html#autotoc_md68", null ],
+        [ "GitLab", "md_docs_2development__guide.html#autotoc_md69", null ],
+        [ "Docker", "md_docs_2development__guide.html#autotoc_md70", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
