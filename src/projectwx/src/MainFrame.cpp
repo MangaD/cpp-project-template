@@ -58,7 +58,7 @@ void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event)) { Close(true); }
 void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxAboutDialogInfo info;
-	info.SetName(wxString::FromUTF8(CPP_PROJ_NAME));
+	info.SetName(wxString::FromUTF8(CPP_PROJ_NAME.data()));
 	info.SetVersion(std::to_string(CPP_VERSION_MAJOR) + "." +
 	                std::to_string(CPP_VERSION_MINOR) + "." +
 	                std::to_string(CPP_VERSION_PATCH) + "." +
@@ -66,13 +66,13 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 	info.SetIcon(logoIco_);
 
-	info.SetDescription(wxString::FromUTF8(CPP_DESCRIPTION));
-	info.SetWebSite(wxString::FromUTF8(CPP_HOMEPAGE_URL));
+	info.SetDescription(wxString::FromUTF8(CPP_DESCRIPTION.data()));
+	info.SetWebSite(wxString::FromUTF8(CPP_HOMEPAGE_URL.data()));
 	// Call of AddDeveloper() method adds a record to list of developers
-	info.AddDeveloper(wxString::FromUTF8(CPP_AUTHOR));
+	info.AddDeveloper(wxString::FromUTF8(CPP_AUTHOR.data()));
 	// Call of AddDocWriter() method adds a record to list of documentation
 	// writers
-	info.AddDocWriter(wxString::FromUTF8(CPP_AUTHOR));
+	info.AddDocWriter(wxString::FromUTF8(CPP_AUTHOR.data()));
 	/*
 	    for (auto& s : app_artists)
 	    {
@@ -91,7 +91,7 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 	constexpr int TM_YEAR_BASE = 1900;
 	info.SetCopyright(wxString::FromUTF8(
 	    (std::string("Copyright (c) ") +
-	     std::to_string(TM_YEAR_BASE + tm->tm_year) + " " + CPP_AUTHOR)
+	     std::to_string(TM_YEAR_BASE + tm->tm_year) + " " + CPP_AUTHOR.data())
 	        .c_str()));
 
 	/*
@@ -103,7 +103,7 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 	 * a separate menu item in the "Help" menu for displaying the text of your
 	 * program licence.
 	 */
-	std::string license(CPP_LICENSE);
+	std::string license(CPP_LICENSE.data());
 #ifndef _WIN32
 	license = wordWrap(license, LICENSE_COLUMN_WIDTH);
 #endif

@@ -80,10 +80,11 @@ if(WIN32)
 
 	## LICENSE
 	# Remove single new lines in license
-	file(STRINGS ${CPACK_RESOURCE_FILE_LICENSE} LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
+	file(READ ${CPACK_RESOURCE_FILE_LICENSE} LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
 	string(REGEX REPLACE "\n\n" "#CMAKE_DOUBLE_NEWLINE#" LICENSE "${LICENSE}") # keep double newlines
 	string(REGEX REPLACE "\n" " " LICENSE "${LICENSE}") # remove single newlines
 	string(REGEX REPLACE "#CMAKE_DOUBLE_NEWLINE#" "\n\n" LICENSE "${LICENSE}") # keep double newlines
+	string(REGEX REPLACE "  +" " " LICENSE "${LICENSE}") # remove excess spaces
 	file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/License.txt" ${LICENSE})
 	# Convert license encoding to UTF-8 with BOM, because:
 	# https://gitlab.kitware.com/cmake/cmake/-/issues/21318

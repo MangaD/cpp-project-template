@@ -14,6 +14,10 @@ if(CMAKE_CURRENT_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	message(FATAL_ERROR "Building in-source is not supported!\nCreate a \"build\" dir and remove:\n- ${CMAKE_SOURCE_DIR}/CMakeCache.txt\n- ${CMAKE_SOURCE_DIR}/CMakeFiles")
 endif()
 
+# Print CMake variables: https://stackoverflow.com/a/69084164/3049315
+#include(CMakePrintHelpers)
+#cmake_print_variables(CMAKE_CURRENT_BINARY_DIR CMAKE_CURRENT_SOURCE_DIR)
+
 ###############
 ### OPTIONS ###
 ###############
@@ -52,27 +56,19 @@ set(CPACK_PACKAGE_COPYRIGHT "© ${COPYRIGHT_YEAR} ${CPACK_PACKAGE_VENDOR}")
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)
 set(PACKAGING_DIR ${CMAKE_CURRENT_SOURCE_DIR}/packaging)
-set(DOXYGEN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen)
-set(SPHINX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx)
+set(DOCS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs)
+set(DOXYGEN_DIR ${DOCS_DIR}/doxygen)
+set(SPHINX_DIR ${DOCS_DIR}/sphinx)
 
 # use your own default generated GUID (must comment this line)
 set(CPACK_WIX_UPGRADE_GUID "02FBAAA4-B5EE-435B-AF4A-ADA99C5EAFA0")
 
 # Read LICENSE file into a variable to be used by config.h
-file(STRINGS ${CPACK_RESOURCE_FILE_LICENSE} LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
-string(REGEX REPLACE "\n\n" "\\\\n\\\\n" LICENSE "${LICENSE}") # keep double newlines
+file(READ ${CPACK_RESOURCE_FILE_LICENSE} LICENSE NEWLINE_CONSUME ENCODING "UTF-8")
+string(REGEX REPLACE "\n\n" ")#license#\"\"\\\\n\\\\n\" R\"#license#(" LICENSE "${LICENSE}") # keep double newlines
 string(REGEX REPLACE "\n" " " LICENSE "${LICENSE}") # remove single newlines
-string(REPLACE "\"" "\\\"" LICENSE "${LICENSE}") # Escape quotes for using as C-style string
-
-# We add a flag to llvm-rc because of the following issue:
-# https://github.com/llvm/llvm-project/issues/57367
-if(WIN32 AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	set(CMAKE_RC_FLAGS "${CMAKE_RC_FLAGS} /C 65001")
-endif()
-
-# Print CMake variables: https://stackoverflow.com/a/69084164/3049315
-#include(CMakePrintHelpers)
-#cmake_print_variables(PROJECT_SOURCE_DIR CMAKE_CURRENT_BINARY_DIR CMAKE_CURRENT_SOURCE_DIR)
+string(REGEX REPLACE "  +" " " LICENSE "${LICENSE}") # remove excess spaces
+#string(REPLACE "\"" "\\\"" LICENSE "${LICENSE}") # Escape quotes for using as C-style string
 
 # CMake variables in source code
 configure_file("${SOURCE_DIR}/config.h.in" config.h)
@@ -90,6 +86,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 # Generate a `compile_commands.json` file for use with clang-based tools
 # https://clang.llvm.org/docs/HowToSetupToolingForLLVM.html
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# We add a flag to llvm-rc because of the following issue:
+# https://github.com/llvm/llvm-project/issues/57367
+if(WIN32 AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	set(CMAKE_RC_FLAGS "${CMAKE_RC_FLAGS} /C 65001")
+endif()
 
 #####################
 ### CMake modules ###

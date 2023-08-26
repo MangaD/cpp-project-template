@@ -27,8 +27,8 @@ bool App::OnInit()
 	 * is used instead. By default the application name is set to the name of
 	 * its executable file.
 	 */
-	SetAppName(CPP_PROJ_NAME);
-	SetAppDisplayName(CPP_PROJ_NAME);
+	SetAppName(CPP_PROJ_NAME.data());
+	SetAppDisplayName(CPP_PROJ_NAME.data());
 
 	// add handlers at startup
 	wxImage::AddHandler(new wxPNGHandler);
@@ -65,7 +65,7 @@ bool App::OnInit()
 	showSplashScreen(this->logoImg_, SPLASHSCREEN_DURATION_MS);
 
 	frame_ =
-	    new MainFrame(*this, CPP_PROJ_NAME, wxPoint(WINDOW_POS_X, WINDOW_POS_Y),
+	    new MainFrame(*this, CPP_PROJ_NAME.data(), wxPoint(WINDOW_POS_X, WINDOW_POS_Y),
 	                  wxSize(WINDOW_WIDTH, WINDOW_HEIGHT));
 	frame_->Centre();
 	frame_->Show(true);

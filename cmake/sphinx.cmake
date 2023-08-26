@@ -13,6 +13,6 @@ if(Sphinx_FOUND)
 		sphinx
 		BREATHE_PROJECTS doxygen
 		BUILDER html
-		SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx"
-		OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx/build")
+		SOURCE_DIRECTORY "${SPHINX_DIR}"
+		OUTPUT_DIRECTORY "${SPHINX_DIR}/build")
 endif()

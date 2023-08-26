@@ -277,6 +277,12 @@ sudo docker push registry.gitlab.com/mangad/cpp-project-template
 <a id="tutorial-links"></a>
 ## Tutorial links
 
+### C++
+
+- [C++ Developer Roadmap](https://roadmap.sh/cpp)
+- [C++ Reference](https://en.cppreference.com/w/)
+- [Compiler Explorer](https://godbolt.org/)
+
 ### CMake
 
 - [Mastering CMake](https://cmake.org/cmake/help/book/mastering-cmake/index.html)
