@@ -150,7 +150,7 @@ Getting Started</h1>
 </li>
 <li>See the <a class="el" href="md_build_2development__guide.html">development guide</a> to learn how to work with this template.</li>
 <li>When modifying dependencies, update <code>.devcontainer/Dockerfile</code>, <code>.github</code> workflows, and <code>docs/install.md</code> accordingly.</li>
-<li>WiX GUID </li>
+<li>For creating installers for Windows with the <a href="https://wixtoolset.org/">WiX Toolset</a>, a unique GUID should be set for your project. In order to do this, comment the line in the <code>CMakeLists.txt</code> file that sets the <code>CPACK_WIX_UPGRADE_GUID</code> variable. After compiling the project with CMake and packaging it with WiX, as shown below, a GUID should be created for you and printed to the console. You may then use this value in the <code>CPACK_WIX_UPGRADE_GUID</code> variable. <code>sh mkdir build &amp;&amp; cd build cmake .. cmake --build . --config Release cpack -G WIX </code> </li>
 </ol>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
