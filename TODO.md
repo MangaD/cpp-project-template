@@ -31,6 +31,7 @@
   - [x] CPack
     - [ ] Sign the executables (see: https://stackoverflow.com/a/252245/3049315)
   - [x] CDash
+  - [ ] [cmake-format](https://github.com/cheshirekow/cmake_format)
 - [x] Package manager
   - [x] vcpkg
   - [ ] conan - Does not have wxWidgets and apparently requires modifying the `CMakeLists.txt` file. I prefer to not integrate it here.

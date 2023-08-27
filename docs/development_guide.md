@@ -356,6 +356,7 @@ sudo docker push registry.gitlab.com/mangad/cpp-project-template
 - [Custom Docker image vs Caching](https://stackoverflow.com/questions/58154246/how-to-speed-up-gitlab-ci-configuration-with-caching)
 - [Custom Docker images](https://cylab.be/blog/8/using-custom-docker-images-with-gitlab)
 - [Best practices for building docker images with GitLab CI](https://blog.callr.tech/building-docker-images-with-gitlab-ci-best-practices/)
+- [GitLab Flavored Markdown (GLFM)](https://docs.gitlab.com/ee/user/markdown.html)
 
 ### Docker
 

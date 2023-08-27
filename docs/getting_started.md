@@ -26,3 +26,10 @@
     Update the Coverity Scan badge in the [README.md](../README.md) file accordingly.
 15. See the [development guide](./development_guide.md) to learn how to work with this template.
 16. When modifying dependencies, update `.devcontainer/Dockerfile`, `.github` workflows, and `docs/install.md` accordingly.
+17. For creating installers for Windows with the [WiX Toolset](https://wixtoolset.org/), a unique GUID should be set for your project. In order to do this, comment the line in the `CMakeLists.txt` file that sets the `CPACK_WIX_UPGRADE_GUID` variable. After compiling the project with CMake and packaging it with WiX, as shown below, a GUID should be created for you and printed to the console. You may then use this value in the `CPACK_WIX_UPGRADE_GUID` variable.
+    ```sh
+    mkdir build && cd build
+    cmake ..
+    cmake --build . --config Release
+    cpack -G WIX
+    ```

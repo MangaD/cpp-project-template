@@ -32,11 +32,25 @@ set(DOXYGEN_IMAGE_PATH ${DOXYGEN_DIR}/logo.png)
 if (DOXYGEN_FOUND)
 	message(STATUS "-- Doxygen documentation enabled through 'doxygen' target.")
 
+	# Add Table of Contents to markdown files
+	file(COPY 
+			README.md 
+			${DOCS_DIR}/getting_started.md
+			${DOCS_DIR}/install.md
+			${DOCS_DIR}/development_guide.md
+		DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+
+	file(GLOB md_files "${CMAKE_CURRENT_BINARY_DIR}/*.md")
+	foreach(filename ${md_files})
+		file(READ ${filename} MD_TEXT)
+		file(WRITE ${filename} "[TOC]\n\n${MD_TEXT}")
+	endforeach()
+
 	doxygen_add_docs(doxygen
-		README.md
-		${DOCS_DIR}/getting_started.md
-		${DOCS_DIR}/install.md
-		${DOCS_DIR}/development_guide.md
+		${CMAKE_CURRENT_BINARY_DIR}/README.md
+		${CMAKE_CURRENT_BINARY_DIR}/getting_started.md
+		${CMAKE_CURRENT_BINARY_DIR}/install.md
+		${CMAKE_CURRENT_BINARY_DIR}/development_guide.md
 		LICENSE
 		${SOURCE_DIR})
 endif()
