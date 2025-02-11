@@ -10,7 +10,7 @@ apt-get install --no-install-recommends -y \
 	build-essential \
 	cmake \
 	ninja-build \
-	libwxgtk3.0-gtk3-dev \
+	libwxgtk3.2-dev \
 	libgtest-dev	
 
 apt-get autoremove -y

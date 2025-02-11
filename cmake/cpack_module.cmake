@@ -148,7 +148,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(CPACK_RPM_PACKAGE_URL "${CMAKE_PROJECT_HOMEPAGE_URL}")
 
 	if(BUILD_PROJECTWX)	
-		set(CPACK_DEBIAN_PACKAGE_DEPENDS "libwxgtk3.0-gtk3-dev")
+		set(CPACK_DEBIAN_PACKAGE_DEPENDS "libwxgtk3.2-dev")
 		set(CPACK_RPM_PACKAGE_REQUIRES "wxGTK-devel")
 
 		# Icon and app shortcut for Linux systems

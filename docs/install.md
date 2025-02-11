@@ -104,7 +104,7 @@ sudo apt install git cmake make ninja-build build-essential clang llvm
 wxWidgets:
 
 ```sh
-sudo apt install libwxgtk3.0-gtk3-dev
+sudo apt install libwxgtk3.2-dev
 ```
 
 Documentation:

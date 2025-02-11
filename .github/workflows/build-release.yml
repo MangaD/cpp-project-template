@@ -175,7 +175,7 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y valgrind libwxgtk3.0-gtk3-dev libgtest-dev
+          sudo apt-get install -y valgrind libwxgtk3.2-dev libgtest-dev
         elif [ "$RUNNER_OS" == "macOS" ]; then
           brew install wxwidgets googletest
         fi
