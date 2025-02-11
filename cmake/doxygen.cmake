@@ -5,7 +5,6 @@ find_package(Doxygen)
 set(DOXYGEN_GENERATE_HTML YES CACHE BOOL "Generate Doxygen HTML")
 set(DOXYGEN_GENERATE_LATEX YES CACHE BOOL "Generate Doxygen LaTeX")
 set(DOXYGEN_GENERATE_XML YES) # Needed by Sphinx
-set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
 set(DOXYGEN_PROJECT_LOGO ${DOXYGEN_DIR}/logo.png)
 set(DOXYGEN_OUTPUT_DIRECTORY ${DOXYGEN_DIR}/build)
 set(DOXYGEN_GENERATE_TREEVIEW YES) # Required by doxygen-awesome-css
@@ -33,24 +32,23 @@ if (DOXYGEN_FOUND)
 	message(STATUS "-- Doxygen documentation enabled through 'doxygen' target.")
 
 	# Add Table of Contents to markdown files
-	file(COPY 
-			README.md 
-			${DOCS_DIR}/getting_started.md
-			${DOCS_DIR}/install.md
-			${DOCS_DIR}/development_guide.md
-		DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+	file(GLOB md_files ${CMAKE_SOURCE_DIR}/docs/*.md)
 
-	file(GLOB md_files "${CMAKE_CURRENT_BINARY_DIR}/*.md")
-	foreach(filename ${md_files})
-		file(READ ${filename} MD_TEXT)
-		file(WRITE ${filename} "[TOC]\n\n${MD_TEXT}")
-	endforeach()
+    file(COPY ${CMAKE_SOURCE_DIR}/README.md DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/md_files")
+	file(COPY ${md_files} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/md_files/docs")
+
+    file(GLOB_RECURSE md_files "${CMAKE_CURRENT_BINARY_DIR}/md_files/*.md")
+    foreach(filename ${md_files})
+        file(READ ${filename} MD_TEXT)
+        # Insert [TOC] immediately after the first level-1 header line.
+        string(REGEX REPLACE "^(# [^\n]+)\r?\n(.+)" "\\1\n[TOC]\n\\2" MD_TEXT_MODIFIED "${MD_TEXT}")
+        file(WRITE ${filename} "${MD_TEXT_MODIFIED}")
+    endforeach()
+
+	set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_CURRENT_BINARY_DIR}/md_files/README.md")
 
 	doxygen_add_docs(doxygen
-		${CMAKE_CURRENT_BINARY_DIR}/README.md
-		${CMAKE_CURRENT_BINARY_DIR}/getting_started.md
-		${CMAKE_CURRENT_BINARY_DIR}/install.md
-		${CMAKE_CURRENT_BINARY_DIR}/development_guide.md
+		${md_files}
 		LICENSE
 		${SOURCE_DIR})
 endif()

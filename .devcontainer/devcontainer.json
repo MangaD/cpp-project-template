@@ -11,7 +11,8 @@
 				"llvm-vs-code-extensions.vscode-clangd",
 				"jeff-hykin.better-cpp-syntax",
 				"cschlosser.doxdocgen", // Generate doxygen documentation for source code
-				"JacquesLucke.gcov-viewer" // View gcov covered lines in the source code
+				"JacquesLucke.gcov-viewer", // View gcov covered lines in the source code
+				"jbenden.c-cpp-flylint" // Lint C/C++ code with supported static analysis tools
 			]
 		}
 	}

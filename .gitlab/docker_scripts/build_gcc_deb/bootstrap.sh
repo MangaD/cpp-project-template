@@ -7,10 +7,11 @@ apt-get update
 apt-get dist-upgrade -y
 
 apt-get install --no-install-recommends -y \
+	build-essential \
 	cmake \
-	doxygen \
-	graphviz \
-	make
+	ninja-build \
+	libwxgtk3.0-gtk3-dev \
+	libgtest-dev	
 
 apt-get autoremove -y
 apt-get clean

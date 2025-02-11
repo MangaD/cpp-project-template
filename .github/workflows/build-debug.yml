@@ -291,7 +291,7 @@ jobs:
     #     debug: true
 
     - name: Coveralls GitHub Action
-      uses: threeal/gcovr-action@latest
+      uses: threeal/gcovr-action@v1.1.0
       if: runner.os == 'Linux'
       with:
         root: project

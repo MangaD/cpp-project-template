@@ -11,11 +11,12 @@ stages:
   - deploy
   - documentation
 
-default:
-  image: gcc
+#default:
+#  image: gcc
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  BUILD_GCC_DEB_IMAGE: $CI_REGISTRY_IMAGE/build_gcc_deb:latest
   DOXYGEN_IMAGE: $CI_REGISTRY_IMAGE/doxygen:latest
   DOCKER_SCRIPTS_PATH: .gitlab/docker_scripts
   DOXYGEN_HTML_PATH: docs/doxygen/build/html
@@ -54,14 +55,18 @@ image/doxygen:
     - changes:
       - $DOCKER_SCRIPTS_PATH/doxygen/**/*
 
+image/build_gcc_deb:
+  extends: .image
+  rules:
+    - changes:
+      - $DOCKER_SCRIPTS_PATH/build_gcc_deb/**/*
 
-# build:
-#   stage: build
-#   interruptible: true
-#   script:
-#     - chmod a+x ./.github/scripts/*.cmake
-#     - cmake -P ./.github/scripts/configure.cmake
-#     - cmake -P ./.github/scripts/build.cmake
+build:
+  stage: build
+  interruptible: true
+  script:
+    - cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
+      -G "Ninja" -D CMAKE_MAKE_PROGRAM=ninja
 
 # build:
 #   stage: build
@@ -97,10 +102,9 @@ doxygen_html:
   dependencies:
     - image/doxygen
   interruptible: true
-  cache:
-    key: 'doxygen_html'
-    paths: ['$DOXYGEN_HTML_PATH']
-    policy: push
+  artifacts:
+    paths:
+    - $DOXYGEN_HTML_PATH
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - mkdir build && cd build
@@ -113,10 +117,6 @@ pages:
   interruptible: false # Deployment jobs usually shouldn't be cancelled, to prevent partial deployments.
   dependencies:
     - doxygen_html
-  cache:
-    key: 'doxygen_html'
-    paths: ['$DOXYGEN_HTML_PATH']
-    policy: pull
   variables:
     GIT_STRATEGY: none
   script:

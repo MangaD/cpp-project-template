@@ -361,42 +361,42 @@ jobs:
         mv package/${{ steps.generate-name.outputs.finalName }}.dmg ../${{ steps.generate-name.outputs.dmgName }}
 
     - name: Upload Archive
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate-name.outputs.archiveName }}
         path: ./project/${{ steps.generate-name.outputs.archiveName }}
 
     - name: Upload Installer NSIS
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate-name.outputs.nsisName }}
         path: ./project/${{ steps.generate-name.outputs.nsisName }}
 
     - name: Upload Installer WIX
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate-name.outputs.wixName }}
         path: ./project/${{ steps.generate-name.outputs.wixName }}
 
     - name: Upload Linux DEB
       if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate-name.outputs.debName }}
         path: ./project/${{ steps.generate-name.outputs.debName }}
 
     - name: Upload Linux RPM
       if: matrix.config.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate-name.outputs.rpmName }}
         path: ./project/${{ steps.generate-name.outputs.rpmName }}
 
     - name: Upload MacOS DMG
       if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate-name.outputs.dmgName }}
         path: ./project/${{ steps.generate-name.outputs.dmgName }}
