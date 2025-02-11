@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=11"/>
     <meta name="generator" content="Doxygen 1.9.7"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>cpp-project-template: getting_started</title>
+    <title>cpp-project-template: Getting Started</title>
     <link href="tabs.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -85,7 +85,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_build_2getting__started.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_build_2md__files_2docs_2getting__started.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -111,17 +111,12 @@ $(document).ready(function(){initNavTree('md_build_2getting__started.html',''); 
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">getting_started</div></div>
+  <div class="headertitle"><div class="title">Getting Started</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md9">Getting Started</a></li>
-</ul>
-</div>
-<div class="textblock"><h1><a class="anchor" id="autotoc_md9"></a>
-Getting Started</h1>
+<div class="textblock"><p><a class="anchor" id="autotoc_md42"></a></p>
 <ol type="1">
-<li>Install the required software as instructed in the <a class="el" href="md_build_2install.html">installation guide</a>.</li>
+<li>Install the required software as instructed in the <a class="el" href="md_build_2md__files_2docs_2install.html">installation guide</a>.</li>
 <li>Modify the <a href="../LICENSE">LICENSE</a> file to suit your application.</li>
 <li>Modify the global variables in the <a href="../CMakeLists.txt">CMakeLists.txt</a> file.</li>
 <li>Change the application's splashscreen in <a href="../assets/images">assets/images</a>.</li>
@@ -131,24 +126,24 @@ Getting Started</h1>
 <li>Remove the <code>CODEOWNERS</code> file or modify it to suit your needs.</li>
 <li>Remove the <code>CITATION.cff</code> file or modify it to suit your needs.</li>
 <li>If using GitLab, change the path of the CI/CD configuration file in your GitLab project's <code>Settings -&gt; CI/CD</code> to <code>.gitlab/.gitlab-ci.yml</code>.</li>
-<li>Create a <a href="https://my.cdash.org/project/new">new project in CDash</a>. Edit the file <a href="../CTestConfig.cmake">CTestConfig.cmake</a> and update the CDash badge in the README.md file accordingly.</li>
+<li>Create a <a href="https://my.cdash.org/project/new">new project in CDash</a>. Edit the file <a href="../CTestConfig.cmake">CTestConfig.cmake</a> and update the CDash badge in the <a class="el" href="index.html#md_build_2md__files_2README">README.md</a> file accordingly.</li>
 <li><p class="startli">Setup your repository in <a href="https://about.codecov.io/">Codecov</a>. Add the following <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository">GitHub repository secret</a>:</p><ul>
 <li><code>CODECOV_TOKEN</code>: Your Codecov repository upload token.</li>
 </ul>
-<p class="startli">Update the Codecov badge in the README.md file accordingly.</p>
+<p class="startli">Update the Codecov badge in the <a class="el" href="index.html#md_build_2md__files_2README">README.md</a> file accordingly.</p>
 </li>
 <li><p class="startli">Setup your repository in <a href="https://coveralls.io/">Coveralls</a>. Add the following <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository">GitHub repository secret</a>:</p><ul>
 <li><code>COVERALLS_REPO_TOKEN</code>: Your Coveralls token.</li>
 </ul>
-<p class="startli">Update the Coveralls badge in the README.md file accordingly.</p>
+<p class="startli">Update the Coveralls badge in the <a class="el" href="index.html#md_build_2md__files_2README">README.md</a> file accordingly.</p>
 </li>
 <li><p class="startli">Setup your repository in <a href="https://scan.coverity.com/">Coverity scan</a>. Add the following <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository">GitHub repository secrets</a>:</p><ul>
 <li><code>COVERITY_SCAN_EMAIL</code>: Your Coverity Scan's account e-mail.</li>
 <li><code>COVERITY_SCAN_TOKEN</code>: Your Coverity Scan's project token.</li>
 </ul>
-<p class="startli">Update the Coverity Scan badge in the README.md file accordingly.</p>
+<p class="startli">Update the Coverity Scan badge in the <a class="el" href="index.html#md_build_2md__files_2README">README.md</a> file accordingly.</p>
 </li>
-<li>See the <a class="el" href="md_build_2development__guide.html">development guide</a> to learn how to work with this template.</li>
+<li>See the <a class="el" href="md_build_2md__files_2docs_2development__guide.html">development guide</a> to learn how to work with this template.</li>
 <li>When modifying dependencies, update <code>.devcontainer/Dockerfile</code>, <code>.github</code> workflows, and <code>docs/install.md</code> accordingly.</li>
 <li>For creating installers for Windows with the <a href="https://wixtoolset.org/">WiX Toolset</a>, a unique GUID should be set for your project. In order to do this, comment the line in the <code>CMakeLists.txt</code> file that sets the <code>CPACK_WIX_UPGRADE_GUID</code> variable. After compiling the project with CMake and packaging it with WiX, as shown below, a GUID should be created for you and printed to the console. You may then use this value in the <code>CPACK_WIX_UPGRADE_GUID</code> variable. <code>sh mkdir build &amp;&amp; cd build cmake .. cmake --build . --config Release cpack -G WIX </code> </li>
 </ol>

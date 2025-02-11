@@ -37,89 +37,83 @@ var NAVTREE =
         [ "Third-Party Libraries", "index.html#autotoc_md8", null ]
       ] ]
     ] ],
-    [ "getting_started", "md_build_2getting__started.html", [
-      [ "Getting Started", "md_build_2getting__started.html#autotoc_md9", null ]
-    ] ],
-    [ "install", "md_build_2install.html", [
-      [ "Installation Guide", "md_build_2install.html#autotoc_md10", [
-        [ "Linux", "md_build_2install.html#autotoc_md11", [
-          [ "Arch Linux / Manjaro Linux", "md_build_2install.html#autotoc_md12", null ],
-          [ "Debian / Linux Mint / Ubuntu", "md_build_2install.html#autotoc_md13", null ],
-          [ "RedHat / Fedora / CentOS", "md_build_2install.html#autotoc_md14", null ]
+    [ "Development Guide", "md_build_2md__files_2docs_2development__guide.html", [
+      [ "Autoformatting", "md_build_2md__files_2docs_2development__guide.html#autotoc_md10", null ],
+      [ "Static analysis", "md_build_2md__files_2docs_2development__guide.html#autotoc_md11", null ],
+      [ "Testing", "md_build_2md__files_2docs_2development__guide.html#autotoc_md12", [
+        [ "Coverage", "md_build_2md__files_2docs_2development__guide.html#autotoc_md13", [
+          [ "GCC / Clang", "md_build_2md__files_2docs_2development__guide.html#autotoc_md14", null ],
+          [ "MSVC", "md_build_2md__files_2docs_2development__guide.html#autotoc_md15", null ]
         ] ],
-        [ "Windows", "md_build_2install.html#autotoc_md15", [
-          [ "MSVC", "md_build_2install.html#autotoc_md16", null ],
-          [ "MinGW", "md_build_2install.html#autotoc_md17", null ],
-          [ "Dependencies", "md_build_2install.html#autotoc_md18", [
-            [ "wxWidgets (manual install not recommended, prefer vcpkg)", "md_build_2install.html#autotoc_md19", null ],
-            [ "Google Test (manual install not recommended, prefer vcpkg)", "md_build_2install.html#autotoc_md20", null ],
-            [ "vcpkg (recommended)", "md_build_2install.html#autotoc_md21", null ]
-          ] ]
+        [ "Dynamic analysis", "md_build_2md__files_2docs_2development__guide.html#autotoc_md16", [
+          [ "Valgrind", "md_build_2md__files_2docs_2development__guide.html#autotoc_md17", null ],
+          [ "Sanitizers", "md_build_2md__files_2docs_2development__guide.html#autotoc_md18", null ]
         ] ],
-        [ "macOS", "md_build_2install.html#autotoc_md22", null ],
-        [ "Compile", "md_build_2install.html#autotoc_md23", [
-          [ "Linux & Mac", "md_build_2install.html#autotoc_md24", null ],
-          [ "Windows", "md_build_2install.html#autotoc_md25", null ]
-        ] ],
-        [ "Package", "md_build_2install.html#autotoc_md26", [
-          [ "Archive", "md_build_2install.html#autotoc_md27", null ],
-          [ "Windows", "md_build_2install.html#autotoc_md28", [
-            [ "NSIS", "md_build_2install.html#autotoc_md29", null ],
-            [ "WiX", "md_build_2install.html#autotoc_md30", null ]
-          ] ],
-          [ "Ubuntu", "md_build_2install.html#autotoc_md31", [
-            [ "DEB", "md_build_2install.html#autotoc_md32", null ],
-            [ "RPM", "md_build_2install.html#autotoc_md33", null ]
-          ] ],
-          [ "MacOS", "md_build_2install.html#autotoc_md34", [
-            [ "DMG", "md_build_2install.html#autotoc_md35", null ],
-            [ "ProductBuild", "md_build_2install.html#autotoc_md36", null ]
-          ] ]
-        ] ],
-        [ "Documentation", "md_build_2install.html#autotoc_md37", null ]
+        [ "CDash", "md_build_2md__files_2docs_2development__guide.html#autotoc_md19", null ]
+      ] ],
+      [ "CMake tips", "md_build_2md__files_2docs_2development__guide.html#autotoc_md20", null ],
+      [ "Doxygen tips", "md_build_2md__files_2docs_2development__guide.html#autotoc_md21", null ],
+      [ "Adding libraries", "md_build_2md__files_2docs_2development__guide.html#autotoc_md22", null ],
+      [ "Windows XP", "md_build_2md__files_2docs_2development__guide.html#autotoc_md23", null ],
+      [ "GitHub Actions tips", "md_build_2md__files_2docs_2development__guide.html#autotoc_md24", [
+        [ "Releases", "md_build_2md__files_2docs_2development__guide.html#autotoc_md25", null ]
+      ] ],
+      [ "GitLab tips", "md_build_2md__files_2docs_2development__guide.html#autotoc_md26", [
+        [ "Custom Docker images", "md_build_2md__files_2docs_2development__guide.html#autotoc_md27", null ]
+      ] ],
+      [ "Tutorial links", "md_build_2md__files_2docs_2development__guide.html#autotoc_md28", [
+        [ "C++", "md_build_2md__files_2docs_2development__guide.html#autotoc_md29", null ],
+        [ "CMake", "md_build_2md__files_2docs_2development__guide.html#autotoc_md30", null ],
+        [ "Testing", "md_build_2md__files_2docs_2development__guide.html#autotoc_md31", null ],
+        [ "Coverage", "md_build_2md__files_2docs_2development__guide.html#autotoc_md32", null ],
+        [ "Profiling", "md_build_2md__files_2docs_2development__guide.html#autotoc_md33", null ],
+        [ "Debuging", "md_build_2md__files_2docs_2development__guide.html#autotoc_md34", null ],
+        [ "Documentation", "md_build_2md__files_2docs_2development__guide.html#autotoc_md35", null ],
+        [ "Versioning", "md_build_2md__files_2docs_2development__guide.html#autotoc_md36", null ],
+        [ "Licenses", "md_build_2md__files_2docs_2development__guide.html#autotoc_md37", null ],
+        [ "Signing", "md_build_2md__files_2docs_2development__guide.html#autotoc_md38", null ],
+        [ "GitHub", "md_build_2md__files_2docs_2development__guide.html#autotoc_md39", null ],
+        [ "GitLab", "md_build_2md__files_2docs_2development__guide.html#autotoc_md40", null ],
+        [ "Docker", "md_build_2md__files_2docs_2development__guide.html#autotoc_md41", null ]
       ] ]
     ] ],
-    [ "development_guide", "md_build_2development__guide.html", [
-      [ "Development Guide", "md_build_2development__guide.html#autotoc_md38", [
-        [ "Autoformatting", "md_build_2development__guide.html#autotoc_md39", null ],
-        [ "Static analysis", "md_build_2development__guide.html#autotoc_md40", null ],
-        [ "Testing", "md_build_2development__guide.html#autotoc_md41", [
-          [ "Coverage", "md_build_2development__guide.html#autotoc_md42", [
-            [ "GCC / Clang", "md_build_2development__guide.html#autotoc_md43", null ],
-            [ "MSVC", "md_build_2development__guide.html#autotoc_md44", null ]
-          ] ],
-          [ "Dynamic analysis", "md_build_2development__guide.html#autotoc_md45", [
-            [ "Valgrind", "md_build_2development__guide.html#autotoc_md46", null ],
-            [ "Sanitizers", "md_build_2development__guide.html#autotoc_md47", null ]
-          ] ],
-          [ "CDash", "md_build_2development__guide.html#autotoc_md48", null ]
-        ] ],
-        [ "CMake tips", "md_build_2development__guide.html#autotoc_md49", null ],
-        [ "Doxygen tips", "md_build_2development__guide.html#autotoc_md50", null ],
-        [ "Adding libraries", "md_build_2development__guide.html#autotoc_md51", null ],
-        [ "Windows XP", "md_build_2development__guide.html#autotoc_md52", null ],
-        [ "GitHub Actions tips", "md_build_2development__guide.html#autotoc_md53", [
-          [ "Releases", "md_build_2development__guide.html#autotoc_md54", null ]
-        ] ],
-        [ "GitLab tips", "md_build_2development__guide.html#autotoc_md55", [
-          [ "Custom Docker images", "md_build_2development__guide.html#autotoc_md56", null ]
-        ] ],
-        [ "Tutorial links", "md_build_2development__guide.html#autotoc_md57", [
-          [ "C++", "md_build_2development__guide.html#autotoc_md58", null ],
-          [ "CMake", "md_build_2development__guide.html#autotoc_md59", null ],
-          [ "Testing", "md_build_2development__guide.html#autotoc_md60", null ],
-          [ "Coverage", "md_build_2development__guide.html#autotoc_md61", null ],
-          [ "Profiling", "md_build_2development__guide.html#autotoc_md62", null ],
-          [ "Debuging", "md_build_2development__guide.html#autotoc_md63", null ],
-          [ "Documentation", "md_build_2development__guide.html#autotoc_md64", null ],
-          [ "Versioning", "md_build_2development__guide.html#autotoc_md65", null ],
-          [ "Licenses", "md_build_2development__guide.html#autotoc_md66", null ],
-          [ "Signing", "md_build_2development__guide.html#autotoc_md67", null ],
-          [ "GitHub", "md_build_2development__guide.html#autotoc_md68", null ],
-          [ "GitLab", "md_build_2development__guide.html#autotoc_md69", null ],
-          [ "Docker", "md_build_2development__guide.html#autotoc_md70", null ]
+    [ "Getting Started", "md_build_2md__files_2docs_2getting__started.html", null ],
+    [ "Installation Guide", "md_build_2md__files_2docs_2install.html", [
+      [ "Linux", "md_build_2md__files_2docs_2install.html#autotoc_md44", [
+        [ "Arch Linux / Manjaro Linux", "md_build_2md__files_2docs_2install.html#autotoc_md45", null ],
+        [ "Debian / Linux Mint / Ubuntu", "md_build_2md__files_2docs_2install.html#autotoc_md46", null ],
+        [ "RedHat / Fedora / CentOS", "md_build_2md__files_2docs_2install.html#autotoc_md47", null ]
+      ] ],
+      [ "Windows", "md_build_2md__files_2docs_2install.html#autotoc_md48", [
+        [ "MSVC", "md_build_2md__files_2docs_2install.html#autotoc_md49", null ],
+        [ "MinGW", "md_build_2md__files_2docs_2install.html#autotoc_md50", null ],
+        [ "Dependencies", "md_build_2md__files_2docs_2install.html#autotoc_md51", [
+          [ "wxWidgets (manual install not recommended, prefer vcpkg)", "md_build_2md__files_2docs_2install.html#autotoc_md52", null ],
+          [ "Google Test (manual install not recommended, prefer vcpkg)", "md_build_2md__files_2docs_2install.html#autotoc_md53", null ],
+          [ "vcpkg (recommended)", "md_build_2md__files_2docs_2install.html#autotoc_md54", null ]
         ] ]
-      ] ]
+      ] ],
+      [ "macOS", "md_build_2md__files_2docs_2install.html#autotoc_md55", null ],
+      [ "Compile", "md_build_2md__files_2docs_2install.html#autotoc_md56", [
+        [ "Linux & Mac", "md_build_2md__files_2docs_2install.html#autotoc_md57", null ],
+        [ "Windows", "md_build_2md__files_2docs_2install.html#autotoc_md58", null ]
+      ] ],
+      [ "Package", "md_build_2md__files_2docs_2install.html#autotoc_md59", [
+        [ "Archive", "md_build_2md__files_2docs_2install.html#autotoc_md60", null ],
+        [ "Windows", "md_build_2md__files_2docs_2install.html#autotoc_md61", [
+          [ "NSIS", "md_build_2md__files_2docs_2install.html#autotoc_md62", null ],
+          [ "WiX", "md_build_2md__files_2docs_2install.html#autotoc_md63", null ]
+        ] ],
+        [ "Ubuntu", "md_build_2md__files_2docs_2install.html#autotoc_md64", [
+          [ "DEB", "md_build_2md__files_2docs_2install.html#autotoc_md65", null ],
+          [ "RPM", "md_build_2md__files_2docs_2install.html#autotoc_md66", null ]
+        ] ],
+        [ "MacOS", "md_build_2md__files_2docs_2install.html#autotoc_md67", [
+          [ "DMG", "md_build_2md__files_2docs_2install.html#autotoc_md68", null ],
+          [ "ProductBuild", "md_build_2md__files_2docs_2install.html#autotoc_md69", null ]
+        ] ]
+      ] ],
+      [ "Documentation", "md_build_2md__files_2docs_2install.html#autotoc_md70", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
