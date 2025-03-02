@@ -1,5 +1,6 @@
 ### TODO
 
+- [ ] Improve versioning: https://gist.github.com/MangaD/ab03ab98c8f7cc804149a6f2500847e5
 - [x] Static library
 - [ ] Dynamic library
 - [x] Console app
@@ -34,7 +35,7 @@
   - [ ] [cmake-format](https://github.com/cheshirekow/cmake_format)
 - [x] Package manager
   - [x] vcpkg
-  - [ ] conan - Does not have wxWidgets and apparently requires modifying the `CMakeLists.txt` file. I prefer to not integrate it here.
+  - [ ] conan 2
 - [x] Static analysis
   - [x] Clang Static Analyzer
   - [x] cppcheck
@@ -46,8 +47,13 @@
   - [ ] GNU Profiler (gprof)
   - [ ] Intel VTune Profiler
   - [ ] perf + [hotspot](https://github.com/KDAB/hotspot)
+- [ ] Benchmarking
+  - [ ] Google Benchmark
 - [x] Documentation
   - [x] Doxygen
+    - [ ] TOC
+    - [ ] GitHub corner
+    - [ ] GitLab Pages
     - [x] GitHub Pages
   - [x] Sphinx
     - [ ] layout + organization (inspiration: https://discordpy.readthedocs.io)
@@ -89,6 +95,8 @@
       - [ ] DragNDrop
       - [ ] productbuild
     - [ ] Raspbian
+      - [ ] [Cross compile in Ubuntu](https://stackoverflow.com/a/11123927/3049315)
+      - [ ] [Cross-compiling with conan 2](https://docs.conan.io/2/tutorial/consuming_packages/cross_building_with_conan.html)
       - [ ] [arm-runner](https://github.com/marketplace/actions/arm-runner)
       - [ ] [Install wxWidgets on RPI](https://yasriady.blogspot.com/2015/10/how-to-build-wxwidgets-for-raspberry-pi.html)
       - [ ] [GH Actions self-hosted runners](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners)
@@ -97,5 +105,6 @@
   - [ ] Appveyor
   - [ ] TeamCity
   - [ ] Azure Pipelines
+  - [ ] Jenkins
   - [x] [GitHub Codespaces](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-a-predefined-dev-container-configuration)
   - [ ] Docker
