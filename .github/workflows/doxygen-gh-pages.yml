@@ -44,7 +44,7 @@ jobs:
 
       - name: Cache Doxygen
         id: cache-doxygen
-        uses: actions/cache@v3.2.1
+        uses: actions/cache@v4
         with:
           path: doxygen-${{ env.DOXYGEN_VERSION }}
           key: doxygen-cache-${{ steps.cache_timestamp.outputs.timestamp }}

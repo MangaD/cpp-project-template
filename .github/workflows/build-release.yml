@@ -121,7 +121,7 @@ jobs:
     - name: Cache MinGW
       id: cache-mingw
       if: contains(matrix.config.ext, 'windows-mingw')
-      uses: actions/cache@v3.2.1
+      uses: actions/cache@v4
       with:
         path: ./mingw
         key: ${{ runner.os }}-${{ matrix.config.ext }}-cache-${{ steps.cache_timestamp.outputs.timestamp }}
@@ -229,7 +229,7 @@ jobs:
         file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
 
     - name: ccache cache files
-      uses: actions/cache@v3.2.1
+      uses: actions/cache@v4
       with:
         path: .ccache
         key: ${{ matrix.config.name }}-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
