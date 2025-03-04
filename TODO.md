@@ -52,7 +52,7 @@
 - [x] Documentation
   - [x] Doxygen
     - [ ] TOC
-    - [ ] GitHub corner
+    - [x] GitHub corner
     - [ ] GitLab Pages
     - [x] GitHub Pages
   - [x] Sphinx
