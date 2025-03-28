@@ -3,16 +3,19 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"ms-vscode.cpptools-extension-pack", // C/C++ Extension Pack
 				//"ms-vscode.cpptools",
-				//"ms-vscode.cmake-tools",
-				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				//"twxs.cmake",
 				"notskm.clang-tidy",
 				"xaver.clang-format",
 				"llvm-vs-code-extensions.vscode-clangd",
 				"jeff-hykin.better-cpp-syntax",
 				"cschlosser.doxdocgen", // Generate doxygen documentation for source code
 				"JacquesLucke.gcov-viewer", // View gcov covered lines in the source code
-				"jbenden.c-cpp-flylint" // Lint C/C++ code with supported static analysis tools
+				"jbenden.c-cpp-flylint", // Lint C/C++ code with supported static analysis tools
+				"ms-vsliveshare.vsliveshare", // Live Share
+				"GitHub.copilot" // GitHub Copilot
 			]
 		}
 	}

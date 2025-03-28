@@ -1,8 +1,8 @@
 # https://github.com/devcontainers/images/tree/main/src
 # https://hub.docker.com/_/microsoft-vscode-devcontainers
 # https://github.com/microsoft/vscode-dev-containers/tree/main/containers/cpp
-ARG VARIANT="jammy"
-FROM mcr.microsoft.com/vscode/devcontainers/cpp:0-${VARIANT}
+ARG VARIANT="24.04"
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:ubuntu-${VARIANT}
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get update \
