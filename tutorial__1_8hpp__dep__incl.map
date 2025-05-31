@@ -1,7 +1,0 @@
-<map id="src/projectlib/src/tutorial_1.hpp" name="src/projectlib/src/tutorial_1.hpp">
-<area shape="rect" id="Node000001" title="This file contains example code for learning purposes." alt="" coords="119,5,248,45"/>
-<area shape="rect" id="Node000002" href="$main_8cpp.html" title="A project template for C++ developers." alt="" coords="5,101,175,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,57,105,102,101,98,151,53"/>
-<area shape="rect" id="Node000003" href="$tutorial__1__gtest_8cpp.html" title="This file contains unit tests for the functions in tutorial_1.hpp." alt="" coords="199,93,354,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,53,258,91,254,95,212,57"/>
-</map>

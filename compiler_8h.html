@@ -116,8 +116,6 @@ $(document).ready(function(){initNavTree('compiler_8h.html',''); initResizable()
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">compiler.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -126,54 +124,13 @@ $(document).ready(function(){initNavTree('compiler_8h.html',''); initResizable()
 <a href="#details">More...</a></p>
 
 <p><a href="compiler_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ad8d5ae679a29f40d24ca0f0031f1d242"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8h.html#ad8d5ae679a29f40d24ca0f0031f1d242">QUOTE</a>(s)&#160;&#160;&#160;#s</td></tr>
-<tr class="memdesc:ad8d5ae679a29f40d24ca0f0031f1d242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns the macro argument s into a string literal.  <br /></td></tr>
-<tr class="separator:ad8d5ae679a29f40d24ca0f0031f1d242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3df2b2beba4d180fb5acdd7a7f96a77b"><td class="memItemLeft" align="right" valign="top"><a id="a3df2b2beba4d180fb5acdd7a7f96a77b" name="a3df2b2beba4d180fb5acdd7a7f96a77b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DIAGNOSTIC_PUSH</b>()</td></tr>
-<tr class="memdesc:a3df2b2beba4d180fb5acdd7a7f96a77b"><td class="mdescLeft">&#160;</td><td class="mdescRight">GCC diagnostic push if using GCC. NOOP otherwise. <br /></td></tr>
-<tr class="separator:a3df2b2beba4d180fb5acdd7a7f96a77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb752545f94d0e1049e7613979f819e5"><td class="memItemLeft" align="right" valign="top"><a id="acb752545f94d0e1049e7613979f819e5" name="acb752545f94d0e1049e7613979f819e5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DIAGNOSTIC_IGNORE</b>(warning)</td></tr>
-<tr class="memdesc:acb752545f94d0e1049e7613979f819e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">GCC diagnostic ignored if using GCC. NOOP otherwise. <br /></td></tr>
-<tr class="separator:acb752545f94d0e1049e7613979f819e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0755bd98af21e5871472edbca361bce8"><td class="memItemLeft" align="right" valign="top"><a id="a0755bd98af21e5871472edbca361bce8" name="a0755bd98af21e5871472edbca361bce8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DIAGNOSTIC_POP</b>()</td></tr>
-<tr class="memdesc:a0755bd98af21e5871472edbca361bce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">GCC diagnostic pop if using GCC. NOOP otherwise. <br /></td></tr>
-<tr class="separator:a0755bd98af21e5871472edbca361bce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains macros for ignoring compiler warnings. </p>
 <dl class="section author"><dt>Author</dt><dd>David Gonçalves (<a href="#" onclick="location.href='mai'+'lto:'+'110'+'88'+'596'+'+M'+'ang'+'aD'+'@us'+'er'+'s.n'+'or'+'epl'+'y.'+'git'+'hu'+'b.c'+'om'; return false;">11088<span class="obfuscator">.nosp@m.</span>596+<span class="obfuscator">.nosp@m.</span>Manga<span class="obfuscator">.nosp@m.</span>D@us<span class="obfuscator">.nosp@m.</span>ers.n<span class="obfuscator">.nosp@m.</span>orep<span class="obfuscator">.nosp@m.</span>ly.gi<span class="obfuscator">.nosp@m.</span>thub<span class="obfuscator">.nosp@m.</span>.com</a>) </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2023-06-01</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2023 David Gonçalves </dd></dl>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ad8d5ae679a29f40d24ca0f0031f1d242" name="ad8d5ae679a29f40d24ca0f0031f1d242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8d5ae679a29f40d24ca0f0031f1d242">&#9670;&#160;</a></span>QUOTE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define QUOTE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">s</td><td>)</td>
-          <td>&#160;&#160;&#160;#s</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Turns the macro argument s into a string literal. </p>
-<dl class="section note"><dt>Note</dt><dd><a href="https://stackoverflow.com/a/61812123/3049315">https://stackoverflow.com/a/61812123/3049315</a> </dd></dl>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
 <!-- start footer part -->
