@@ -2,6 +2,8 @@
 
 find_package(Doxygen)
 
+set(DOXYGEN_ENABLE_PREPROCESSING NO) # https://stackoverflow.com/a/26043120/3049315
+
 set(DOXYGEN_GENERATE_HTML YES CACHE BOOL "Generate Doxygen HTML")
 set(DOXYGEN_GENERATE_LATEX YES CACHE BOOL "Generate Doxygen LaTeX")
 set(DOXYGEN_GENERATE_XML YES) # Needed by Sphinx

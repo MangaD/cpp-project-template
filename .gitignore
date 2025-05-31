@@ -3,9 +3,11 @@
 /CMakeLists.txt.user
 /vcpkg/
 /.vscode/
+/.idea/
 /.cache/
 /build/
 /out/
+/cmake-build-*
 /docs/doxygen/build/
 /docs/sphinx/build/
 /docs/sphinx/index.rst

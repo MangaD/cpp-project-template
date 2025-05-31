@@ -13,6 +13,7 @@
 - [x] Windows resources
   - [x] Icon
   - [x] Version data
+  - [ ] Manifest
 - [ ] i18n and L10n
 - [ ] Boost
 - [ ] Unit testing
@@ -106,5 +107,6 @@
   - [ ] TeamCity
   - [ ] Azure Pipelines
   - [ ] Jenkins
+  - [ ] CircleCI
   - [x] [GitHub Codespaces](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-a-predefined-dev-container-configuration)
   - [ ] Docker
