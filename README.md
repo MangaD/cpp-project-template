@@ -1,12 +1,19 @@
-<div align="center">
-
 # C++ Project Template
+<!--!
+[TOC]
+-->
+<!--
+- TOC should be placed after the header
+- https://www.doxygen.nl/manual/markdown.html#md_toc
+- https://www.doxygen.nl/manual/htmlcmds.html#htmltagcmds
+-->
+<div align="center">
 
 <!--
 Cannot use relative path here because of the following Doxygen issue:
 https://github.com/doxygen/doxygen/issues/6783#issuecomment-1058486600
 -->
-<img alt="cpplogo" src="https://github.com/MangaD/cpp-project-template/blob/main/docs/doxygen/logo.png?raw=true" width="150" />
+<img alt="cpplogo" src="https://github.com/MangaD/cpp-project-template/blob/main/assets/images/logo.png?raw=true" width="150" />
 <br/><br/>
 
 
