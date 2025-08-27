@@ -73,56 +73,90 @@ jobs:
         run: echo "${GITHUB_WORKSPACE}/doxygen-${{ env.DOXYGEN_VERSION }}/bin" >> $GITHUB_PATH
 
       ##################################
-      # 📦 Build Graphviz (dot) from source
+      # 📦 Deps for Graphviz (pangocairo) + cached fonts
       ##################################
-      - name: Cache Graphviz (built)
-        id: cache-graphviz
+      - name: Cache & install build deps + fonts via APT
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: >
+            build-essential pkg-config libexpat1-dev libltdl-dev
+            libcairo2-dev libpango1.0-dev libfontconfig1-dev
+            libfreetype6-dev libpng-dev libjpeg-dev zlib1g-dev
+            fontconfig fonts-dejavu-core fonts-liberation gsfonts fonts-urw-base35
+          version: 3
+
+      ##################################
+      # 🧱 Build Graphviz (pangocairo; no gd) from source — cached
+      ##################################
+      - name: Cache Graphviz build (pangocairo)
+        id: cache-graphviz-cairo
         uses: actions/cache@v4
         with:
           path: graphviz-install
-          key: ${{ runner.os }}-graphviz-${{ env.GRAPHVIZ_VERSION }}
+          key: ${{ runner.os }}-graphviz-${{ env.GRAPHVIZ_VERSION }}-cairo-nogd
 
-      - name: Build & install Graphviz from source
-        if: steps.cache-graphviz.outputs.cache-hit != 'true'
+      - name: Build & install Graphviz (pangocairo; no gd)
+        if: steps.cache-graphviz-cairo.outputs.cache-hit != 'true'
+        shell: bash
         run: |
           set -euo pipefail
-          sudo apt-get update
-          # Minimal toolchain + headers (gd/png/jpeg optional but nice to have)
-          sudo apt-get install -y build-essential pkg-config libexpat1-dev \
-                                  libgd-dev libpng-dev libjpeg-dev zlib1g-dev \
-                                  libfreetype6-dev libfontconfig1-dev
+          curl -LO "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${GRAPHVIZ_VERSION}/graphviz-${GRAPHVIZ_VERSION}.tar.gz"
+          tar -xf "graphviz-${GRAPHVIZ_VERSION}.tar.gz"
+          cd "graphviz-${GRAPHVIZ_VERSION}"
 
-          curl -LO https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${GRAPHVIZ_VERSION}/graphviz-${GRAPHVIZ_VERSION}.tar.gz
-          tar -xf graphviz-${GRAPHVIZ_VERSION}.tar.gz
-          cd graphviz-${GRAPHVIZ_VERSION}
-
-          # Keep it lean: disable language bindings to avoid extra deps
+          # Build with pangocairo; disable gd so -Tpng uses cairo by default
           ./configure --prefix="${GITHUB_WORKSPACE}/graphviz-install" \
+                      --without-gd \
                       --disable-swig --disable-guile --disable-java \
                       --disable-lua --disable-perl --disable-php \
                       --disable-python --disable-r --disable-ruby
-
           make -j"$(nproc)"
           make install
 
-      - name: Add Graphviz to PATH (and lib path)
+      - name: Add Graphviz to PATH & set lib path
+        shell: bash
         run: |
-          echo "${GITHUB_WORKSPACE}/graphviz-install/bin" >> $GITHUB_PATH
-          echo "LD_LIBRARY_PATH=${GITHUB_WORKSPACE}/graphviz-install/lib:${LD_LIBRARY_PATH:-}" >> $GITHUB_ENV
-
-      - name: Check Graphviz/Doxygen
-        run: |
-          dot -V
-          which dot
-          doxygen --version
+          echo "${GITHUB_WORKSPACE}/graphviz-install/bin" >> "$GITHUB_PATH"
+          echo "LD_LIBRARY_PATH=${GITHUB_WORKSPACE}/graphviz-install/lib:${LD_LIBRARY_PATH:-}" >> "$GITHUB_ENV"
 
       ##################################
-      # 📚 Generate Doxygen Documentation
+      # 🖋️ Install fonts (cached) & refresh caches for Graphviz
+      ##################################
+      - name: Refresh font caches & Graphviz plugin cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Ensure system fontconfig is used
+          unset FONTCONFIG_FILE FONTCONFIG_PATH || true
+
+          # Rebuild fontconfig cache and refresh Graphviz plugin cache
+          fc-cache -f
+          "${GITHUB_WORKSPACE}/graphviz-install/bin/dot" -c || true
+
+          # Smoke test with Helvetica (aliased via fontconfig to Nimbus Sans)
+          fc-match Helvetica || true
+          echo 'digraph G {
+            graph [fontname="Helvetica"];
+            node  [fontname="Helvetica"];
+            edge  [fontname="Helvetica"];
+            a -> b; label="Helvetica test";
+          }' | "${GITHUB_WORKSPACE}/graphviz-install/bin/dot" -Tpng -o /tmp/helvetica.png
+          ls -lh /tmp/helvetica.png || true
+
+      ##################################
+      # 📚 Generate Doxygen Documentation (force Helvetica; png via cairo)
       ##################################
       - name: Generate Doxygen Documentation
+        shell: bash
         run: |
-          mkdir build && cd build
-          cmake .. -DBUILD_SOURCE=OFF -DDOXYGEN_GENERATE_LATEX=FALSE
+          set -euo pipefail
+          mkdir -p build && cd build
+          cmake .. \
+            -DBUILD_SOURCE=OFF \
+            -DDOXYGEN_GENERATE_LATEX=FALSE \
+            -DDOXYGEN_DOT_FONTNAME="Helvetica"
+            # No need to force DOT_EXECUTABLE; it's on PATH now
+            # PNG will use cairo because Graphviz was built --without-gd
           cmake --build . --target doxygen
 
       ##################################
