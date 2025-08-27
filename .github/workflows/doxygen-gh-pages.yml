@@ -1,7 +1,3 @@
-# Taken from:
-# - https://github.com/marketplace/actions/doxygen-github-pages-deploy-action
-# - https://github.com/DenverCoder1/doxygen-github-pages-action/blob/main/action.yml
-
 name: GH Doxygen
 
 on:
@@ -11,10 +7,12 @@ on:
   workflow_dispatch:
 
 env:
-  DOXYGEN_VERSION: 1.14.0
+  DOXYGEN_VERSION: "1.14.0"
+  CMAKE_VERSION: "4.0.3"
+  GRAPHVIZ_VERSION: "13.1.1"
 
 jobs:
-  deploy:
+  generate-docs:
     runs-on: ubuntu-latest
 
     defaults:
@@ -22,39 +20,46 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           submodules: "true"
 
-      - name: Update Ubuntu package list
-        run: sudo apt-get update
+      ##################################
+      # 📦 Cache and Install CMake
+      ##################################
+      - name: Cache CMake
+        id: cache-cmake
+        uses: actions/cache@v4
+        with:
+          path: cmake-install
+          key: cmake-cache-${{ env.CMAKE_VERSION }}
 
       - name: Install CMake
-        run: sudo apt-get install -y cmake
-
-      - name: Install Graphviz (for doxygen 'dot' component)
-        run: sudo apt-get install -y graphviz
-
-      - name: Prepare cache timestamp
-        id: cache_timestamp
-        shell: cmake -P {0}
+        if: steps.cache-cmake.outputs.cache-hit != 'true'
         run: |
-          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-          file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
+          mkdir -p cmake-install
+          curl -LO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
+          tar -xf cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz --strip-components=1 -C cmake-install
+        shell: bash
 
+      - name: Add CMake to PATH
+        run: echo "${GITHUB_WORKSPACE}/cmake-install/bin" >> $GITHUB_PATH
+
+      ##################################
+      # 📦 Cache and Install Doxygen
+      ##################################
       - name: Cache Doxygen
         id: cache-doxygen
         uses: actions/cache@v4
         with:
           path: doxygen-${{ env.DOXYGEN_VERSION }}
-          key: doxygen-cache-${{ steps.cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-            doxygen-cache-
+          key: doxygen-cache-${{ env.DOXYGEN_VERSION }}
 
       - name: Install Doxygen from GitHub
         if: steps.cache-doxygen.outputs.cache-hit != 'true'
         run: |
-          version_underscore=$(echo "$DOXYGEN_VERSION" | sed -r 's/\./_/g')
+          version_underscore=$(echo "$DOXYGEN_VERSION" | sed 's/\./_/g')
           dirname=doxygen-$DOXYGEN_VERSION
           filename_tar=$dirname.linux.bin.tar
           filename_gz=$filename_tar.gz
@@ -62,20 +67,76 @@ jobs:
           wget $url
           gunzip $filename_gz
           tar xf $filename_tar
-          echo "${GITHUB_WORKSPACE}/$dirname/bin" >> $GITHUB_PATH
+        shell: bash
 
+      - name: Add Doxygen to PATH
+        run: echo "${GITHUB_WORKSPACE}/doxygen-${{ env.DOXYGEN_VERSION }}/bin" >> $GITHUB_PATH
+
+      ##################################
+      # 📦 Build Graphviz (dot) from source
+      ##################################
+      - name: Cache Graphviz (built)
+        id: cache-graphviz
+        uses: actions/cache@v4
+        with:
+          path: graphviz-install
+          key: ${{ runner.os }}-graphviz-${{ env.GRAPHVIZ_VERSION }}
+
+      - name: Build & install Graphviz from source
+        if: steps.cache-graphviz.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          # Minimal toolchain + headers (gd/png/jpeg optional but nice to have)
+          sudo apt-get install -y build-essential pkg-config libexpat1-dev \
+                                  libgd-dev libpng-dev libjpeg-dev zlib1g-dev \
+                                  libfreetype6-dev libfontconfig1-dev
+
+          curl -LO https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${GRAPHVIZ_VERSION}/graphviz-${GRAPHVIZ_VERSION}.tar.gz
+          tar -xf graphviz-${GRAPHVIZ_VERSION}.tar.gz
+          cd graphviz-${GRAPHVIZ_VERSION}
+
+          # Keep it lean: disable language bindings to avoid extra deps
+          ./configure --prefix="${GITHUB_WORKSPACE}/graphviz-install" \
+                      --disable-swig --disable-guile --disable-java \
+                      --disable-lua --disable-perl --disable-php \
+                      --disable-python --disable-r --disable-ruby
+
+          make -j"$(nproc)"
+          make install
+
+      - name: Add Graphviz to PATH (and lib path)
+        run: |
+          echo "${GITHUB_WORKSPACE}/graphviz-install/bin" >> $GITHUB_PATH
+          echo "LD_LIBRARY_PATH=${GITHUB_WORKSPACE}/graphviz-install/lib:${LD_LIBRARY_PATH:-}" >> $GITHUB_ENV
+
+      - name: Check Graphviz/Doxygen
+        run: |
+          dot -V
+          which dot
+          doxygen --version
+
+      ##################################
+      # 📚 Generate Doxygen Documentation
+      ##################################
       - name: Generate Doxygen Documentation
         run: |
           mkdir build && cd build
           cmake .. -DBUILD_SOURCE=OFF -DDOXYGEN_GENERATE_LATEX=FALSE
           cmake --build . --target doxygen
 
-      - name: Create .nojekyll (ensures pages with underscores work on gh pages)
-        run: touch docs/doxygen/build/html/.nojekyll
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+      ##################################
+      # 🚀 Deploy to GitHub Pages
+      ##################################
+      - name: Upload documentation to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          branch: gh-pages
-          folder: docs/doxygen/build/html
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/doxygen/build/html
+          publish_branch: gh-pages          # explicit (default)
+          keep_files: false                 # remove anything that isn't in publish_dir
+          force_orphan: true                # recreate gh-pages as a single clean commit
+      # In the repository settings, go to Actions -> General -> Workflow permissions
+      # and enable Read and write permissions.
+      # After the workflow runs successfully, go to Settings -> Pages -> Branch
+      # select `gh-pages` and click "Save".
