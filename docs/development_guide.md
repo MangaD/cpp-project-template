@@ -193,7 +193,7 @@ cmake .. --list-presets
 1. Files are considered private by default. Having a file command will have documentation be generated for it. See: https://linux.m2osw.com/doxygen-does-not-generate-documentation-my-c-functions-or-any-global-function
 2. Documenting the namespace is necessary for references to work. See: https://stackoverflow.com/q/46845369/3049315
 3. The main page of doxygen is set with the `\mainpage` command. See: https://www.doxygen.nl/manual/commands.html#cmdmainpage  
-  But it is possible to set an MD file as the main page. See: https://stackoverflow.com/a/26244558/3049315
+    But it is possible to set an MD file as the main page. See: https://stackoverflow.com/a/26244558/3049315
 
 <a id="adding-libraries"></a>
 ## Adding libraries
@@ -317,6 +317,9 @@ sudo docker push registry.gitlab.com/mangad/cpp-project-template
 ### Debuging
 
 - [Difference between -g, -ggdb and -ggdb3](https://gcc.gnu.org/legacy-ml/gcc-help/2009-02/msg00130.html)
+- [Valgrind](https://valgrind.org/)
+- [perf](https://perfwiki.github.io/main/)
+- [rr debugger](https://rr-project.org/)
 
 ### Documentation
 
