@@ -309,16 +309,18 @@ sudo docker push registry.gitlab.com/mangad/cpp-project-template
 - [VSCode Gcov Viewer](https://marketplace.visualstudio.com/items?itemName=JacquesLucke.gcov-viewer)
 - [OpenCppCoverage Wiki](https://github.com/OpenCppCoverage/OpenCppCoverage/wiki)
 - [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html)
+- [BullseyeCoverage](https://www.bullseye.com/) (gcov alternative)
 
 ### Profiling
 
 - [GPROF Tutorial](https://www.thegeekstuff.com/2012/08/gprof-tutorial/)
+- [perf](https://perfwiki.github.io/main/)
 
 ### Debuging
 
 - [Difference between -g, -ggdb and -ggdb3](https://gcc.gnu.org/legacy-ml/gcc-help/2009-02/msg00130.html)
 - [Valgrind](https://valgrind.org/)
-- [perf](https://perfwiki.github.io/main/)
+- [PurifyPlus](https://www.unicomsi.com/products/purifyplus/) (alternative to Valgrind)
 - [rr debugger](https://rr-project.org/)
 
 ### Documentation
