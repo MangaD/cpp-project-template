@@ -5,6 +5,8 @@
 
 name: GH Debug
 
+# Trigger this workflow manually, on pushes to main or version tags, and on
+# pull requests targeting main.
 on:
   workflow_dispatch: {} # allow running it manually
   push:

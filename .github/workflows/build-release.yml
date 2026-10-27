@@ -5,6 +5,8 @@
 
 name: GH Release
 
+# Trigger this workflow manually, on pushes to main or version tags, and on
+# pull requests targeting main.
 on:
   workflow_dispatch: {} # allow running it manually
   push:
@@ -17,6 +19,11 @@ on:
       - main
     tags:
       - v**
+
+# By default, the workflow token can read repository contents but cannot change them.
+# Give write access only to individual jobs that need to publish or modify repository data.
+permissions:
+  contents: read
 
 env:
   BUILD_TYPE: Release
