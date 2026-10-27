@@ -63,7 +63,7 @@ jobs:
             os: windows-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x86-mingw-dynamic,
-            mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/i686-12.2.0-release-posix-dwarf-msvcrt-rt_v10-rev2.7z",
+            mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/i686-16.2.0-release-posix-dwarf-msvcrt-rt_v14-rev1.7z",
             mingw_dir: "./mingw/mingw32/bin",
             mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw32/bin"
           }
@@ -72,7 +72,7 @@ jobs:
             os: windows-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x64-mingw-dynamic,
-            mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/x86_64-12.2.0-release-posix-seh-msvcrt-rt_v10-rev2.7z",
+            mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-msvcrt-rt_v14-rev1.7z",
             mingw_dir: "./mingw/mingw64/bin",
             mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin"
           }
