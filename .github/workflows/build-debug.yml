@@ -35,15 +35,12 @@ jobs:
             name: "Windows Latest MSVC i686", ext: "windows-msvc-i686",
             os: windows-latest,
             cc: "cl", cxx: "cl",
-            # https://learn.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170
-            environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars32.bat",
             vcpkg_triplet: x86-windows
           }
         - {
             name: "Windows Latest MSVC x86_64", ext: "windows-msvc-x86_64",
             os: windows-latest,
             cc: "cl", cxx: "cl",
-            environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
             vcpkg_triplet: x64-windows
           }
         # - {
@@ -246,11 +243,18 @@ jobs:
         restore-keys: |
           ${{ matrix.config.name }}-ccache-
 
+    # Set up MSVC environment for Windows builds using the Microsoft Visual Studio compiler (cl.exe).
+    # This step is only executed if the selected compiler in the matrix configuration is 'cl'.
+    - name: Set up MSVC environment
+      if: matrix.config.cc == 'cl'
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ startsWith(matrix.config.vcpkg_triplet, 'x86-') && 'x86' || 'x64' }}
+
     - name: Configure
       env:
         CC: ${{ matrix.config.cc }}
         CXX: ${{ matrix.config.cxx }}
-        ENVIRONMENT_SCRIPT: ${{ matrix.config.environment_script }}
         RUNNER_OS: ${{ runner.os }}
         VCPKG_TRIPLET: ${{ matrix.config.vcpkg_triplet }}
       working-directory: project
@@ -261,7 +265,6 @@ jobs:
     - name: Build
       env:
         CXX: ${{ matrix.config.cxx }}
-        ENVIRONMENT_SCRIPT: ${{ matrix.config.environment_script }}
         RUNNER_OS: ${{ runner.os }}
       working-directory: project
       run: |
