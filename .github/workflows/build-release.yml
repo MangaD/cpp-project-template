@@ -125,15 +125,26 @@ jobs:
     #   if: contains(matrix.config.ext, 'windows-mingw')
     #   run: echo "${{ matrix.config.mingw_chocolatey_dir }}" >> $GITHUB_PATH
 
+    - name: Generate MinGW cache key
+      id: mingw-cache-key
+      if: contains(matrix.config.ext, 'windows-mingw')
+      shell: pwsh
+      env:
+        MINGW_URL: ${{ matrix.config.mingw_url }}
+      run: |
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($env:MINGW_URL)
+        $hash = [Convert]::ToHexString(
+          [System.Security.Cryptography.SHA256]::HashData($bytes)
+        ).ToLowerInvariant()
+        "hash=$hash" >> $env:GITHUB_OUTPUT
+
     - name: Cache MinGW
       id: cache-mingw
       if: contains(matrix.config.ext, 'windows-mingw')
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./mingw
-        key: ${{ runner.os }}-${{ matrix.config.ext }}-cache-${{ steps.cache_timestamp.outputs.timestamp }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.config.ext }}-cache-
+        key: ${{ runner.os }}-${{ matrix.config.ext }}-mingw-${{ steps.mingw-cache-key.outputs.hash }}
 
     # vcpkg wxwidgets build fails with Chocolatey's packaging of MinGW.
     # https://github.com/microsoft/vcpkg/issues/31496
@@ -236,7 +247,7 @@ jobs:
         file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
 
     - name: ccache cache files
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: .ccache
         key: ${{ matrix.config.name }}-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
