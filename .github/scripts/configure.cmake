@@ -1,18 +1,5 @@
 #!/usr/local/bin/cmake -P
 
-if ("$ENV{RUNNER_OS}" STREQUAL "Windows" AND NOT "x$ENV{ENVIRONMENT_SCRIPT}" STREQUAL "x")
-	execute_process(
-		COMMAND "$ENV{ENVIRONMENT_SCRIPT}" && set
-		OUTPUT_FILE environment_script_output.txt
-	)
-	file(STRINGS environment_script_output.txt output_lines)
-	foreach(line IN LISTS output_lines)
-		if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
-			set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
-		endif()
-	endforeach()
-endif()
-
 set(path_separator ":")
 if ("$ENV{RUNNER_OS}" STREQUAL "Windows")
 	set(path_separator ";")

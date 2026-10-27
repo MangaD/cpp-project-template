@@ -27,6 +27,11 @@ permissions:
 
 env:
   BUILD_TYPE: Release
+  CCACHE_DIR: ${{ github.workspace }}/.ccache
+  CCACHE_COMPRESS: "true"
+  CCACHE_COMPRESSLEVEL: "3"
+  CCACHE_MAXSIZE: "1G"
+
 
 jobs:
   build:
@@ -109,13 +114,6 @@ jobs:
     - name: Update Ubuntu package list
       if: runner.os == 'Linux'
       run: sudo apt-get update
-
-    - name: Prepare cache timestamp
-      id: cache_timestamp
-      shell: cmake -P {0}
-      run: |
-        string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-        file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
 
     # # Chocolatey's MinGW does not work with vcpkg for some reason
     # - name: Set MinGW path
@@ -236,20 +234,17 @@ jobs:
     #     name: install-x64-mingw-static-dbg-out.log
     #     path: ./vcpkg/buildtrees/wxwidgets/install-x64-mingw-static-dbg-out.log
 
-    - name: Prepare ccache timestamp
-      id: ccache_cache_timestamp
-      shell: cmake -P {0}
-      run: |
-        string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-        file(APPEND "$ENV{GITHUB_OUTPUT}" "timestamp=${current_date}")
-
-    - name: ccache cache files
-      uses: actions/cache@v6
+    # Restore compiler cache files from .ccache before building. The exact key is
+    # unique to this workflow run and attempt; restore-keys lets GitHub fall back
+    # to the most recently saved cache for the same OS, configuration, and build type.
+    - name: Restore ccache
+      id: ccache-restore
+      uses: actions/cache/restore@v6
       with:
         path: .ccache
-        key: ${{ matrix.config.name }}-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
+        key: ${{ runner.os }}-${{ matrix.config.ext }}-${{ env.BUILD_TYPE }}-ccache-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: |
-          ${{ matrix.config.name }}-ccache-
+          ${{ runner.os }}-${{ matrix.config.ext }}-${{ env.BUILD_TYPE }}-ccache-
 
     # Set up MSVC environment for Windows builds using the Microsoft Visual Studio compiler (cl.exe).
     # This step is only executed if the selected compiler in the matrix configuration is 'cl'.
@@ -278,7 +273,18 @@ jobs:
       run: |
         cmake -P ./.github/scripts/build.cmake
 
-    - name: ccache statistics
+    # Persist the ccache directory so subsequent runs can reuse the compiler cache.
+    # Using always() allows a partially populated compiler cache to be saved even if
+    # the build fails. The condition also avoids saving when the restore step itself failed.
+    - name: Save ccache to cache
+      if: always() && steps.ccache-restore.outcome == 'success'
+      uses: actions/cache/save@v6
+      with:
+        path: .ccache
+        key: ${{ steps.ccache-restore.outputs.cache-primary-key }}
+
+    # Print the ccache summary to help diagnose cache hits, misses, and overall efficiency.
+    - name: Show ccache statistics
       shell: cmake -P {0}
       run: |
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
