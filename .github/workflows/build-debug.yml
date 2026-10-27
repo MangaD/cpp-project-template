@@ -230,13 +230,13 @@ jobs:
     # https://stackoverflow.com/a/59361133/3049315
     # - name: Get error log
     #   if: always()
-    #   uses: actions/upload-artifact@v1
+    #   uses: actions/upload-artifact@v7
     #   with:
     #     name: install-x64-mingw-static-dbg-out.log
     #     path: ./vcpkg/buildtrees/wxwidgets/install-x64-mingw-dynamic-dbg-out.log
 
     - name: ccache cache files
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: .ccache
         key: ${{ matrix.config.name }}-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
