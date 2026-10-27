@@ -97,7 +97,7 @@ jobs:
         shell: bash
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v7
       with:
         submodules: "true"
         # Use path because of issue: https://github.com/johnwason/vcpkg-action/issues/14#issuecomment-1558312751
@@ -195,7 +195,7 @@ jobs:
 
     - name: Get LLVM vcpkg triplets
       if: runner.os == 'Windows'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
       with:
         repository: 'Neumann-A/my-vcpkg-triplets'
         path: './my-vcpkg-triplets'
