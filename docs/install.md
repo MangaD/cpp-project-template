@@ -240,8 +240,8 @@ In Visual Studio Installer, click "Modify" and install "Desktop development with
 Download latest [MinGW builds](https://github.com/niXman/mingw-builds-binaries/releases/).
 
 Example:
-- [Architecture: i686](https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/i686-12.2.0-release-posix-dwarf-msvcrt-rt_v10-rev2.7z) - for compiling 32 bit programs
-- [Architecture: x86_64](https://github.com/niXman/mingw-builds-binaries/releases/download/12.2.0-rt_v10-rev2/x86_64-12.2.0-release-posix-seh-msvcrt-rt_v10-rev2.7z) - for compiling 64 bit programs
+- [Architecture: i686](https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/i686-16.2.0-release-posix-dwarf-ucrt-rt_v14-rev1.7z) - for compiling 32 bit programs
+- [Architecture: x86_64](https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-ucrt-rt_v14-rev1.7z) - for compiling 64 bit programs
 
 Put the MinGW bin folder in the path for the intended architecture.
 
