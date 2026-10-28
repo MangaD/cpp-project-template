@@ -70,6 +70,11 @@ jobs:
             os: windows-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x86-mingw-static,
+            # Choosing the UCRT version of MinGW because it is more compatible with modern Windows APIs and libraries.
+            # The MSVCRT version is older and may have compatibility issues with newer software.
+            # Choosing the POSIX threading model (posix) over the Windows threading model (win32) because
+            # it is more compatible with cross-platform libraries and tools, and it provides better support
+            # for C++11 and later features.
             mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/i686-16.2.0-release-posix-dwarf-ucrt-rt_v14-rev1.7z",
             mingw_dir: "./mingw/mingw32/bin",
             mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw32/bin"
@@ -287,10 +292,6 @@ jobs:
     - name: Show ccache statistics
       shell: cmake -P {0}
       run: |
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
-        set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
-        set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
-
         execute_process(COMMAND ccache -s)
 
     - name: Run tests
