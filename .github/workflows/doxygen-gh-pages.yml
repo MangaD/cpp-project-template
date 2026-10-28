@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  DOXYGEN_VERSION: "1.15.0"
+  DOXYGEN_VERSION: "1.18.0"
   CMAKE_VERSION: "4.0.3"
-  GRAPHVIZ_VERSION: "13.1.1"
+  GRAPHVIZ_VERSION: "16.1.0"
 
 jobs:
   generate-docs:
@@ -30,7 +30,7 @@ jobs:
       ##################################
       - name: Cache CMake
         id: cache-cmake
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: cmake-install
           key: cmake-cache-${{ env.CMAKE_VERSION }}
@@ -51,7 +51,7 @@ jobs:
       ##################################
       - name: Cache Doxygen
         id: cache-doxygen
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: doxygen-${{ env.DOXYGEN_VERSION }}
           key: doxygen-cache-${{ env.DOXYGEN_VERSION }}
@@ -90,7 +90,7 @@ jobs:
       ##################################
       - name: Cache Graphviz build (pangocairo)
         id: cache-graphviz-cairo
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: graphviz-install
           key: ${{ runner.os }}-graphviz-${{ env.GRAPHVIZ_VERSION }}-cairo-nogd
