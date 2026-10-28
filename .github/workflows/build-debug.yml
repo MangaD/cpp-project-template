@@ -161,25 +161,8 @@ jobs:
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${{ matrix.config.mingw_dir }}" mingw_dir)
         file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE};${mingw_dir}")
 
-    - name: Install Ninja
-      run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y ninja-build
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          choco install ninja
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          brew install ninja
-        fi
-
-    - name: Install ccache
-      run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y ccache
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          choco install ccache
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          brew install ccache
-        fi
+    - name: Set up build tools
+      uses: ./project/.github/actions/setup-build-tools
 
     - name: Install code coverage tool
       if: startsWith(matrix.config.ext, 'windows-msvc')
