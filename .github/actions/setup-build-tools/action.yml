@@ -1,64 +1,56 @@
 
 # Composite GitHub Action: Setup Build Tools
 #
-# Installs Ninja (the build system) and ccache (the compiler cache) on
-# the current GitHub Actions runner.
+# Installs Ninja (build system) and ccache (compiler cache) on the
+# current GitHub Actions runner.
 #
 # Supported operating systems:
-#   - Linux:   Uses APT.
-#   - Windows: Uses Chocolatey.
-#   - macOS:   Uses Homebrew.
+#   - Linux:   APT
+#   - Windows: Chocolatey
+#   - macOS:   Homebrew
 #
 # Requirements:
-#   - The runner must have the appropriate package manager installed.
-#   - Bash must be available (provided by GitHub-hosted runners).
-#   - The Linux package index should be updated before invoking this action.
+#   - Bash and the corresponding package manager must be available.
+#   - On Linux, the APT package index should be updated beforehand.
 #
-# Usage:
+# Usage (after checking out the repository into ./project):
 #   - name: Set up build tools
 #     uses: ./project/.github/actions/setup-build-tools
 #
 # Note:
-#   This action installs ccache but does not configure its storage directory,
-#   size limit, or compression settings. Those are configured separately
-#   through environment variables in the calling workflow.
+#   This action installs ccache but does not configure compiler caching.
+#   Cache settings and persistence are handled by the calling workflow.
 
 name: Setup build tools
 description: Install Ninja and ccache on Linux, Windows, and macOS runners.
 
 runs:
-  # Composite actions allow you to combine multiple steps into a single action.
   using: composite
   steps:
-    # Ninja is the build system used by the project's CMake configuration
-    # (-G Ninja). It executes the compilation and linking commands generated
-    # by CMake.
-    - name: Install Ninja
+    - name: Install Ninja and ccache
       shell: bash
       run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y ninja-build
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          choco install ninja
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          brew install ninja
-        fi
+        set -euo pipefail
 
-    # ccache stores compilation results so that subsequent builds can reuse
-    # previously compiled object files when the compiler inputs have not
-    # changed.
-    #
-    # The calling workflow is responsible for:
-    #   - Setting CCACHE_DIR, CCACHE_MAXSIZE, and compression options.
-    #   - Restoring and saving the cache with actions/cache.
-    #   - Enabling ccache through CMake's compiler launcher properties.
-    - name: Install ccache
+        case "$RUNNER_OS" in
+          Linux)
+            sudo apt-get install -y ninja-build ccache
+            ;;
+          Windows)
+            choco install ninja ccache -y --no-progress
+            ;;
+          macOS)
+            brew install ninja ccache
+            ;;
+          *)
+            echo "::error::Unsupported operating system: $RUNNER_OS"
+            exit 1
+            ;;
+        esac
+
+    # Print installed versions for easier troubleshooting and CI diagnostics.
+    - name: Verify installed tools
       shell: bash
       run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y ccache
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          choco install ccache
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          brew install ccache
-        fi
+        ninja --version
+        ccache --version
