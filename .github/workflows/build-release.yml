@@ -42,31 +42,31 @@ jobs:
       matrix:
         config:
         - {
-            name: "Windows Latest MSVC i686", ext: "windows-msvc-i686",
+            name: "Windows Latest MSVC x86", ext: "windows-msvc-x86",
             os: windows-latest,
             cc: "cl", cxx: "cl",
             vcpkg_triplet: x86-windows-static
           }
         - {
-            name: "Windows Latest MSVC x86_64", ext: "windows-msvc-x86_64",
+            name: "Windows Latest MSVC x64", ext: "windows-msvc-x64",
             os: windows-latest,
             cc: "cl", cxx: "cl",
             vcpkg_triplet: x64-windows-static
           }
         # - {
-        #     name: "Windows Latest LLVM i686", ext: "windows-llvm-i686",
+        #     name: "Windows Latest LLVM x86", ext: "windows-llvm-x86",
         #     os: windows-latest,
         #     cc: "clang", cxx: "clang++",
         #     vcpkg_triplet: x86-win-llvm-static-md-release
         #   }
         - {
-            name: "Windows Latest LLVM x86_64", ext: "windows-llvm-x86_64",
+            name: "Windows Latest LLVM x64", ext: "windows-llvm-x64",
             os: windows-latest,
             cc: "clang", cxx: "clang++",
             vcpkg_triplet: x64-win-llvm-static-md-release
           }
         - {
-            name: "Windows Latest MinGW i686", ext: "windows-mingw-i686",
+            name: "Windows Latest MinGW x86", ext: "windows-mingw-x86",
             os: windows-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x86-mingw-static,
@@ -79,7 +79,7 @@ jobs:
             mingw_dir: "./mingw/mingw32/bin"
           }
         - {
-            name: "Windows Latest MinGW x86_64", ext: "windows-mingw-x86_64",
+            name: "Windows Latest MinGW x64", ext: "windows-mingw-x64",
             os: windows-latest,
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x64-mingw-static,
@@ -283,7 +283,7 @@ jobs:
       if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
       working-directory: project/build
       run: |
-        if [[ ${{ matrix.config.ext }} =~ "i686" ]]; then
+        if [[ ${{ matrix.config.ext }} =~ "x86" ]]; then
           cpack -C Release -G NSIS
         else
           cpack -C Release -G NSIS64
