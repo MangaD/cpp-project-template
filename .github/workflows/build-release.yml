@@ -53,17 +53,24 @@ jobs:
             cc: "cl", cxx: "cl",
             vcpkg_triplet: x64-windows-static
           }
-        # - {
-        #     name: "Windows Latest LLVM x86", ext: "windows-llvm-x86",
-        #     os: windows-latest,
-        #     cc: "clang", cxx: "clang++",
-        #     vcpkg_triplet: x86-win-llvm-static-md-release
-        #   }
+        - {
+            name: "Windows Latest LLVM x86", ext: "windows-llvm-x86",
+            os: windows-latest,
+            cc: "clang", cxx: "clang++",
+            # The compiler target is set to the 32-bit MSVC target for the x86 LLVM build.
+            # This ensures that the generated binaries are compatible with 32-bit Windows systems.
+            compiler_target: "i686-pc-windows-msvc",
+            # This triplet is not provided by Neumann-A/my-vcpkg-triplets.
+            # We define it locally and copy it into the upstream overlay directory
+            # so it can reuse the existing LLVM toolchain and configuration.
+            vcpkg_triplet: x86-win-llvm-static-rel
+          }
         - {
             name: "Windows Latest LLVM x64", ext: "windows-llvm-x64",
             os: windows-latest,
             cc: "clang", cxx: "clang++",
-            vcpkg_triplet: x64-win-llvm-static-md-release
+            compiler_target: "x86_64-pc-windows-msvc",
+            vcpkg_triplet: x64-win-llvm-static-rel
           }
         - {
             name: "Windows Latest MinGW x86", ext: "windows-mingw-x86",
@@ -194,6 +201,16 @@ jobs:
       run: |
         chmod a+x ./.github/scripts/*.cmake
         cmake -P ./.github/scripts/configure.cmake
+
+    # Check the compiler target for Windows LLVM builds to ensure that the correct target is being used.
+    - name: Check LLVM target
+      if: contains(matrix.config.ext, 'windows-llvm')
+      shell: pwsh
+      working-directory: project
+      run: |
+        clang++ --version
+        clang++ -dumpmachine
+        Select-String -Path build/CMakeCache.txt -Pattern 'CMAKE_CXX_COMPILER:|CMAKE_CXX_COMPILER_TARGET:|VCPKG_TARGET_TRIPLET:'
 
     - name: Build
       env:

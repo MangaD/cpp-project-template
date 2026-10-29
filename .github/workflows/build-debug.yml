@@ -51,7 +51,11 @@ jobs:
             name: "Windows Latest LLVM x86", ext: "windows-llvm-x86",
             os: windows-latest,
             cc: "clang", cxx: "clang++",
+            # The compiler target is set to the 32-bit MSVC target for the x86 LLVM build.
+            # This ensures that the generated binaries are compatible with 32-bit Windows systems.
             compiler_target: "i686-pc-windows-msvc",
+            # The Windows LLVM installation lacks the x86 profiling runtime
+            # (clang_rt.profile.lib), so Coverage builds fail at link time.
             build_type: "Debug",
             vcpkg_triplet: x86-win-llvm
           }
@@ -197,6 +201,7 @@ jobs:
         chmod a+x ./.github/scripts/*.cmake
         cmake -P ./.github/scripts/configure.cmake
 
+    # Check the compiler target for Windows LLVM builds to ensure that the correct target is being used.
     - name: Check LLVM target
       if: contains(matrix.config.ext, 'windows-llvm')
       shell: pwsh

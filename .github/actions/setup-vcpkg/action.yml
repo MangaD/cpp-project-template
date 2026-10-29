@@ -63,6 +63,18 @@ runs:
         repository: Neumann-A/my-vcpkg-triplets
         path: my-vcpkg-triplets
 
+    # Add the project's custom LLVM triplets to the upstream overlay.
+    # Keeping them in the same directory preserves the relative paths
+    # used by the upstream toolchain and port configuration.
+    - name: Add project LLVM triplets
+      if: contains(inputs.triplet, 'win-llvm')
+      shell: pwsh
+      run: |
+        Copy-Item `
+          -Path "${{ github.workspace }}/project/.github/vcpkg-triplets/*.cmake" `
+          -Destination "${{ github.workspace }}/my-vcpkg-triplets/" `
+          -Force
+
     # Install the dependencies declared in project/vcpkg.json for the
     # selected target triplet.
     # The overlay triplets argument is supplied only for LLVM builds.
