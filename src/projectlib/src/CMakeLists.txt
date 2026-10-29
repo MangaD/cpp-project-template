@@ -2,6 +2,27 @@ file(GLOB PROJECT_LIB_FILES "*.cpp")
 
 add_library(${PROJECT_LIB_NAME} STATIC ${PROJECT_LIB_FILES})
 
+# Match the MSVC runtime used by the executables and vcpkg dependencies.
+# Use the static CRT in Release (/MT) and Debug (/MTd).
+if (MSVC OR
+	(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
+	CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC"))
+
+	set_property(TARGET ${PROJECT_LIB_NAME} PROPERTY
+		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+	)
+
+	# Clang's GNU frontend targeting the MSVC ABI may not honor
+	# MSVC_RUNTIME_LIBRARY. Explicitly select the static CRT.
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
+		CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+		target_compile_options(${PROJECT_LIB_NAME} PRIVATE
+			$<$<CONFIG:Release>:-fms-runtime-lib=static>
+			$<$<CONFIG:Debug>:-fms-runtime-lib=static_dbg>
+		)
+	endif()
+endif()
+
 # Set to PUBLIC so that executables depending on this library also use these definitions
 target_compile_definitions(${PROJECT_LIB_NAME} PUBLIC
 	# Disable secure warnings on MSVC

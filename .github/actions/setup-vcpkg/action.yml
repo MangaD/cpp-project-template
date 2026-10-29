@@ -24,7 +24,7 @@
 #     uses: ./project/.github/actions/setup-vcpkg
 #     with:
 #       triplet: ${{ matrix.config.vcpkg_triplet }}
-#       cache-key: ${{ matrix.config.ext }}_${{ env.BUILD_TYPE }}
+#       cache-key: ${{ matrix.config.ext }}_${{ matrix.config.build_type || env.BUILD_TYPE }}
 #
 # Note:
 #   Dependencies are installed explicitly in manifest mode by this action.

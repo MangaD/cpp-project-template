@@ -156,7 +156,7 @@ jobs:
       uses: ./project/.github/actions/setup-vcpkg
       with:
         triplet: ${{ matrix.config.vcpkg_triplet }}
-        cache-key: ${{ matrix.config.ext }}_${{ env.BUILD_TYPE }}
+        cache-key: ${{ matrix.config.ext }}_${{ matrix.config.build_type || env.BUILD_TYPE }}
 
     # vcpkg wxwidgets build failts with Chocolatey's packaging of MinGW. This step is
     # used for retrieving the error log.
@@ -176,9 +176,9 @@ jobs:
       uses: actions/cache/restore@v6
       with:
         path: .ccache
-        key: ${{ runner.os }}-${{ matrix.config.ext }}-${{ env.BUILD_TYPE }}-ccache-${{ github.run_id }}-${{ github.run_attempt }}
+        key: ${{ runner.os }}-${{ matrix.config.ext }}-${{ matrix.config.build_type || env.BUILD_TYPE }}-ccache-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: |
-          ${{ runner.os }}-${{ matrix.config.ext }}-${{ env.BUILD_TYPE }}-ccache-
+          ${{ runner.os }}-${{ matrix.config.ext }}-${{ matrix.config.build_type || env.BUILD_TYPE }}-ccache-
 
     # Set up MSVC environment for Windows builds using the Microsoft Visual Studio compiler (cl.exe).
     # This step is only executed if the selected compiler in the matrix configuration is 'cl'.

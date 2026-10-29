@@ -30,7 +30,12 @@ if ("$ENV{RUNNER_OS}" STREQUAL "Windows")
 			-D CMAKE_CXX_COMPILER_LAUNCHER=ccache
 			-D CMAKE_TOOLCHAIN_FILE=${toolchain_file}
 			-D VCPKG_TARGET_TRIPLET=$ENV{VCPKG_TRIPLET}
-			-D VCPKG_HOST_TRIPLET=$ENV{VCPKG_TRIPLET}
+			-D VCPKG_TARGET_TRIPLET=$ENV{VCPKG_TRIPLET}
+			# Do not force the host triplet to match the target triplet.
+			# Cross-architecture builds (e.g., x86 on an x64 runner) may need native
+			# x64 build tools, even when the target libraries are built for x86.
+			# Let vcpkg select the appropriate host triplet automatically.
+			# -D VCPKG_HOST_TRIPLET=$ENV{VCPKG_TRIPLET}
 			-D VCPKG_MANIFEST_MODE=OFF
 			${compiler_target_args}
 			--fresh # Necessary if changing between build types

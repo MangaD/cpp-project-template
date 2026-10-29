@@ -51,16 +51,38 @@ if (MINGW)
 	target_link_libraries(${PROJECT_WX_NAME} PRIVATE
 		$<$<CONFIG:Release>:-static gcc stdc++ winpthread -dynamic>
 	)
-elseif (MSVC)
+elseif (MSVC OR
+		(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
+		CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC"))
 	# MT vs MD vs MTd vs MDd https://social.msdn.microsoft.com/Forums/en-US/9474efb9-49cd-46e1-8935-ee2bebe95203/difference-in-mt-and-md-run-time-lib-setting?forum=vcgeneral
 	# Might have to use MDd with wxWidgets because: https://forums.wxwidgets.org/viewtopic.php?t=47650
 	set_property(TARGET ${PROJECT_WX_NAME} PROPERTY
 		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 		#MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
-	target_link_options(${PROJECT_WX_NAME} PUBLIC
-		$<$<CONFIG:Release>:/INCREMENTAL:NO /NODEFAULTLIB:MSVCRT>
-	)
+	# Clang's GNU frontend targeting the MSVC ABI may not honor
+	# MSVC_RUNTIME_LIBRARY. Explicitly select the corresponding static CRT.
+	# clang-cl uses the MSVC frontend and is handled by the property above.
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
+		CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+		target_compile_options(${PROJECT_WX_NAME} PRIVATE
+			$<$<CONFIG:Release>:-fms-runtime-lib=static>
+			$<$<CONFIG:Debug>:-fms-runtime-lib=static_dbg>
+		)
+	else()
+		# Disable incremental linking in Release builds to allow full linker
+		# optimizations and avoid incremental-link padding and overhead.
+		#
+		# Ignore automatic requests for MSVCRT.lib (the dynamic Release CRT
+		# import library), since our Release builds use the static MSVC runtime
+		# (/MT) to match the vcpkg dependencies.
+		#
+		# This does not disable the UCRT or fix objects compiled with /MD;
+		# all linked objects must use compatible CRT settings.
+		target_link_options(${PROJECT_WX_NAME} PRIVATE
+			$<$<CONFIG:Release>:/INCREMENTAL:NO /NODEFAULTLIB:MSVCRT>
+		)
+	endif()
 endif()
 
 # Bring project files to the executable's directory
