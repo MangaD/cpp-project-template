@@ -189,6 +189,7 @@ jobs:
         CXX: ${{ matrix.config.cxx }}
         RUNNER_OS: ${{ runner.os }}
         VCPKG_TRIPLET: ${{ matrix.config.vcpkg_triplet }}
+        COMPILER_TARGET: ${{ matrix.config.compiler_target || '' }}
       working-directory: project
       run: |
         chmod a+x ./.github/scripts/*.cmake

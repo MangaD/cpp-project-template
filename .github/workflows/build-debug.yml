@@ -51,12 +51,15 @@ jobs:
             name: "Windows Latest LLVM x86", ext: "windows-llvm-x86",
             os: windows-latest,
             cc: "clang", cxx: "clang++",
+            compiler_target: "i686-pc-windows-msvc",
+            build_type: "Debug",
             vcpkg_triplet: x86-win-llvm
           }
         - {
             name: "Windows Latest LLVM x64", ext: "windows-llvm-x64",
             os: windows-latest,
             cc: "clang", cxx: "clang++",
+            compiler_target: "x86_64-pc-windows-msvc",
             vcpkg_triplet: x64-win-llvm
           }
         - {
@@ -187,6 +190,8 @@ jobs:
         CXX: ${{ matrix.config.cxx }}
         RUNNER_OS: ${{ runner.os }}
         VCPKG_TRIPLET: ${{ matrix.config.vcpkg_triplet }}
+        BUILD_TYPE: ${{ matrix.config.build_type || env.BUILD_TYPE }}
+        COMPILER_TARGET: ${{ matrix.config.compiler_target || '' }}
       working-directory: project
       run: |
         chmod a+x ./.github/scripts/*.cmake
