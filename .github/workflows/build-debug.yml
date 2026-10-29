@@ -47,12 +47,12 @@ jobs:
             cc: "cl", cxx: "cl",
             vcpkg_triplet: x64-windows
           }
-        # - {
-        #     name: "Windows Latest LLVM i686", ext: "windows-llvm-i686",
-        #     os: windows-latest,
-        #     cc: "clang", cxx: "clang++",
-        #     vcpkg_triplet: x86-win-llvm
-        #   }
+        - {
+            name: "Windows Latest LLVM i686", ext: "windows-llvm-i686",
+            os: windows-latest,
+            cc: "clang", cxx: "clang++",
+            vcpkg_triplet: x86-win-llvm
+          }
         - {
             name: "Windows Latest LLVM x86_64", ext: "windows-llvm-x86_64",
             os: windows-latest,
@@ -144,29 +144,12 @@ jobs:
     #       libxkbcommon-dev libegl1-mesa-dev libibus-1.0-dev \
     #       libdbus-1-dev libxi-dev libxtst-dev
 
-    - name: Get LLVM vcpkg triplets
+    - name: Set up vcpkg
       if: runner.os == 'Windows'
-      uses: actions/checkout@v7
+      uses: ./project/.github/actions/setup-vcpkg
       with:
-        repository: 'Neumann-A/my-vcpkg-triplets'
-        path: './my-vcpkg-triplets'
-
-    - name: vcpkg
-      id: vcpkg
-      if: runner.os == 'Windows'
-      uses: johnwason/vcpkg-action@master
-      env:
-        # Because we have the vcpkg.json file but don't use it, we must turn manifest mode off
-        VCPKG_MANIFEST_MODE: OFF
-      with:
-        # Manifest builds on every CMake configure, which is not acceptable
-        #manifest-dir: ${{ github.workspace }}
-        pkgs: wxwidgets gtest
         triplet: ${{ matrix.config.vcpkg_triplet }}
-        extra-args: --overlay-triplets=${{ github.workspace }}/my-vcpkg-triplets
-        cache-key: ${{ matrix.config.ext }}
-        revision: master
-        token: ${{ github.token }}
+        cache-key: ${{ matrix.config.ext }}_${{ env.BUILD_TYPE }}
 
     # vcpkg wxwidgets build failts with Chocolatey's packaging of MinGW. This step is
     # used for retrieving the error log.

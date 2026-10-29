@@ -1,0 +1,100 @@
+
+# Composite GitHub Action: Setup vcpkg
+#
+# Installs the project's Windows dependencies using the vcpkg manifest
+# located at project/vcpkg.json.
+#
+# Features:
+#   - Installs dependencies declared in vcpkg.json.
+#   - Supports MSVC, LLVM, and MinGW target triplets.
+#   - Retrieves custom LLVM triplets from Neumann-A/my-vcpkg-triplets.
+#   - Uses binary caching provided by johnwason/vcpkg-action.
+#   - Tracks the latest vcpkg master revision.
+#   - Installs dependencies before CMake configuration.
+#
+# Requirements:
+#   - A Windows GitHub Actions runner.
+#   - The project must be checked out into ./project.
+#   - The appropriate compiler must already be configured.
+#   - A valid vcpkg.json must exist in the project root.
+#
+# Usage (after checking out the repository into ./project):
+#   - name: Set up vcpkg
+#     if: runner.os == 'Windows'
+#     uses: ./project/.github/actions/setup-vcpkg
+#     with:
+#       triplet: ${{ matrix.config.vcpkg_triplet }}
+#       cache-key: ${{ matrix.config.ext }}_${{ env.BUILD_TYPE }}
+#
+# Note:
+#   Dependencies are installed explicitly in manifest mode by this action.
+#   CMake configuration must use VCPKG_MANIFEST_MODE=OFF to avoid running
+#   another vcpkg installation.
+#
+#   The vcpkg installation is placed in the runner workspace, outside the
+#   project checkout, to keep it separate from the project's source files.
+
+name: Setup vcpkg
+description: Install Windows dependencies from vcpkg.json using binary caching.
+
+inputs:
+  triplet:
+    description: Target vcpkg triplet used to build and install dependencies.
+    required: true
+
+  cache-key:
+    description: Additional cache identifier for the dependency configuration.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # Retrieve the custom LLVM triplets used by the Windows Clang builds.
+    #
+    # The repository is checked out into the runner workspace so that
+    # vcpkg can find its triplet definitions through --overlay-triplets.
+    #
+    # Custom LLVM triplets are needed only for Windows Clang builds.
+    # MSVC and MinGW use vcpkg's built-in triplets.
+    - name: Get LLVM vcpkg triplets
+      if: contains(inputs.triplet, 'win-llvm')
+      uses: actions/checkout@v7
+      with:
+        repository: Neumann-A/my-vcpkg-triplets
+        path: my-vcpkg-triplets
+
+    # Install the dependencies declared in project/vcpkg.json for the
+    # selected target triplet.
+    # The overlay triplets argument is supplied only for LLVM builds.
+    #
+    # Manifest mode:
+    #   - manifest-dir points to the directory containing vcpkg.json.
+    #   - No pkgs input is supplied because the manifest defines the
+    #     dependency list.
+    #
+    # Binary caching:
+    #   - johnwason/vcpkg-action manages cache restoration and saving.
+    #   - cache-key provides an additional identifier to distinguish
+    #     dependency configurations.
+    #   - No separate actions/cache step is required for vcpkg packages.
+    #
+    # Version selection:
+    #   - revision: master uses the current vcpkg master branch.
+    #   - Dependencies follow the versions available in that revision,
+    #     subject to any constraints declared in vcpkg.json.
+    #
+    # Installation layout:
+    #   - vcpkg is checked out into the runner workspace's vcpkg directory.
+    #   - Installed packages are placed in vcpkg/installed.
+    #   - CMake subsequently uses the vcpkg toolchain file to find them.
+    - name: Install dependencies with vcpkg
+      uses: johnwason/vcpkg-action@master
+      env:
+        VCPKG_MANIFEST_MODE: ON
+      with:
+        manifest-dir: ${{ github.workspace }}/project
+        triplet: ${{ inputs.triplet }}
+        extra-args: ${{ contains(inputs.triplet, 'win-llvm') && format('--overlay-triplets={0}/my-vcpkg-triplets', github.workspace) || '' }}
+        cache-key: ${{ inputs.cache-key }}
+        revision: master
+        token: ${{ github.token }}
