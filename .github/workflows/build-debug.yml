@@ -192,6 +192,15 @@ jobs:
         chmod a+x ./.github/scripts/*.cmake
         cmake -P ./.github/scripts/configure.cmake
 
+    - name: Check LLVM target
+      if: contains(matrix.config.ext, 'windows-llvm')
+      shell: pwsh
+      working-directory: project
+      run: |
+        clang++ --version
+        clang++ -dumpmachine
+        Select-String -Path build/CMakeCache.txt -Pattern 'CMAKE_CXX_COMPILER:|CMAKE_CXX_COMPILER_TARGET:|VCPKG_TARGET_TRIPLET:'
+
     - name: Build
       env:
         CXX: ${{ matrix.config.cxx }}
