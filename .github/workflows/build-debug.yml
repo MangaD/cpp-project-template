@@ -70,8 +70,7 @@ jobs:
             # it is more compatible with cross-platform libraries and tools, and it provides better support
             # for C++11 and later features.
             mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/i686-16.2.0-release-posix-dwarf-ucrt-rt_v14-rev1.7z",
-            mingw_dir: "./mingw/mingw32/bin",
-            mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw32/bin"
+            mingw_dir: "./mingw/mingw32/bin"
           }
         - {
             name: "Windows Latest MinGW x86_64", ext: "windows-mingw-x86_64",
@@ -79,8 +78,7 @@ jobs:
             cc: "gcc", cxx: "g++",
             vcpkg_triplet: x64-mingw-dynamic,
             mingw_url: "https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-ucrt-rt_v14-rev1.7z",
-            mingw_dir: "./mingw/mingw64/bin",
-            mingw_chocolatey_dir: "C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin"
+            mingw_dir: "./mingw/mingw64/bin"
           }
         - {
             name: "Ubuntu Latest GCC", ext: "linux",
@@ -114,55 +112,15 @@ jobs:
       if: runner.os == 'Linux'
       run: sudo apt-get update
 
-    # # Chocolatey's MinGW does not work with vcpkg for some reason
-    # - name: Set MinGW path
-    #   if: contains(matrix.config.ext, 'windows-mingw')
-    #   run: echo "${{ matrix.config.mingw_chocolatey_dir }}" >> $GITHUB_PATH
-
-    - name: Generate MinGW cache key
-      id: mingw-cache-key
-      if: contains(matrix.config.ext, 'windows-mingw')
-      shell: pwsh
-      env:
-        MINGW_URL: ${{ matrix.config.mingw_url }}
-      run: |
-        $bytes = [System.Text.Encoding]::UTF8.GetBytes($env:MINGW_URL)
-        $hash = [Convert]::ToHexString(
-          [System.Security.Cryptography.SHA256]::HashData($bytes)
-        ).ToLowerInvariant()
-        "hash=$hash" >> $env:GITHUB_OUTPUT
-
-    - name: Cache MinGW
-      id: cache-mingw
-      if: contains(matrix.config.ext, 'windows-mingw')
-      uses: actions/cache@v6
-      with:
-        path: ./mingw
-        key: ${{ runner.os }}-${{ matrix.config.ext }}-mingw-${{ steps.mingw-cache-key.outputs.hash }}
-
-    # vcpkg wxwidgets build fails with Chocolatey's packaging of MinGW.
-    # https://github.com/microsoft/vcpkg/issues/31496
-    # https://stackoverflow.com/a/59361133/3049315
-    # - name: Remove Chocolatey's MinGW
-    #   if: contains(matrix.config.ext, 'windows-mingw')
-    #   run: choco uninstall mingw
-    - name: Install MinGW
-      if: ${{ contains(matrix.config.ext, 'windows-mingw') && steps.cache-mingw.outputs.cache-hit != 'true' }}
-      shell: cmake -P {0}
-      run: |
-        file(DOWNLOAD "${{ matrix.config.mingw_url }}" ./mingw.7z SHOW_PROGRESS)
-        file(ARCHIVE_EXTRACT INPUT ./mingw.7z DESTINATION mingw)
-
-    - name: Add MinGW to PATH
-      shell: cmake -P {0}
-      if: contains(matrix.config.ext, 'windows-mingw')
-      run: |
-        # Add to PATH environment variable
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${{ matrix.config.mingw_dir }}" mingw_dir)
-        file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE};${mingw_dir}")
-
     - name: Set up build tools
       uses: ./project/.github/actions/setup-build-tools
+
+    - name: Set up MinGW
+      if: contains(matrix.config.ext, 'windows-mingw')
+      uses: ./project/.github/actions/setup-mingw
+      with:
+        url: ${{ matrix.config.mingw_url }}
+        bin-dir: ${{ matrix.config.mingw_dir }}
 
     - name: Install code coverage tool
       if: startsWith(matrix.config.ext, 'windows-msvc')

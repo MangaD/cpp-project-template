@@ -1,0 +1,157 @@
+
+# Composite GitHub Action: Setup MinGW
+#
+# Downloads and configures a MinGW-w64 toolchain on Windows runners.
+#
+# Note:
+#   Chocolatey's MinGW distribution has caused compatibility issues with
+#   vcpkg, particularly when building wxWidgets. Therefore, this action
+#   downloads and configures a separate MinGW-w64 distribution instead.
+#
+# References:
+#   - https://github.com/microsoft/vcpkg/issues/31496
+#   - https://stackoverflow.com/a/59361133/3049315
+#
+# Features:
+#   - Supports both 32-bit and 64-bit MinGW toolchains.
+#   - Caches the extracted toolchain between workflow runs.
+#   - Invalidates the cache when the download URL changes.
+#   - Adds the compiler directory to PATH for subsequent steps.
+#
+# Requirements:
+#   - Windows runner with PowerShell and CMake installed.
+#   - A MinGW archive supported by CMake's file(ARCHIVE_EXTRACT).
+#
+# Usage:
+#   - name: Set up MinGW
+#     uses: ./project/.github/actions/setup-mingw
+#     with:
+#       url: ${{ matrix.config.mingw_url }}
+#       bin-dir: ${{ matrix.config.mingw_dir }}
+#
+# Note:
+#   This action caches the MinGW toolchain itself, not compiled objects.
+#   Compilation caching is handled separately through ccache.
+
+name: Setup MinGW
+description: Download, cache, and configure a MinGW-w64 toolchain.
+
+inputs:
+  url:
+    description: URL of the MinGW toolchain archive.
+    required: true
+
+  bin-dir:
+    description: Path to the MinGW bin directory, relative to the runner workspace.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # Hash the archive URL to invalidate the cache whenever the selected
+    # MinGW distribution or version changes.
+    - name: Generate MinGW cache key
+      id: cache-key
+      shell: pwsh
+      env:
+        MINGW_URL: ${{ inputs.url }}
+      run: |
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($env:MINGW_URL)
+        $hash = [Convert]::ToHexString(
+          [System.Security.Cryptography.SHA256]::HashData($bytes)
+        ).ToLowerInvariant()
+
+        "hash=$hash" >> $env:GITHUB_OUTPUT
+
+    # Reuse the previously extracted toolchain when its cache key matches.
+    # No restore-keys are used because restoring a different toolchain
+    # version could produce incorrect or inconsistent builds.
+    - name: Cache MinGW
+      id: cache-mingw
+      uses: actions/cache@v6
+      with:
+        path: ./mingw
+        key: mingw-${{ steps.cache-key.outputs.hash }}
+
+    # Download and extract the archive only when no exact cache hit exists.
+    - name: Install MinGW
+      if: steps.cache-mingw.outputs.cache-hit != 'true'
+      shell: cmake -P {0}
+      env:
+        MINGW_URL: ${{ inputs.url }}
+      run: |
+        file(DOWNLOAD "$ENV{MINGW_URL}" ./mingw.7z
+             SHOW_PROGRESS
+             STATUS download_status)
+
+        list(GET download_status 0 download_result)
+        if (NOT download_result EQUAL 0)
+          message(FATAL_ERROR "Failed to download MinGW: ${download_status}")
+        endif()
+
+        file(ARCHIVE_EXTRACT
+             INPUT ./mingw.7z
+             DESTINATION mingw)
+
+    # Add the selected toolchain's bin directory to PATH so that subsequent
+    # steps, including vcpkg and CMake, can find gcc, g++, and related tools.
+    - name: Add MinGW to PATH
+      shell: pwsh
+      env:
+        MINGW_BIN_DIR: ${{ inputs.bin-dir }}
+      run: |
+        $binDir = [System.IO.Path]::GetFullPath(
+          [System.IO.Path]::Combine(
+            $env:GITHUB_WORKSPACE,
+            $env:MINGW_BIN_DIR
+          )
+        )
+
+        if (-not (Test-Path -LiteralPath $binDir -PathType Container)) {
+          throw "MinGW bin directory does not exist: $binDir"
+        }
+
+        $binDir >> $env:GITHUB_PATH
+
+
+    # Verify that the expected MinGW compilers exist and take precedence
+    # over any other GCC installations available on the runner.
+    - name: Verify MinGW installation
+      shell: pwsh
+      env:
+        MINGW_BIN_DIR: ${{ inputs.bin-dir }}
+      run: |
+        $binDir = [System.IO.Path]::GetFullPath(
+          [System.IO.Path]::Combine(
+            $env:GITHUB_WORKSPACE,
+            $env:MINGW_BIN_DIR
+          )
+        )
+
+        foreach ($compiler in @("gcc.exe", "g++.exe")) {
+          $expected = Join-Path $binDir $compiler
+
+          if (-not (Test-Path -LiteralPath $expected -PathType Leaf)) {
+            throw "MinGW compiler not found: $expected"
+          }
+
+          # Get-Command may return multiple matching executables.
+          # Only the first one should be selected by PATH resolution.
+          $resolved = (Get-Command $compiler -CommandType Application -ErrorAction Stop |
+            Select-Object -First 1).Source
+
+          if (-not [System.IO.Path]::GetFullPath($resolved).Equals(
+            [System.IO.Path]::GetFullPath($expected),
+            [System.StringComparison]::OrdinalIgnoreCase
+          )) {
+            throw "Incorrect $compiler on PATH. Expected: $expected; Found: $resolved"
+          }
+
+          Write-Host "$compiler : $expected"
+          & $expected --version
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "$compiler version check failed with exit code $LASTEXITCODE"
+          }
+        }
+
