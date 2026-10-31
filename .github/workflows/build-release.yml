@@ -56,6 +56,7 @@ jobs:
         - {
             name: "Windows Latest LLVM x86", ext: "windows-llvm-x86",
             os: windows-latest,
+            # Read on clang++ vs clang-cl: https://gist.github.com/MangaD/1d7f082c27c6895975ebe5264570038c
             cc: "clang", cxx: "clang++",
             # The compiler target is set to the 32-bit MSVC target for the x86 LLVM build.
             # This ensures that the generated binaries are compatible with 32-bit Windows systems.

@@ -4,6 +4,7 @@
 
 # Version guard
 # 3.5 required for the environment variable CMAKE_EXPORT_COMPILE_COMMANDS
+# 3.15 for CMP0091: https://cmake.org/cmake/help/latest/policy/CMP0091.html
 # 3.17 for CPACK_NSIS_MUI_HEADERIMAGE
 # 3.18 for CPACK_NSIS_MANIFEST_DPI_AWARE
 # 3.21 for cmake-presets version 3
