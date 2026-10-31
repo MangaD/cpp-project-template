@@ -16,7 +16,8 @@ if("$ENV{RUNNER_OS}" STREQUAL "Linux")
 endif()
 
 # Conditionally add Coverage for gcc
-if("$ENV{CC}" STREQUAL "gcc")
+if("$ENV{ENABLE_COVERAGE}" STREQUAL "ON" AND
+   "$ENV{CC}" STREQUAL "gcc")
   list(APPEND CTEST_STEPS Coverage)
 endif()
 

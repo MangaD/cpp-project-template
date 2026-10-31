@@ -4,6 +4,7 @@
 
 # Version guard
 # 3.5 required for the environment variable CMAKE_EXPORT_COMPILE_COMMANDS
+# 3.15 for CMP0091: https://cmake.org/cmake/help/latest/policy/CMP0091.html
 # 3.17 for CPACK_NSIS_MUI_HEADERIMAGE
 # 3.18 for CPACK_NSIS_MANIFEST_DPI_AWARE
 # 3.21 for cmake-presets version 3
@@ -27,6 +28,7 @@ endif()
 # See: https://cmake.cmake.narkive.com/OMnbmBIb/without-c-c-compiler-check
 option(BUILD_SOURCE "Build primary libraries and executables." ON)
 # The BUILD_TESTING option is automatically created by CTest
+option(ENABLE_COVERAGE "Enable code coverage instrumentation and reporting." OFF)
 
 #############################
 ### PROJECT CONFIGURATION ###
@@ -102,7 +104,7 @@ include(cmake/doxygen.cmake)
 include(cmake/sphinx.cmake)
 include(cmake/clang-format.cmake)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+if (ENABLE_COVERAGE)
 	include(CodeCoverage)
 endif()
 

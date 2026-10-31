@@ -7,11 +7,12 @@
 # Other example considered but not used:
 # - https://stackoverflow.com/a/16536401/3049315
 
-if (NOT CMAKE_BUILD_TYPE STREQUAL "Coverage")
-	message(FATAL_ERROR "Must set CMAKE_BUILD_TYPE to \"Coverage\" in order to generate code coverage results.")
+# Coverage is an optional feature of Debug builds, not a separate CMake build configuration.
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+	message(FATAL_ERROR "ENABLE_COVERAGE requires CMAKE_BUILD_TYPE=Debug.")
 endif()
 
-if(MSVC)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	# Integrate OpenCppCoverage with CTest:
 	# - https://github.com/OpenCppCoverage/OpenCppCoverage/issues/85
 	# - https://github.com/boostorg/nowide/blob/84f074c2159a3c75f43120a5405e13a95cc5e639/cmake/FindOpenCppCoverage.cmake
@@ -43,7 +44,6 @@ if(MSVC)
 		set(outputFile ${CMAKE_CURRENT_BINARY_DIR}/OpenCppCoverage/cov-${counter}-coverage)
 
 		add_custom_command(OUTPUT ${outputFile}
-			DEPENDS coverage
 			COMMAND ${OpenCppCoverage_PATH}
 				--working_dir ${CMAKE_CURRENT_BINARY_DIR}
 				--export_type html:${outputFile}
@@ -58,14 +58,12 @@ if(MSVC)
 	
 	endif()
 	
-elseif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+elseif(CMAKE_COMPILER_IS_GNUCXX)
 
 	# The --coverage flag is a synonym for -fprofile-arcs -ftest-coverage (when compiling) 
 	# and -lgcov (when linking)
-	set(CMAKE_CXX_FLAGS_COVERAGE "-g -O0 --coverage")
-	set(CMAKE_C_FLAGS_COVERAGE "-g -O0 --coverage")
-	set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "--coverage")
-	set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "--coverage")
+	add_compile_options(--coverage)
+	add_link_options(--coverage)
 
 	mark_as_advanced(
 		CMAKE_CXX_FLAGS_COVERAGE
@@ -165,6 +163,38 @@ elseif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 		)
 		message(STATUS "-- gcovr HTML coverage report enabled through 'gcovr_html' target.")
 	endif()
+
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	# LLVM source-based coverage.
+	add_compile_options(
+		-fprofile-instr-generate
+		-fcoverage-mapping
+	)
+
+	add_link_options(-fprofile-instr-generate)
+
+	find_program(LLVM_PROFDATA_PATH llvm-profdata REQUIRED)
+	find_program(LLVM_COV_PATH llvm-cov REQUIRED)
+
+	set(LLVM_COVERAGE_DIR "${CMAKE_BINARY_DIR}/coverage/llvm")
+
+	add_custom_target(llvm_coverage
+		COMMAND ${CMAKE_COMMAND} -E make_directory
+			"${LLVM_COVERAGE_DIR}"
+
+		COMMAND ${CMAKE_COMMAND} -E env
+			"LLVM_PROFILE_FILE=${LLVM_COVERAGE_DIR}/%p-%m.profraw"
+			${CMAKE_CTEST_COMMAND} --output-on-failure
+
+		COMMAND ${LLVM_PROFDATA_PATH} merge
+			-sparse
+			"${LLVM_COVERAGE_DIR}"
+			-o "${LLVM_COVERAGE_DIR}/coverage.profdata"
+
+		WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+		COMMENT "Running tests and collecting LLVM coverage."
+		VERBATIM
+	)
 
 else()
 	message(STATUS "Coverage not supported with the current compiler.")

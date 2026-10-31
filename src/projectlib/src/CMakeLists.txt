@@ -9,7 +9,11 @@ if (MSVC OR
 	CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC"))
 
 	set_property(TARGET ${PROJECT_LIB_NAME} PROPERTY
-		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+		# MT vs MD vs MTd vs MDd https://social.msdn.microsoft.com/Forums/en-US/9474efb9-49cd-46e1-8935-ee2bebe95203/difference-in-mt-and-md-run-time-lib-setting?forum=vcgeneral
+		# Might have to use MDd with wxWidgets because: https://forums.wxwidgets.org/viewtopic.php?t=47650
+		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:DebugDLL>"
+		#MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+		#MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 	)
 
 	# Clang's GNU frontend targeting the MSVC ABI may not honor
@@ -18,7 +22,8 @@ if (MSVC OR
 		CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
 		target_compile_options(${PROJECT_LIB_NAME} PRIVATE
 			$<$<CONFIG:Release>:-fms-runtime-lib=static>
-			$<$<CONFIG:Debug>:-fms-runtime-lib=static_dbg>
+			$<$<CONFIG:Debug>:-fms-runtime-lib=dll_dbg>
+			#$<$<CONFIG:Debug>:-fms-runtime-lib=static_dbg>
 		)
 	endif()
 endif()

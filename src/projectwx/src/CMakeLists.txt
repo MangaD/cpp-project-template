@@ -57,8 +57,7 @@ elseif (MSVC OR
 	# MT vs MD vs MTd vs MDd https://social.msdn.microsoft.com/Forums/en-US/9474efb9-49cd-46e1-8935-ee2bebe95203/difference-in-mt-and-md-run-time-lib-setting?forum=vcgeneral
 	# Might have to use MDd with wxWidgets because: https://forums.wxwidgets.org/viewtopic.php?t=47650
 	set_property(TARGET ${PROJECT_WX_NAME} PROPERTY
-		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-		#MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:DebugDLL>")
 
 	# Clang's GNU frontend targeting the MSVC ABI may not honor
 	# MSVC_RUNTIME_LIBRARY. Explicitly select the corresponding static CRT.
@@ -67,7 +66,8 @@ elseif (MSVC OR
 		CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
 		target_compile_options(${PROJECT_WX_NAME} PRIVATE
 			$<$<CONFIG:Release>:-fms-runtime-lib=static>
-			$<$<CONFIG:Debug>:-fms-runtime-lib=static_dbg>
+			$<$<CONFIG:Debug>:-fms-runtime-lib=dll_dbg>
+			#$<$<CONFIG:Debug>:-fms-runtime-lib=static_dbg>
 		)
 	else()
 		# Disable incremental linking in Release builds to allow full linker

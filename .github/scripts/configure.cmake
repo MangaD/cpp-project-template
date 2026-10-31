@@ -24,12 +24,12 @@ if ("$ENV{RUNNER_OS}" STREQUAL "Windows")
 			-S .
 			-B build
 			-D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
+			-D ENABLE_COVERAGE=$ENV{ENABLE_COVERAGE}
 			-G "Ninja"
 			-D CMAKE_MAKE_PROGRAM=ninja
 			-D CMAKE_C_COMPILER_LAUNCHER=ccache
 			-D CMAKE_CXX_COMPILER_LAUNCHER=ccache
 			-D CMAKE_TOOLCHAIN_FILE=${toolchain_file}
-			-D VCPKG_TARGET_TRIPLET=$ENV{VCPKG_TRIPLET}
 			-D VCPKG_TARGET_TRIPLET=$ENV{VCPKG_TRIPLET}
 			# Do not force the host triplet to match the target triplet.
 			# Cross-architecture builds (e.g., x86 on an x64 runner) may need native
@@ -47,6 +47,7 @@ else()
 			-S .
 			-B build
 			-D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
+			-D ENABLE_COVERAGE=$ENV{ENABLE_COVERAGE}
 			-G "Ninja"
 			-D CMAKE_MAKE_PROGRAM=ninja
 			-D CMAKE_C_COMPILER_LAUNCHER=ccache
